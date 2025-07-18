@@ -5,12 +5,13 @@ import App from "./App.jsx";
 import SmoothScroll from "./components/SmoothScroll.jsx";
 import { BrowserRouter } from "react-router-dom";
 
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <SmoothScroll>
-        <App />
-      </SmoothScroll>
+        <SmoothScroll>
+          <App />
+        </SmoothScroll>  
     </BrowserRouter>
   </StrictMode>
 );
