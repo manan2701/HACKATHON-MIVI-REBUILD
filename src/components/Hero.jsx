@@ -60,6 +60,9 @@ const Home = () => {
           For Android Only <img src="https://www.mivi.in/cdn/shop/files/Frame_2_0877e40f-2f0a-465c-a5da-9eae8c46e5ad_100x.svg?v=1751182108" alt="android" />
           </p>
       </section>
+      <div className="hero-price">
+      <p><span>₹</span>6999</p>
+      </div>
       <div className="home-button">
         <button className="explore-btn">
           Explore

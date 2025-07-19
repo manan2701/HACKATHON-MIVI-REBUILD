@@ -25,7 +25,7 @@
 
 .ai-buds h1 {
     font-size: 8em;
-    color: #a7f955;
+    color: #52fea2;
 }
 
 .ai-buds-title span{
@@ -88,12 +88,12 @@
 .feature-card:hover {
     transform: translateY(-10px) scale(1.04);
     box-shadow: 0 12px 40px rgba(0, 255, 1, 0.18);
-    border-color: #a7f955;
+    border-color: #52fea2;
 }
 
 .feature-card i {
     font-size: 2.7rem;
-    color: #a7f955;
+    color: #52fea2;
     margin-bottom: 18px;
     display: block;
     filter: drop-shadow(0 2px 8px rgba(0, 255, 1, 0.10));
@@ -124,7 +124,7 @@
     border: 2px solid #181a1b;
     border-radius: 9999px;
     background-color: #181a1b;
-    color: #a7f955;
+    color: #52fea2;
     overflow: hidden;
     z-index: 10;
     cursor: pointer;
@@ -139,7 +139,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: #a7f955; /* emerald-500 */
+    background-color: #52fea2; /* emerald-500 */
     z-index: -1;
     border-radius: 9999px;
     transition: all 0.7s ease;
@@ -151,6 +151,7 @@
   
   .explore-btn:hover::before {
     left: 0;
+    transform: scale(0.99);
   }
   
   /* SVG styling */
@@ -159,14 +160,14 @@
     height: 32px;
     padding: 6px;
     transform: rotate(45deg);
-    border: 1px solid #a7f955; /* gray-700 */
+    border: 1px solid #52fea2; /* gray-700 */
     border-radius: 50%;
     transition: all 0.3s ease;
     background-color: transparent;
   }
   
   .arrow-path {
-    fill: #a7f955; /* gray-800 */
+    fill: #52fea2; /* gray-800 */
     transition: fill 0.3s ease;
   }
   
@@ -177,10 +178,22 @@
   }
   
   .explore-btn:hover .arrow-path {
-    fill: #a7f955;
+    fill: #52fea2;
   }
   
 
+  .hero-price {
+    position: absolute;
+    top: 40%;
+    left: 70%;
+    font-size: 4em;
+    color: #52fea2;
+  }
+
+  .hero-price span{
+    font-size: 0.5em;
+    color: #181a1b;
+  }
 
 
   

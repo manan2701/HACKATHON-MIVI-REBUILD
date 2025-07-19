@@ -54,7 +54,7 @@
   position: absolute;
   top: 15%;
   left: -7px;
-  color: #a7f955;
+  color: #52fea2;
   font-size: 32px;
   transform: rotate(90deg); /* Rotate the arrow to point right */
 }
@@ -86,7 +86,7 @@
 
 .navbar a:hover{
   background-color: #181a1b;
-  color: #a7f955;
+  color: #52fea2;
 }
 
 @keyframes fadeIn {
@@ -117,7 +117,7 @@
 }
 
 .navbar-profile i:hover{
-  color: #a7f955;
+  color: #52fea2;
 }
 
 .navbar-logo{
