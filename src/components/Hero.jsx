@@ -42,8 +42,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div ref={sectionRef} className="home-container data-scroll-section">
-      <div className="blank"></div>
+    <div ref={sectionRef} className="home-container">
+      
       <Video />
       <section className="ai-buds">
         <h1 className="ai-buds-title">

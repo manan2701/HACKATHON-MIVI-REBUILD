@@ -4,7 +4,7 @@ import Home from "./pages/Home.jsx";
 
 const App = () => {
   return (
-    <div className="data-scroll-container">
+    <div>
       <NavBar />
       <Home />
     </div>

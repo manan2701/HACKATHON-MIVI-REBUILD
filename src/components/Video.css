@@ -1,7 +1,7 @@
 .video-container {
     position: absolute;
     width: 100%;
-    min-height: 90vh;
+    min-height: 100vh;
     overflow: hidden;
 }
 .video-layer{
