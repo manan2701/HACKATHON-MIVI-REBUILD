@@ -16,4 +16,24 @@
     bottom: -50%;
     z-index: -1;
 }
+.desktop-screen {
+    display: none;
+}
+
+.mobile-screen {
+    display: none;
+}
+
+/* Media queries for responsive video display */
+@media (min-width: 769px) {
+    .desktop-screen {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {  
+    .mobile-screen {
+        display: block;
+    }
+}
 

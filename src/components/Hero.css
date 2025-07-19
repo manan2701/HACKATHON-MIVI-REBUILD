@@ -64,22 +64,6 @@
     margin: 32px 0 40px 0;
 }
 
-.buy-now-btn {
-    background-color: #a7f955;
-    color: #181a1b;
-    font-size: 1.2em;
-    font-weight: 800;
-    padding: 18px 36px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, transform 0.2s;
-}
-
-.buy-now-btn:hover {
-    background: #fff;
-    color: #a7f955;
-    transform: scale(.95);
-}
 
 .features {
     display: flex;
@@ -167,7 +151,6 @@
   
   .explore-btn:hover::before {
     left: 0;
-    transform: scale(1.5);
   }
   
   /* SVG styling */
