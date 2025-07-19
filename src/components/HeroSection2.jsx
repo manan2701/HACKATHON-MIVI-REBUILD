@@ -68,7 +68,7 @@ const HeroSection2 = () => {
         <div className="multi-lang-content">
           <h1><span className="multi-word">Multilingual.</span></h1>
           <h1><span className="multi-word">Multitalented.</span></h1>
-          <h1><span className="multi-word">Just like Humans.</span></h1>
+          <h1><span className="multi-word">Just like <br/> Humans.</span></h1>
           <p>
             Say “Hi Mivi” and speak in up to 8 <br/>Indian languages apart from
             <br/>English. No switching, no settings.
