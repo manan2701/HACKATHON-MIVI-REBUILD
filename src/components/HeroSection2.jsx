@@ -3,6 +3,7 @@ import "./HeroSection2.css";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import HorizontalScrollSection from "./HorizontalScrollSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +15,6 @@ const HeroSection2 = () => {
         start: "top 85%",
         end: "bottom 65%",
         scrub: 1,
-        markers: true,
       },
     });
     tl.fromTo(
@@ -36,7 +36,6 @@ const HeroSection2 = () => {
         start: "top 85%",
         end: "bottom 65%",
         scrub: 1,
-        markers: true,
       },
     });
     tl.fromTo(
@@ -63,7 +62,19 @@ const HeroSection2 = () => {
               </span>
             ))}
         </p>
+
       </div>
+  
+      <div className="wake-up">
+          <div className="wake-up-image">
+            <img src="https://www.mivi.in/cdn/shop/files/Girl_image_Desktop_copy.webp?v=1751457523&width=2500&format=webp&quality=100" alt="" />
+          </div>
+          <div className="wake-up-text">
+          <p>Wake them up by saying</p>
+          <h1>"Hi Mivi"</h1>
+        </div>
+      </div>
+      <HorizontalScrollSection />
       <div className="multi-language">
         <div className="multi-lang-content">
           <h1><span className="multi-word">Multilingual.</span></h1>
@@ -84,6 +95,7 @@ const HeroSection2 = () => {
           ></video>
         </div>
       </div>
+
     </div>
   );
 };

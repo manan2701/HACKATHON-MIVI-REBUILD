@@ -1,0 +1,12 @@
+.hero-section3{
+    height: 150vh;
+    display: flex;
+    justify-content: space-between;
+    background-color: #cf2a2a;
+    align-items: center;
+    padding: 100px 0;
+}
+
+.hero-section3-left{
+    width: 50%;
+}

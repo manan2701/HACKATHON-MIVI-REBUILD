@@ -1,0 +1,39 @@
+.horizontal-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.horizontal-scroll {
+  display: flex;
+  height: 100%;
+}
+
+.image-card {
+  flex: 0 0 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #181A1B;
+  border: none;
+}
+
+.image-card-1{
+  background-color: #181A1B;
+}
+.image-card-2{
+  background-color: #aeaaa1;
+}
+.image-card-3{
+  background-color: #df8746;
+}
+.image-card-4{
+  background-color: #bf9472;
+}
+
+.image-card img {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+}

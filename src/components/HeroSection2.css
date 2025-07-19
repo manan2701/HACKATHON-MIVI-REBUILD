@@ -1,17 +1,29 @@
 .hero-section-top{
-    background: #181A1B;
-    background: linear-gradient(180deg,#181A1B,#0b0d0d);
+    background: linear-gradient(180deg,#181A1B,#040503);
     height: 100vh;
     width: 100%;
-    padding: 15vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 5vw 25vw 30vw 5vw;
+    color: #52fea2;
+}
+
+.hero-section-top::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    background-image: url("/assets/ai.svg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.1;
+
 }
 
 .hero-section-top p{
     color: #52fea2;
-    font-size: 4em;
+    font-size: 3.7em;
     font-weight: 600;
     opacity: 1;
 }
@@ -46,5 +58,78 @@
     opacity: 0.4;
     padding-top: 1em;
 }
+.wake-up {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5vw;
+    height: 100vh;
+    gap: 2vw;
+    background: linear-gradient(360deg,#181A1B,#040503);
+  }
+  
+  .wake-up-image {
+    flex: 1;
+    height: 80%;
+    overflow: hidden;
+    border-radius: 50px;
+  }
+  
+  .wake-up-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .wake-up-text {
+    height: 100%;
+    display: flex;
+    padding: 5vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+  .wake-up-text p {
+    font-size: 1.5em;
+    opacity: 0.6 ;
+    padding-top: 1em;
+    text-transform: uppercase;
+    font-family: "inter tight", sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.15em;
+  }
+  
+  .wake-up-text h1 {
+    font-size: 6.5em;
+    color: #52fea2;
+    padding-bottom: 0.5em;
+    font-family: "inter tight", sans-serif;
+    letter-spacing: 0.1em;
+  }
 
 
+  
+
+@media (max-width: 768px) {
+    .hero-section-top p{
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 1099px) {
+    .hero-section-top p{
+        font-size: 3em;
+    }
+}
+
+@media (max-width: 456px) {
+    .hero-section-top p{
+        font-size: 1.8em;
+    }
+    .hero-section-top{
+        padding: 6vw;
+    }
+}
