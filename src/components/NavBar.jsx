@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./NavBar.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 
 const FloatingNavbar = () => {
-  const [isNavVisible, setIsNavVisible] = useState(true);
+  const [isNavVisible, setIsNavVisible] = useState(false); // Start with navbar hidden
   const [menuOpen, setMenuOpen] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const navbarRef = useRef(null);
 
+  // Toggle navbar visibility on button click
   const toggleNav = () => {
     setIsNavVisible(!isNavVisible);
+    if (!isNavVisible) {
+      setMenuOpen(false); // Close menu when hiding navbar
+    }
   };
 
   const toggleMenu = () => {
@@ -32,65 +40,132 @@ const FloatingNavbar = () => {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+  const handleNavLinkClick = () => {
+    if (isMobile || isTablet) {
+      setMenuOpen(false);
+    }
+  };
 
-      if (currentScrollY > 0 && isNavVisible) {
-        setIsNavVisible(false);
-        setMenuOpen(false); // Close menu when hiding navbar
-      }
-      if (currentScrollY === 0 && !isNavVisible) {
+  // Check device screen size
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+      setIsTablet(width > 480 && width < 992);
+      
+      // Show navbar for desktop, hide for mobile/tablet by default
+      if (width >= 992) {
         setIsNavVisible(true);
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
+    
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [isNavVisible]);
+  }, []);
+
+  // Control navbar visibility based on scroll direction
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (isMobile || isTablet) return; // Don't control navbar visibility on mobile/tablet
+      
+      const currentScrollY = window.scrollY;
+      
+      // Determine scroll direction
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        // Scrolling down - hide navbar
+        setIsNavVisible(false);
+        // Also close mobile menu when hiding navbar
+        if (menuOpen) setMenuOpen(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - show navbar
+        setIsNavVisible(true);
+      }
+      
+      // Always show navbar at the top of the page
+      if (currentScrollY === 0) {
+        setIsNavVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", controlNavbar);
+    return () => {
+      window.removeEventListener("scroll", controlNavbar);
+    };
+  }, [lastScrollY, menuOpen, isMobile, isTablet]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuOpen && navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
 
   return (
     <>
-      {!isNavVisible && (
-        <button className="nav-toggle" onClick={toggleNav}>
-          <i className="ri-arrow-up-s-line"></i>
-        </button>
-      )}
-      <nav className={`navbar ${isNavVisible ? "navbar-visible" : ""} `}>
+      <button 
+        className={`nav-toggle ${isNavVisible ? 'nav-toggle-hide' : 'nav-toggle-show'}`}
+        onClick={toggleNav} 
+      >
+        <i className={`ri-arrow-${isNavVisible ? 'left' : 'right'}-s-line`}></i>
+      </button>
+
+      <nav 
+        ref={navbarRef}
+        className={`navbar ${isNavVisible ? "navbar-visible" : ""}`}
+      >
         <div className="navbar-container">
           <div className="navbar-logo">
-            <a href="/" onClick={handleLogoClick}>
+            <a href="/" onClick={handleLogoClick} className="logo-link">
               <img
                 src="https://www.mivi.in/cdn/shop/files/WhatsApp_Image_2024-09-25_at_14.24.21_1.avif?v=1750936057&width=113"
-                alt="logo"
+                alt="Mivi logo"
               />
             </a>
           </div>
           <div className="navbar-separator"></div>
 
-          <div 
-            className={`hamburger-menu ${menuOpen ? 'open' : ''}`} 
-            onClick={toggleMenu}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-
           <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
-            <a className="navbar-link" href="#"><p>Products</p></a>
-            <a className="navbar-link" href="#"><p>About Us</p></a>
-            <a className="navbar-link" href="#"><p>Contact Us</p></a>
+            <a className="navbar-link products-link" href="#products" onClick={handleNavLinkClick} style={{"--i": 1}}>
+              <p>Products</p>
+            </a>
+            <a className="navbar-link about-link" href="#about" onClick={handleNavLinkClick} style={{"--i": 2}}>
+              <p>About Us</p>
+            </a>
+            <a className="navbar-link contact-link" href="#contact" onClick={handleNavLinkClick} style={{"--i": 3}}>
+              <p>Contact Us</p>
+            </a>
           </div>
         </div>
+        
         <div className="navbar-profile">
-          <i className="ri-shopping-cart-line"></i>
-          <Link to="/login">
+          <a href="#cart" className="cart-icon">
+            <i className="ri-shopping-cart-line"></i>
+          </a>
+          <Link to="/login" className="user-icon">
             <i className="ri-user-line"></i>
           </Link>
+        </div>
+        
+        <div 
+          className={`hamburger-menu ${menuOpen ? 'open' : ''}`} 
+          onClick={toggleMenu}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </nav>
     </>
