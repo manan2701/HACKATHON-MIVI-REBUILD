@@ -48,7 +48,6 @@ const HeroSection2 = () => {
           start: "top 90%",
           end: "bottom 10%",
           scrub: true,
-          markers: true,
         },
       }
     );
