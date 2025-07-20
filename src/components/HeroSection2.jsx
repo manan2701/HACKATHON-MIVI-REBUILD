@@ -74,7 +74,7 @@ const HeroSection2 = () => {
           <h1>"Hi Mivi"</h1>
         </div>
       </div>
-      <HorizontalScrollSection />
+      {/* <HorizontalScrollSection /> */}
       <div className="multi-language">
         <div className="multi-lang-content">
           <h1><span className="multi-word">Multilingual.</span></h1>
