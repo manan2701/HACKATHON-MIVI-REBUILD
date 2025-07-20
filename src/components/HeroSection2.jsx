@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./HeroSection2.css";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -8,6 +8,10 @@ import HorizontalScrollSection from "./HorizontalScrollSection";
 gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection2 = () => {
+  const wakeUpRef = useRef(null);
+  const topSectionRef = useRef(null);
+
+  // Keep existing GSAP animations for .ai-word and .multi-word
   useGSAP(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -30,31 +34,64 @@ const HeroSection2 = () => {
   }, []);
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".multi-lang-content",
-        start: "top 85%",
-        end: "bottom 65%",
-        scrub: 1,
-      },
-    });
-    tl.fromTo(
-      ".multi-word",
+    // Wake up section animations
+    const wakeUpTl = gsap.timeline();
+    wakeUpTl.fromTo(
+      ".wake-up-image",
+      { y: 100, opacity: 0 },
+      {
+        y: -100,
+        opacity: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".wake-up-image",
+          start: "top 90%",
+          end: "bottom 10%",
+          scrub: true,
+          markers: true,
+        },
+      }
+    );
+    wakeUpTl.fromTo(
+      ".wake-up-text p span",
       { opacity: 0.1, y: 10 },
       {
         opacity: 1,
         y: 0,
         stagger: 0.08,
         ease: "power2.out",
+        scrollTrigger: {
+          trigger:".wake-up-text p span",
+          start: "top 90%",
+          end: "bottom 40%",
+          scrub: true,
+        },
+      }
+    );
+    wakeUpTl.fromTo(
+     ".wake-up-text h1 span",
+      { opacity: 0.1, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.08,
+        delay: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger:".wake-up-text h1 span",
+          start: "top 90%",
+          end: "bottom 40%",
+          scrub: true,
+        },
       }
     );
   }, []);
 
   return (
     <div className="hero-section2">
-      <div className="hero-section-top">
+      <div className="hero-section-top" ref={topSectionRef}>
         <p className="ai-line">
-          {`Mivi AI Buds, powered by built-in Mivi AI, mark the first step in the human and AI relationship. Designed for voice-only conversations, just plug in and say “Hi Mivi” to get started.`
+          {`Mivi AI Buds, powered by built-in Mivi AI, mark the first step in the human and AI relationship. Designed for voice-only conversations, just plug in and say "Hi Mivi" to get started.`
             .split(" ")
             .map((word, i) => (
               <span key={i} className="ai-word">
@@ -63,38 +100,31 @@ const HeroSection2 = () => {
             ))}
         </p>
 
+        {/* <div className="android-image" ref={androidRef}>
+          <img width={"100%"} src="/assets/android.png" alt="" />
+        </div> */}
       </div>
-  
-      <div className="wake-up">
-          <div className="wake-up-image">
-            <img src="https://www.mivi.in/cdn/shop/files/Girl_image_Desktop_copy.webp?v=1751457523&width=2500&format=webp&quality=100" alt="" />
-          </div>
-          <div className="wake-up-text">
-          <p>Wake them up by saying</p>
-          <h1>"Hi Mivi"</h1>
+
+      <div className="wake-up" ref={wakeUpRef}>
+        <div className="wake-up-image">
+          <img
+            src="https://www.mivi.in/cdn/shop/files/Girl_image_Desktop_copy.webp?v=1751457523&width=2500&format=webp&quality=100"
+            alt=""
+          />
         </div>
-      </div>
-      {/* <HorizontalScrollSection /> */}
-      <div className="multi-language">
-        <div className="multi-lang-content">
-          <h1><span className="multi-word">Multilingual.</span></h1>
-          <h1><span className="multi-word">Multitalented.</span></h1>
-          <h1><span className="multi-word">Just like <br/> Humans.</span></h1>
+        <div className="wake-up-text">
           <p>
-            Say “Hi Mivi” and speak in up to 8 <br/>Indian languages apart from
-            <br/>English. No switching, no settings.
+            {`Wake them up by saying`.split(" ").map((word, i) => (
+              <span key={i} className="wakeup-word">
+                {word}&nbsp;
+              </span>
+            ))}
           </p>
-        </div>
-        <div className="multi-lang-video">
-          <video
-            src="https://www.mivi.in/cdn/shop/videos/c/vp/27863044c6104d11bb3cf1abddb746b9/27863044c6104d11bb3cf1abddb746b9.SD-480p-0.9Mbps-50498716.mp4?v=0"
-            autoPlay
-            loop
-            muted
-            width={"80%"}
-          ></video>
+          <h1><span>"</span><span>Hi</span>{" "}<span>Mivi</span><span>"</span></h1>
         </div>
       </div>
+
+      <HorizontalScrollSection />
 
     </div>
   );
