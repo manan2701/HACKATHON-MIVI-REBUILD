@@ -1,0 +1,603 @@
+/* Login and Register Page Styles */
+.auth-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f5f5f7;
+    position: relative;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    padding-top: calc(10vh + 10px);
+}
+
+.auth-box {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    aspect-ratio: 16/9;
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.8s ease-in-out;
+}
+
+.auth-form-side {
+    width: 50%;
+    padding: 40px;
+    transition: all 0.8s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.auth-background-side {
+    position: relative;
+    width: 50%;
+    background: linear-gradient(135deg, #181a1b 0%, #252a2c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.8s ease-in-out;
+}
+
+.slide-animation .auth-form-side {
+    transform: translateX(100%);
+}
+
+.slide-animation .auth-background-side {
+    transform: translateX(-100%);
+}
+
+.auth-header {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.auth-header h1 {
+    font-size: 26px;
+    color: #181a1b;
+    font-weight: 700;
+}
+
+.auth-header h1 span {
+    color: #52fea2;
+    font-weight: 800;
+}
+
+.auth-header p {
+    color: #8d9498;
+    font-size: 15px;
+}
+
+/* Form Styles */
+.form-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+}
+
+.form-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.7s ease-in-out;
+    transform: translateX(-30px);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* Add this to allow scrolling within form panels only */
+}
+
+.form-panel form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-evenly;
+}
+
+.form-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.input-group {
+    margin-bottom: 12px;
+}
+
+.input-group label {
+    display: block;
+    color: #181a1b;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8d9498;
+    font-size: 16px;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 9px 16px 9px 42px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+/* Add these styles for form validation and error messages */
+
+.input-error input {
+    border-color: #ff3b30;
+    background-color: rgba(255, 59, 48, 0.05);
+}
+
+.input-error i {
+    color: #ff3b30;
+}
+
+.error-message {
+    display: block;
+    color: #ff3b30;
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.terms-error {
+    color: #ff3b30;
+}
+
+.terms-error label {
+    color: #ff3b30;
+}
+
+.terms .error-message {
+    margin-left: 24px;
+    margin-top: 2px;
+}
+
+/* Add a focus style to highlight fields when they're in focus */
+.input-with-icon input:focus {
+    outline: none;
+    border-color: #52fea2;
+    box-shadow: 0 0 0 2px rgba(82, 254, 162, 0.2);
+}
+
+/* Even when there's an error, focus should be highlighted properly */
+.input-error input:focus {
+    border-color: #52fea2;
+    box-shadow: 0 0 0 2px rgba(82, 254, 162, 0.2);
+    background-color: #fff;
+}
+
+/* Successful validation style */
+.input-success input {
+    border-color: #34c759;
+    background-color: rgba(52, 199, 89, 0.05);
+}
+
+.input-success i {
+    color: #34c759;
+}
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    accent-color: #52fea2;
+}
+
+.remember-me label {
+    color: #8d9498;
+    font-size: 13px;
+}
+
+.forgot-password {
+    color: #52fea2;
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    color: #31d980;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 12px;
+    background: #1d2022;
+    color: #52fea2;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-button::before {
+    content: "";
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #52fea2;
+    z-index: -1;
+    transition: all 0.5s ease;
+}
+
+.auth-button:hover {
+    color: #181a1b;
+}
+
+.auth-button:hover::before {
+    left: 0;
+}
+
+.auth-button i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.auth-button:hover i {
+    transform: translateX(5px);
+}
+
+.terms {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.terms input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    margin-top: 2px;
+    accent-color: #52fea2;
+}
+
+.terms label {
+    color: #8d9498;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.terms a {
+    color: #52fea2;
+    text-decoration: none;
+}
+
+.terms a:hover {
+    text-decoration: underline;
+}
+
+.toggle-link {
+    text-align: center;
+    margin-top: 14px;
+}
+
+.toggle-link p {
+    color: #8d9498;
+    font-size: 13px;
+}
+
+.toggle-link button {
+    background: none;
+    border: none;
+    color: #52fea2;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 5px;
+    transition: all 0.3s ease;
+}
+
+.toggle-link button:hover {
+    text-decoration: underline;
+}
+
+/* Background Styles */
+.circles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(82, 254, 162, 0.1);
+}
+
+.circle-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    right: -100px;
+    animation: float 8s infinite alternate;
+}
+
+.circle-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 10%;
+    right: 25%;
+    animation: float 10s infinite alternate-reverse;
+}
+
+.circle-3 {
+    width: 250px;
+    height: 250px;
+    bottom: -100px;
+    left: -100px;
+    animation: float 15s infinite alternate;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(-10px, 10px);
+    }
+
+    100% {
+        transform: translate(10px, -10px);
+    }
+}
+
+.auth-info {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    color: white;
+    padding: 0 30px;
+    max-width: 90%;
+}
+
+.auth-info h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #52fea2;
+}
+
+.auth-info p {
+    color: #f1f1f1;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.switch-btn {
+    padding: 12px 30px;
+    background: transparent;
+    color: white;
+    border: 2px solid #52fea2;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.switch-btn:hover {
+    background: #52fea2;
+    color: #181a1b;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .auth-box {
+        width: 90%;
+        max-width: 900px;
+        aspect-ratio: 3/2;
+    }
+
+    .auth-form-side {
+        padding: 35px 30px;
+    }
+}
+
+/* Add these new classes for mobile animation */
+.mobile-register-active {
+    transform: none !important;
+}
+
+.mobile-bg-register {
+    transform: none !important;
+}
+
+/* Mobile specific styles for the panel transition */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 15px 0;
+    }
+
+    .auth-box {
+        flex-direction: column;
+        height: auto;
+        aspect-ratio: auto;
+        width: 90%;
+        max-width: 500px;
+    }
+
+    .auth-form-side,
+    .auth-background-side {
+        width: 100%;
+    }
+
+    .auth-form-side {
+        order: 2;
+        padding: 25px 20px;
+        height: auto;
+        min-height: 520px;
+        position: relative;
+    }
+
+    .auth-background-side {
+        height: 180px;
+        order: 1;
+    }
+
+    .form-container {
+        min-height: auto;
+    }
+
+    /* Fix for mobile animation - eliminate slide transformation */
+    .slide-animation .auth-form-side,
+    .slide-animation .auth-background-side {
+        transform: translateX(0);
+    }
+
+    /* Better animation for mobile devices */
+    .form-panel {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease;
+        transform: translateX(0);
+        left: 0;
+        top: 0;
+    }
+
+    .form-panel.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+        z-index: 2;
+    }
+
+    .auth-header {
+        margin-bottom: 12px;
+    }
+
+    .auth-header h1 {
+        font-size: 22px;
+    }
+
+    .auth-info h2 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .auth-info p {
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-box {
+        max-height: 86vh;
+        margin-top: 9vh;
+    }
+    .switch-btn {
+        padding: 4px 20px;
+        font-size: 12px;
+    }
+
+    .auth-form-side {
+        padding: 20px 15px;
+    }
+
+    .auth-background-side {
+        height: 180px;
+    }
+
+    .input-group {
+        margin-bottom: 12px;
+    }
+
+    .remember-forgot {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .forgot-password {
+        margin-top: 10px;
+    }
+}
+
+/* Add these styles for the phone number input with country code prefix */
+.input-with-prefix {
+    position: relative;
+}
+
+.input-prefix {
+    position: absolute;
+    left: 45px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #181a1b;
+    font-weight: 500;
+    font-size: 14px;
+    z-index: 2;
+}
+
+.input-with-prefix input {
+    padding-left: 75px !important;
+}
+
+/* Add extra small device styles for iPhone SE */
+@media (max-width: 376px) {
+    .auth-background-side{
+        display: none;
+    }
+}

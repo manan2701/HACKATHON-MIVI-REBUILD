@@ -70,12 +70,10 @@
   align-items: center;
 }
 
-.navbar a {
+.navbar-link {
   position: relative;
   color: #181a1b;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
   height: 10vh;
   display: flex;
   align-items: center;
@@ -84,7 +82,7 @@
   transition: all 0.3s ease;
 }
 
-.navbar a:hover{
+.navbar-link:hover{
   background-color: #181a1b;
   color: #52fea2;
 }
@@ -109,6 +107,10 @@
   font-size: 1.8rem;
 }
 
+.navbar-profile a{
+  text-decoration: none;
+}
+
 .navbar-profile i {
   color: #fff;
   padding: 0 10px;
@@ -124,6 +126,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+    transition: transform 0.3s ease;
   padding: 0 60px;
 }
 
@@ -132,6 +135,11 @@
   width: auto;
   display: block;
 }
+
+.navbar-logo:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+} 
 
 /* Hamburger Menu Styles */
 .hamburger-menu {

@@ -1,12 +1,10 @@
 import React from "react";
-import NavBar from "./components/NavBar.jsx";
-import Home from "./pages/Home.jsx";
+import Mainroutes from "./routes/Mainroutes.jsx";
 
 const App = () => {
   return (
     <div>
-      <NavBar />
-      <Home />
+      <Mainroutes/>
     </div>
   );
 };
