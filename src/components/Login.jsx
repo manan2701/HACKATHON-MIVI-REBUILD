@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './Login.css';
+import { nanoid } from '@reduxjs/toolkit';
+import { asyncRegisterUser } from '../store/actions/userActions';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const [isLoginActive, setIsLoginActive] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const dispatch = useDispatch()
   
   // React Hook Form setup for login
   const { 
@@ -76,9 +80,13 @@ const Login = () => {
     // Here you would typically send the data to your backend
   };
   
-  const onRegisterSubmit = (data) => {
-    console.log('Registration successful', data);
-    // Here you would typically send the data to your backend
+  const onRegisterSubmit = async (user) => {
+      user.id = nanoid()
+      user.cart = []
+      user.orders = []
+      dispatch(asyncRegisterUser(user))
+      console.log(user);
+      
   };
 
   return (

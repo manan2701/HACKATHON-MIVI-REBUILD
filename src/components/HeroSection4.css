@@ -1,0 +1,222 @@
+.ai-buds-slider-component {
+  margin: 50px auto;
+  max-width: 1200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.common-section-padding {
+  padding: 60px 20px;
+}
+
+/* Tab Navigation */
+.tab {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.tablinks {
+  background: transparent;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #646B66;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tablinks:hover {
+  color: #000;
+}
+
+.tablinks.active {
+  color: #000;
+  font-weight: 600;
+}
+
+.tablinks.active:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background-color: #000;
+}
+
+/* Tab Content */
+.tab-swiper {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.tabcontent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  height: auto;
+}
+
+.tabcontent:not(.active) {
+  display: none;
+}
+
+.tab-text-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.tab-text-content h3 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.tab-text-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.tab-image {
+  flex: 1;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.tab-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.tabcontent.active .tab-image img {
+  transform: scale(1.02);
+}
+
+/* Progress Bar */
+.tab-progress-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.tab-progress-bar {
+  width: 40px;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-line {
+  height: 100%;
+  background-color: #000;
+  width: 0;
+  transition: width 0.2s ease;
+}
+
+@keyframes progressAnimation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .tab-text-content h3 {
+    font-size: 28px;
+  }
+  
+  .tab-image {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tabcontent {
+    flex-direction: column-reverse;
+  }
+  
+  .tab {
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .tab::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .tablinks {
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .tab-text-content {
+    padding: 15px 0;
+    text-align: center;
+  }
+  
+  .tab-text-content h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .tab-image {
+    width: 100%;
+    height: 300px;
+  }
+  
+  .tab-progress-bar {
+    width: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .common-section-padding {
+    padding: 40px 15px;
+  }
+  
+  .tab-text-content h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .tab-text-content p {
+    font-size: 14px;
+  }
+  
+  .tab-image {
+    height: 250px;
+  }
+  
+  .tablinks {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .tab-progress-bar {
+    width: 25px;
+    height: 3px;
+  }
+} 

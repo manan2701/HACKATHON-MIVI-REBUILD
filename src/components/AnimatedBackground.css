@@ -1,0 +1,40 @@
+.animated-bg-container {
+    position: absolute;
+    height: 100%;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  /* Floating small particles */
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #52fea2; /* Replace with your desired "primary" color */
+    border-radius: 9999px;
+  }
+  
+  /* Large Circle */
+  .circle-shape {
+    position: absolute;
+    top: 5rem;
+    left: 5rem;
+    width: 8rem;
+    height: 8rem;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 50%;
+  }
+  
+  /* Gradient Square */
+  .square-shape {
+    position: absolute;
+    top: 33%;
+    right: 5rem;
+    width: 5rem;
+    height: 5rem;
+    background: linear-gradient(135deg, #52fea2, #02be59);
+    opacity: 0.1;
+    border-radius: 0.5rem;
+  }

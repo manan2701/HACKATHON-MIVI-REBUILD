@@ -3,7 +3,7 @@ import "./HeroSection2.css";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import HorizontalScrollSection from "./HorizontalScrollSection";
+import AnimatedBackground from "./AnimatedBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -122,9 +122,7 @@ const HeroSection2 = () => {
           <h1><span>"</span><span>Hi</span>{" "}<span>Mivi</span><span>"</span></h1>
         </div>
       </div>
-
-      <HorizontalScrollSection />
-
+      <AnimatedBackground/>
     </div>
   );
 };
