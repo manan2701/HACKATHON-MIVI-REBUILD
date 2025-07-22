@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import LenisWrapper from "./components/LenisWrapper.jsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.jsx";
+import { ToastContainer } from "react-toastify";
 
 
 createRoot(document.getElementById("root")).render(
@@ -12,6 +13,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
         <LenisWrapper>
           <App />
+          <ToastContainer />
         </LenisWrapper>  
     </BrowserRouter>
   </Provider>

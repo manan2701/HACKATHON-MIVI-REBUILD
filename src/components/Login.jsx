@@ -3,13 +3,16 @@ import { useForm } from 'react-hook-form';
 // import { Link } from 'react-router-dom';
 import './Login.css';
 import { nanoid } from '@reduxjs/toolkit';
-import { asyncRegisterUser } from '../store/actions/userActions';
+import { asyncLoginUser, asyncRegisterUser } from '../store/actions/userActions';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [isLoginActive, setIsLoginActive] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   
   // React Hook Form setup for login
   const { 
@@ -76,17 +79,15 @@ const Login = () => {
   
   // Form submission handlers
   const onLoginSubmit = (data) => {
-    console.log('Login successful', data);
-    // Here you would typically send the data to your backend
+    dispatch(asyncLoginUser(data , navigate))
   };
   
   const onRegisterSubmit = async (user) => {
       user.id = nanoid()
       user.cart = []
       user.orders = []
-      dispatch(asyncRegisterUser(user))
-      console.log(user);
-      
+      dispatch(asyncRegisterUser(user))  
+      resetRegister()
   };
 
   return (
@@ -97,7 +98,6 @@ const Login = () => {
             <h1>Welcome to <span>MIVI</span></h1>
             <p>Experience the future of sound</p>
           </div>
-
           <div className="form-container">
             <div className={`form-panel ${isLoginActive ? 'active' : ''}`}>
               <form className="login-form" onSubmit={handleSubmitLogin(onLoginSubmit)}>
@@ -119,7 +119,7 @@ const Login = () => {
                   {loginErrors.email && <span className="error-message">{loginErrors.email.message}</span>}
                 </div>
                 
-                <div className="input-group">
+                {/* <div className="input-group">
                   <label>Phone Number</label>
                   <div className={`input-with-icon input-with-prefix ${loginErrors.phone ? 'input-error' : ''}`}>
                     <i className="ri-smartphone-line"></i>
@@ -138,7 +138,7 @@ const Login = () => {
                     />
                   </div>
                   {loginErrors.phone && <span className="error-message">{loginErrors.phone.message}</span>}
-                </div>
+                </div> */}
                 
                 <div className="input-group">
                   <label>Password</label>

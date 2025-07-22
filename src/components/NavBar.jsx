@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./NavBar.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const FloatingNavbar = () => {
   const [isNavVisible, setIsNavVisible] = useState(false); // Start with navbar hidden
@@ -11,6 +12,8 @@ const FloatingNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const navbarRef = useRef(null);
+  const user = JSON.parse(localStorage.getItem('user'))
+  
 
   // Toggle navbar visibility on button click
   const toggleNav = () => {
@@ -138,9 +141,9 @@ const FloatingNavbar = () => {
           <div className="navbar-separator"></div>
 
           <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
-            <a className="navbar-link products-link" href="#products" onClick={handleNavLinkClick} style={{"--i": 1}}>
+            <NavLink to="/products" className="navbar-link products-link" onClick={handleNavLinkClick} style={{"--i": 1}}>
               <p>Products</p>
-            </a>
+            </NavLink>
             <a className="navbar-link about-link" href="#about" onClick={handleNavLinkClick} style={{"--i": 2}}>
               <p>About Us</p>
             </a>
@@ -154,7 +157,7 @@ const FloatingNavbar = () => {
           <a href="#cart" className="cart-icon">
             <i className="ri-shopping-cart-line"></i>
           </a>
-          <Link to="/login" className="user-icon">
+          <Link to={user ? "/profile" : "/login"} className="user-icon">
             <i className="ri-user-line"></i>
           </Link>
         </div>
