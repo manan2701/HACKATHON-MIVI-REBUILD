@@ -23,19 +23,24 @@ export const asyncRegisterUser = (user) => async (dispatch,getState) => {
     }
 }
 
-export const asyncLoginUser = (user, navigate) => async (dispatch,getState) => {
-    try {
-        const {data} = await axiosInstance.get(`/users?email=${user.email}&password=${user.password}`)
-        console.log(data);
-        dispatch(saveUser(data[0]))
-        dispatch(setUser(data[0]))
-        toast.success('Login successful')
-        navigate('/')
-    } catch (error) {
-        console.log('Login failed', error)
-        toast.error('Login failed')
-    }
-}
+export const asyncLoginUser = (user, navigate) => async (dispatch, getState) => {
+  try {
+    const { data } = await axiosInstance.post(`/users/login`, {
+      email: user.email,
+      password: user.password
+    });
+    console.log(data);
+    
+    dispatch(saveUser(data));
+    dispatch(setUser(data));
+    toast.success('Login successful');
+    navigate('/');
+  } catch (error) {
+    console.log('Login failed', error);
+    toast.error('Invalid email or password');
+  }
+};
+
 
 export const asyncLogoutUser = () => async (dispatch,getState) => {
     try {
@@ -52,6 +57,16 @@ export const asyncCurrentUser = () => async (dispatch,getState) => {
     try {
         const user = JSON.parse(localStorage.getItem("user"))
         if(user) dispatch(setUser(user))
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const asyncupdateuser = (id, user) => async (dispatch, getState) => {
+    try{
+        const {data} = await axiosInstance.patch(`/users/${id}`,user)
+        localStorage.setItem("user", JSON.stringify(data))
+        dispatch(setUser(data))
     } catch (error) {
         console.log(error);
     }

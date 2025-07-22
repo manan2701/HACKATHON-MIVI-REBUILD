@@ -80,6 +80,7 @@ const Login = () => {
   // Form submission handlers
   const onLoginSubmit = (data) => {
     dispatch(asyncLoginUser(data , navigate))
+    console.log(data);
   };
   
   const onRegisterSubmit = async (user) => {
