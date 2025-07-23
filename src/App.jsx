@@ -2,17 +2,18 @@ import React from "react";
 import Mainroutes from "./routes/Mainroutes.jsx";
 import { useDispatch } from "react-redux";
 import { asyncCurrentUser } from "./store/actions/userActions.jsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { asyncGetProducts } from "./store/actions/productActions.jsx";
+import { useLocation } from "react-router-dom";
 
 const App = () => {
   const dispatch = useDispatch();
+
   
   useEffect(() => {
     // Load initial data
     dispatch(asyncCurrentUser());
     dispatch(asyncGetProducts());
-    
     // Ensure scrolling is enabled after data loads
     const enableScrolling = () => {
       if (window.lenisScroll) {

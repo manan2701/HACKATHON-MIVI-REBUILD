@@ -63,18 +63,21 @@ export const asyncCurrentUser = () => async (dispatch,getState) => {
 }
 
 export const asyncupdateuser = (id, user) => async (dispatch, getState) => {
-    try{
-        const {data} = await axiosInstance.patch(`/users/${id}`,user)
-        localStorage.setItem("user", JSON.stringify(data))
-        dispatch(setUser(data))
-    } catch (error) {
-        console.log(error);
-    }
-}
+  try {
+    console.log(user);
+    const { data } = await axiosInstance.patch(`/users/${id}`, user);
+    localStorage.setItem("user", JSON.stringify(data));
+    dispatch(setUser(data));
+    return true; // ✅ return a success flag
+  } catch (error) {
+    console.log(error);
+    return false; // ✅ handle errors
+  }
+};
 
 
 export const asyncaddToCart = (user, product, selectedColorName) => async (dispatch) => {
-  try {
+  try {  
     // Extract the correct image URL for the selected color
     const colorEntry = product.color.find((colorObj) => colorObj[selectedColorName]);
     const colorImageUrl = colorEntry?.[selectedColorName];

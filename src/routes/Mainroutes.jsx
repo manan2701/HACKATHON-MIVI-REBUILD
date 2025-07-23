@@ -1,5 +1,5 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Profile from '../pages/Profile'
@@ -7,10 +7,19 @@ import ProductPage from '../pages/Product'
 import ProductDetail from '../pages/ProductDetail'
 import NavBar from '../components/NavBar'
 import Cart from '../pages/Cart'
-
+import Footer from '../components/Footer'
+import { useState } from 'react'
 
 const Mainroutes = () => {
-  
+  const location = useLocation()
+  const [isLoginPage, setisLoginPage] = useState(false)
+  useEffect(() => {
+    if(location.pathname === '/login'){
+      setisLoginPage(true)
+    }else{
+      setisLoginPage(false)
+    }
+  }, [location.pathname])
   return (
     <div>
        <NavBar />
@@ -24,6 +33,7 @@ const Mainroutes = () => {
             <Route path="/products/:productId" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
         </Routes>
+      {isLoginPage ? "" : <Footer />}
     </div>
   )
 }

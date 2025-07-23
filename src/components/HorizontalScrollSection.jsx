@@ -1,14 +1,36 @@
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalSection.css";
 import { useGSAP } from "@gsap/react";
+import { useSelector, useDispatch } from 'react-redux';
+import { asyncaddToCart } from '../store/actions/userActions';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HorizontalScrollSection = () => {
   const sectionRef = useRef(null);
   const horizontalRef = useRef(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer.user);
+  const product = useSelector((state) => state.productReducer.products)
+
+  const colors = [{
+    color : "Black",
+    image : "/assets/ai-buds-1.webp"
+  },
+  {
+    color : "Silver",
+    image : "/assets/ai-buds-2.webp"
+  },
+  {
+    color : "Orange",
+    image : "/assets/ai-buds-3.webp"
+  },
+  {
+    color : "Champagne",
+    image : "/assets/ai-buds-4.webp"
+  }]
 
   const imageURLs = [
     [1, 5, 9],
@@ -26,6 +48,26 @@ const HorizontalScrollSection = () => {
     const updated = [...selectedImages];
     updated[groupIndex] = imageId;
     setSelectedImages(updated);
+  };
+
+  const handleAddToCart = (index) => {
+    // Only proceed if user is logged in and products are loaded
+    if (!user) {
+      // Navigate to login or show notification
+      alert('Please log in to add items to cart');
+      return;
+    }
+
+    if (colors && product.length > 0) {
+      // For simplicity, we'll use the first 4 products from the products array
+      const productToAdd = colors[index];
+      if (productToAdd) {
+        // Use the first color option for the selected product
+        const {color} = productToAdd;
+        console.log(color);
+        dispatch(asyncaddToCart(user, product[0], color));
+      }
+    }
   };
 
   useLayoutEffect(() => {
@@ -85,7 +127,12 @@ const HorizontalScrollSection = () => {
                 alt={`Main ${selectedImages[groupIndex]}`}
               />
             </div>
-            <button className="horizontal-add-to-cart">ADD TO CART<span>  |  </span>₹6999</button>
+            <button 
+              className="horizontal-add-to-cart"
+              onClick={() => handleAddToCart(groupIndex)}
+            >
+              ADD TO CART<span>  |  </span>₹6999
+            </button>
           </div>
         ))}
       </div>

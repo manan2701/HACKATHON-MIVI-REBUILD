@@ -865,11 +865,11 @@
   margin-right: 10px;
 }
 
-.form-group {
+.checkout-form-group {
   margin-bottom: 15px;
 }
 
-.form-group label {
+.checkout-form-group label {
   display: block;
   margin-bottom: 6px;
   font-weight: 500;
@@ -877,8 +877,8 @@
   font-size: 0.9rem;
 }
 
-.form-group input,
-.form-group textarea {
+.checkout-form-group input,
+.checkout-form-group textarea {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #ddd;
@@ -887,8 +887,8 @@
   transition: border-color 0.2s;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.checkout-form-group input:focus,
+.checkout-form-group textarea:focus {
   border-color: #343B36;
   outline: none;
 }
@@ -898,7 +898,7 @@
   gap: 15px;
 }
 
-.form-row .form-group {
+.form-row .checkout-form-group  {
   flex: 1;
 }
 
@@ -949,7 +949,7 @@
 }
 
 .payment-option:nth-child(1) label:before {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23343B36"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm7.753 16.195c-.69 1.561-1.881 2.586-3.396 2.586-2.933 0-4.867-2.994-7.004-2.994-.821 0-1.525.361-1.996.915-1.204-1.336-1.657-3.388-1.157-5.406.69-2.786 2.855-4.549 4.72-4.549 1.521 0 2.342 1.011 3.983 1.011 1.637 0 2.348-.861 4.065-.861 1.264 0 2.586.87 3.504 2.639-3.566 1.898-3.268 5.673-.719 6.659z"/></svg>');
+  background-image: url('data:image/  svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23343B36"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm7.753 16.195c-.69 1.561-1.881 2.586-3.396 2.586-2.933 0-4.867-2.994-7.004-2.994-.821 0-1.525.361-1.996.915-1.204-1.336-1.657-3.388-1.157-5.406.69-2.786 2.855-4.549 4.72-4.549 1.521 0 2.342 1.011 3.983 1.011 1.637 0 2.348-.861 4.065-.861 1.264 0 2.586.87 3.504 2.639-3.566 1.898-3.268 5.673-.719 6.659z"/></svg>');
 }
 
 .payment-option:nth-child(2) label:before {
@@ -1344,4 +1344,20 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+.save-address-option {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.save-address-option input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.save-address-option label {
+  cursor: pointer;
+  color: #343B36;
 }

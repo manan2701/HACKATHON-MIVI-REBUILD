@@ -141,7 +141,12 @@ const FloatingNavbar = () => {
           <div className="navbar-separator"></div>
 
           <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
-            <NavLink to="/products" className="navbar-link products-link" onClick={handleNavLinkClick} style={{"--i": 1}}>
+            <NavLink 
+              to="/products" 
+              className={({isActive}) => isActive ? "navbar-link navbar-link-active products-link" : "navbar-link products-link"} 
+              onClick={handleNavLinkClick} 
+              style={{"--i": 1}}
+            >
               <p>Products</p>
             </NavLink>
             <a className="navbar-link about-link" href="#about" onClick={handleNavLinkClick} style={{"--i": 2}}>

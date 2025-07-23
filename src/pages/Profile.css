@@ -350,7 +350,7 @@
 }
 
 .save-button,
-.cancel-button {
+.profile-cancel-button   {
   background: none;
   border: none;
   font-size: 14px;
@@ -378,13 +378,13 @@
   color: #181a1b;
 }
 
-.cancel-button {
+.profile-cancel-button {
   background-color: rgba(255, 74, 86, 0.1);
   color: #ff4a57;
   border: 1px solid rgba(255, 74, 86, 0.3);
 }
 
-.cancel-button:hover {
+.profile-cancel-button:hover {
   background-color: #ff4a57;
   color: #fff;
 }
@@ -423,25 +423,25 @@
   gap: 20px;
 }
 
-.form-group {
+.profile-form-group {
   margin-bottom: 15px;
   position: relative;
 }
 
-.form-group.full-width {
+.profile-form-group.full-width {
   grid-column: 1 / -1;
 }
 
-.form-group label {
+.profile-form-group label {
   display: block;
   font-size: 13px;
   color: #a8aaab;
   margin-bottom: 8px;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
+.profile-form-group input,
+.profile-form-group textarea,
+.profile-form-group select {
   width: 100%;
   padding: 10px 15px;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -453,26 +453,26 @@
   transition: all 0.3s ease;
 }
 
-.form-group textarea {
+.profile-form-group textarea {
   min-height: 100px;
   resize: vertical;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
+.profile-form-group input:focus,
+.profile-form-group textarea:focus,
+.profile-form-group select:focus {
   border-color: #52fea2;
   box-shadow: 0 0 0 3px rgba(82, 254, 162, 0.1);
   outline: none;
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder,
-.form-group select::placeholder {
+.profile-form-group input::placeholder,
+.profile-form-group textarea::placeholder,
+.profile-form-group select::placeholder {
   color: #a8aaab;
 }
 
-.form-group .error-message {
+.profile-form-group .error-message {
   color: #ff4a57;
   font-size: 12px;
   margin-top: 5px;

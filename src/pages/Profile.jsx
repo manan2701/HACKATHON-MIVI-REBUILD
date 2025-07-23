@@ -26,20 +26,20 @@ const Profile = () => {
     if (user) {
       setFormData({
         _id: user._id,
-        fullName: user.fullName || "John Doe",
-        email: user.email || "bordaalpaben@gmail.com",
-        phone: user.phone || "7818007554",
-        dob: user.dob || "",
-        address: user.address || "123 Main Street, Apartment 4B",
-        city: user.city || "Mumbai",
-        state: user.state || "Maharashtra",
-        pincode: user.pincode || "400001",
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        dob: user.dob,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        pincode: user.pincode,
       });
     }
   }, [user]);
 
   // UI state
-  const [activeTab, setActiveTab] = useState("details");
+  const [activeTab, setActiveTab] = useState("orders");
   const [isMobile, setIsMobile] = useState(false);
   const [editPersonalInfo, setEditPersonalInfo] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
@@ -83,19 +83,18 @@ const Profile = () => {
       setEditPersonalInfo(false);
       setFormData((prev) => ({
         ...prev,
-        fullName: user?.fullName || "John Doe",
-        email: user?.email || "bordaalpaben@gmail.com",
-        phone: user?.phone || "7818007554",
-        dob: user?.dob || "",
+        fullName: user?.fullName ,
+        email: user?.email ,
+        phone: user?.phone ,
       }));
     } else if (section === "address") {
       setEditAddress(false);
       setFormData((prev) => ({
         ...prev,
-        address: user?.address || "123 Main Street, Apartment 4B",
-        city: user?.city || "Mumbai",
-        state: user?.state || "Maharashtra",
-        pincode: user?.pincode || "400001",
+        address: user?.address,
+        city: user?.city,
+        state: user?.state,
+        pincode: user?.pincode,
       }));
     }
   };
@@ -123,15 +122,7 @@ const Profile = () => {
             <h2>ACCOUNT</h2>
           </div>
           <div className="sidebar-menu">
-            <button
-              className={`menu-item ${activeTab === "details" ? "active" : ""}`}
-              onClick={() => setActiveTab("details")}
-            >
-              <i className="ri-user-line"></i>
-              <span>My Details</span>
-              <i className="ri-arrow-right-s-line arrow-icon"></i>
-            </button>
-            <button
+          <button
               className={`menu-item ${activeTab === "orders" ? "active" : ""}`}
               onClick={() => setActiveTab("orders")}
             >
@@ -140,13 +131,11 @@ const Profile = () => {
               <i className="ri-arrow-right-s-line arrow-icon"></i>
             </button>
             <button
-              className={`menu-item ${
-                activeTab === "wishlist" ? "active" : ""
-              }`}
-              onClick={() => setActiveTab("wishlist")}
+              className={`menu-item ${activeTab === "details" ? "active" : ""}`}
+              onClick={() => setActiveTab("details")}
             >
-              <i className="ri-heart-line"></i>
-              <span>Wishlist</span>
+              <i className="ri-user-line"></i>
+              <span>My Details</span>
               <i className="ri-arrow-right-s-line arrow-icon"></i>
             </button>
             <button className="menu-item logout" onClick={handleLogout}>
@@ -184,7 +173,7 @@ const Profile = () => {
                         <i className="ri-check-line"></i> Save
                       </button>
                       <button
-                        className="cancel-button"
+                        className="profile-cancel-button"
                         onClick={() => cancelEdit("personal")}
                       >
                         <i className="ri-close-line"></i> Cancel
@@ -207,12 +196,6 @@ const Profile = () => {
                       <label>Phone</label>
                       <div className="info-value">+91{formData.phone}</div>
                     </div>
-                    <div className="info-item">
-                      <label>Date of Birth</label>
-                      <div className="info-value">
-                        {formData.dob || "Not provided"}
-                      </div>
-                    </div>
                   </div>
                 ) : (
                   <form
@@ -220,7 +203,7 @@ const Profile = () => {
                     onSubmit={(e) => e.preventDefault()}
                   >
                     <div className="form-grid">
-                      <div className="form-group">
+                      <div className="profile-form-group">
                         <label htmlFor="fullName">Full Name</label>
                         <input
                           type="text"
@@ -231,7 +214,7 @@ const Profile = () => {
                           required
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="profile-form-group">
                         <label htmlFor="email">Email</label>
                         <input
                           type="email"
@@ -242,7 +225,7 @@ const Profile = () => {
                           required
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="profile-form-group">
                         <label htmlFor="phone">Phone</label>
                         <div className="phone-input-container">
                           <span className="country-code">+91</span>
@@ -255,16 +238,6 @@ const Profile = () => {
                             required
                           />
                         </div>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="dob">Date of Birth</label>
-                        <input
-                          type="date"
-                          id="dob"
-                          name="dob"
-                          value={formData.dob}
-                          onChange={handleInputChange}
-                        />
                       </div>
                     </div>
                   </form>
@@ -284,7 +257,7 @@ const Profile = () => {
                         <i className="ri-check-line"></i> Save
                       </button>
                       <button
-                        className="cancel-button"
+                        className="profile-cancel-button"
                         onClick={() => cancelEdit("address")}
                       >
                         <i className="ri-close-line"></i> Cancel
@@ -315,7 +288,7 @@ const Profile = () => {
                     onSubmit={(e) => e.preventDefault()}
                   >
                     <div className="form-grid">
-                      <div className="form-group full-width">
+                      <div className="profile-form-group full-width">
                         <label htmlFor="address">Address</label>
                         <textarea
                           id="address"
@@ -325,7 +298,7 @@ const Profile = () => {
                           required
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="profile-form-group">
                         <label htmlFor="city">City</label>
                         <input
                           type="text"
@@ -336,7 +309,7 @@ const Profile = () => {
                           required
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="profile-form-group">
                         <label htmlFor="state">State</label>
                         <input
                           type="text"
@@ -347,7 +320,7 @@ const Profile = () => {
                           required
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="profile-form-group">
                         <label htmlFor="pincode">Pincode</label>
                         <input
                           type="text"
@@ -366,7 +339,7 @@ const Profile = () => {
           )}
 
           {activeTab === "orders" && (
-            <div className="tab-content orders-tab">
+            <div className="tab-content orders-tab" >
               <h2>My Orders</h2>
               <p className="tab-description">Track and manage your orders</p>
               <div className="orders-section">

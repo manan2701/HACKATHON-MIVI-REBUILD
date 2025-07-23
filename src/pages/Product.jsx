@@ -3,8 +3,9 @@ import './Product.css';
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { asyncaddToCart } from '../store/actions/userActions';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,6 +50,8 @@ const ProductPage = () => {
   };
   
   const productsFromStore = useSelector((state) => state.productReducer.products);
+  const user = useSelector((state) => state.userReducer.user);
+  const dispatch = useDispatch();
 
   // Ensure scrolling is always enabled after data loads
   useEffect(() => {
@@ -308,6 +311,27 @@ const ProductPage = () => {
     }
   };
 
+  // Function to handle adding product to cart
+  const handleAddToCart = (product) => {
+    if (!user) {
+      alert('Please log in to add items to cart');
+      return;
+    }
+    
+    // Get the first color key from the product's colors
+    const firstColorKey = product.color && product.color.length > 0 
+      ? Object.keys(product.color[0])[0] 
+      : null;
+      
+    if (!firstColorKey) {
+      console.error("No color available for this product");
+      return;
+    }
+    
+    dispatch(asyncaddToCart(user, product, firstColorKey));
+  };
+
+
   return (
     <div className="product-page">
       <div className="product-page__header">
@@ -548,7 +572,10 @@ const ProductPage = () => {
                   </div>
                   
                   <div className="product-cta">
-                    <button className="add-to-cart-btn">
+                    <button 
+                      className="add-to-cart-btn"
+                      onClick={() => handleAddToCart(product)}
+                    >
                       <i className="ri-shopping-cart-line"></i>
                       Add to Cart
                     </button>

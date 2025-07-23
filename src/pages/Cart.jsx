@@ -17,7 +17,7 @@ const Cart = () => {
     pincode: '',
     paymentMethod: 'upi'
   });
-  const [useProfileAddress, setUseProfileAddress] = useState(true);
+  const [useProfileAddress, setUseProfileAddress] = useState(false);
   
   useEffect(() => {
     setCartItems(user?.cart);
@@ -83,6 +83,20 @@ const Cart = () => {
   // Toggle checkout form
   const toggleCheckoutForm = () => {
     setShowCheckoutForm(!showCheckoutForm);
+    
+    // Toggle body scroll when modal is open/closed
+    if (!showCheckoutForm) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  };
+
+  // Close the modal when clicking outside
+  const handleModalClick = (e) => {
+    if (e.target.className === 'checkout-modal') {
+      toggleCheckoutForm();
+    }
   };
 
   // Handle form input changes
@@ -109,9 +123,7 @@ const Cart = () => {
     }
   };
 
-  // Place order function
-  const placeOrder = () => {
-    // Create order object
+  const placeOrder = async () => {
     const orderData = {
       items: cartItems,
       totalAmount: subtotal,
@@ -123,17 +135,35 @@ const Cart = () => {
       },
       paymentMethod: checkoutData.paymentMethod,
     };
-
-    // Dispatch the asyncPlaceOrder action
-    dispatch(asyncPlaceOrder(user, orderData))
-      .then((success) => {
-        if (success) {
-          setCartItems([]);
-          setShowCheckoutForm(false);
-          navigate('/profile');
-        }
-      });
+  
+    const updatedUserData = {
+      ...user,
+      address: checkoutData.address,
+      city: checkoutData.city,
+      state: checkoutData.state,
+      pincode: checkoutData.pincode
+    };
+  
+    // ✅ Await user update and check result
+    const userUpdated = dispatch(asyncupdateuser(user._id, updatedUserData));
+  
+    if (!userUpdated) {
+      console.error("User update failed.");
+      return; // Stop here if update failed
+    }
+  
+    // ✅ Await order placement
+    const orderSuccess = await dispatch(asyncPlaceOrder(user, orderData));
+  
+    if (orderSuccess) {
+      setCartItems([]);
+      setShowCheckoutForm(false);
+      navigate('/profile');
+    } else {
+      console.error("Order placement failed.");
+    }
   };
+  
 
   return (
     <div className="cart-page">
@@ -250,8 +280,7 @@ const Cart = () => {
         </div>
         
         {cartItems?.length > 0 && (
-          <div className="cart-footer">
-            
+          <div className="cart-footer">  
             <div className="cart-footer-details">
               <div className="cart-totals">
                 <div className="cart-total-price">₹{subtotal?.toLocaleString()}</div>
@@ -339,7 +368,7 @@ const Cart = () => {
 
       {/* Checkout Form Modal */}
       {showCheckoutForm && (
-        <div className="checkout-modal">
+        <div className="checkout-modal" onClick={handleModalClick}>
           <div className="checkout-form-container">
             <div className="checkout-form-header">
               <h2>Complete Your Order</h2>
@@ -349,7 +378,7 @@ const Cart = () => {
             <div className="checkout-form">
               <div className="checkout-columns">
                 <div className="checkout-left-column">
-                  <div className="form-section">
+                  <div className="form-section shipping-address-section">
                     <h3>Shipping Address</h3>
                     <div className="use-profile-address">
                       <input
@@ -361,7 +390,7 @@ const Cart = () => {
                       <label htmlFor="use-profile-address">Use address from profile</label>
                     </div>
                     
-                    <div className="form-group">
+                    <div className="checkout-form-group">
                       <label htmlFor="address">Address</label>
                       <textarea
                         id="address"
@@ -374,7 +403,7 @@ const Cart = () => {
                     </div>
                     
                     <div className="form-row">
-                      <div className="form-group">
+                      <div className="checkout-form-group">
                         <label htmlFor="city">City</label>
                         <input
                           type="text"
@@ -387,7 +416,7 @@ const Cart = () => {
                         />
                       </div>
                       
-                      <div className="form-group">
+                      <div className="checkout-form-group">
                         <label htmlFor="state">State</label>
                         <input
                           type="text"
@@ -401,7 +430,7 @@ const Cart = () => {
                       </div>
                     </div>
                     
-                    <div className="form-group">
+                    <div className="checkout-form-group">
                       <label htmlFor="pincode">Pincode</label>
                       <input
                         type="text"
@@ -412,10 +441,10 @@ const Cart = () => {
                         disabled={useProfileAddress}
                         required
                       />
-                    </div>
+                    </div>                    
                   </div>
                   
-                  <div className="form-section">
+                  <div className="form-section payment-section">
                     <h3>Payment Method</h3>
                     <div className="payment-options">
                       <div className="payment-option">
