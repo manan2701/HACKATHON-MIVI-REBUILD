@@ -3,8 +3,34 @@ import './ProductListing.css';
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Helper function to safely animate with GSAP
+const safeAnimate = (target, animation, options = {}) => {
+  // Only proceed if target exists and is a valid element or array of elements
+  if (!target) {
+    // If no target, immediately call onComplete if provided
+    if (options.onComplete) options.onComplete();
+    return;
+  }
+  
+  // Check if it's an array-like object with valid elements
+  if (Array.isArray(target)) {
+    const validElements = target.filter(el => el && typeof el === 'object');
+    if (validElements.length === 0) {
+      // If no valid elements, immediately call onComplete if provided
+      if (options.onComplete) options.onComplete();
+      return;
+    }
+    gsap.to(validElements, { ...animation, ...options });
+  } else {
+    // For direct element references
+    gsap.to(target, { ...animation, ...options });
+  }
+};
 
 const ProductPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -16,156 +42,83 @@ const ProductPage = () => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [activeFilterPanel, setActiveFilterPanel] = useState('sort');
   const productGridRef = useRef(null);
+  const productCardsRef = useRef([]);
   const filterRefs = {
     sort: useRef(null),
     price: useRef(null)
   };
   
-  // Dummy product data with more realistic information
+  const productsFromStore = useSelector((state) => state.productReducer.products);
+
+  // Ensure scrolling is always enabled after data loads
   useEffect(() => {
-    const dummyProducts = [
-      {
-        id: 1,
-        name: "AI Buds Pro 700",
-        description: "AI-powered earbuds with superior sound quality",
-        price: 4999,
-        originalPrice: 6999,
-        discount: 29,
-        color: "Black",
-        subcategory: "gaming-pods",
-        availability: true,
-        rating: 4.8,
-        reviews: 127,
-        features: ["AI Voice Assistant", "40h Battery", "Noise Cancellation"],
-        image: "/assets/ai-buds-1.webp"
-      },
-      {
-        id: 2,
-        name: "AI Buds Pro 600",
-        description: "Smart earbuds with voice controls",
-        price: 3999,
-        originalPrice: 5999,
-        discount: 33,
-        color: "White",
-        subcategory: "gaming-pods",
-        availability: true,
-        rating: 4.5,
-        reviews: 98,
-        features: ["Hi Mivi Wake", "30h Battery", "Low Latency"],
-        image: "/assets/ai-buds-2.webp"
-      },
-      {
-        id: 3,
-        name: "AI Buds X",
-        description: "Premium AI earbuds with immersive sound",
-        price: 6999,
-        originalPrice: 9999,
-        discount: 30,
-        color: "Red",
-        subcategory: "gaming-pods",
-        availability: false,
-        rating: 4.9,
-        reviews: 74,
-        features: ["Neural Voice", "50h Battery", "Pro Gaming Mode"],
-        image: "/assets/ai-buds-3.webp"
-      },
-      {
-        id: 4,
-        name: "DuoPods 500",
-        description: "Dual driver earbuds for balanced sound",
-        price: 2999,
-        originalPrice: 4499,
-        discount: 33,
-        color: "Blue",
-        subcategory: "duopods",
-        availability: true,
-        rating: 4.3,
-        reviews: 156,
-        features: ["Dual Drivers", "25h Battery", "IPX7 Water Resistant"],
-        image: "/assets/ai-buds-4.webp"
-      },
-      {
-        id: 5,
-        name: "SuperPods Ultra",
-        description: "Ultra premium sound experience",
-        price: 9999,
-        originalPrice: 12999,
-        discount: 23,
-        color: "White",
-        subcategory: "superpods",
-        availability: false,
-        rating: 4.7,
-        reviews: 62,
-        features: ["Studio Sound", "45h Battery", "Ambient Mode"],
-        image: "/assets/ai-buds-5.webp"
-      },
-      {
-        id: 6,
-        name: "SuperPods Max",
-        description: "Maximum audio performance with AI",
-        price: 12999,
-        originalPrice: 15999,
-        discount: 19,
-        color: "Grey",
-        subcategory: "superpods",
-        availability: true,
-        rating: 4.6,
-        reviews: 43,
-        features: ["Premium Sound", "60h Battery", "Gesture Controls"],
-        image: "/assets/ai-buds-6.webp"
-      },
-      {
-        id: 7,
-        name: "AI Buds Lite",
-        description: "Lightweight AI earbuds for everyday use",
-        price: 2499,
-        originalPrice: 3999,
-        discount: 38,
-        color: "Black",
-        subcategory: "gaming-pods",
-        availability: true,
-        rating: 4.2,
-        reviews: 89,
-        features: ["Voice Control", "20h Battery", "Compact Design"],
-        image: "/assets/ai-buds-7.webp"
-      },
-      {
-        id: 8,
-        name: "DuoPods Pro",
-        description: "Professional grade dual driver earbuds",
-        price: 5999,
-        originalPrice: 7999,
-        discount: 25,
-        color: "Blue",
-        subcategory: "duopods",
-        availability: true,
-        rating: 4.4,
-        reviews: 112,
-        features: ["Pro Audio", "35h Battery", "Fast Charge"],
-        image: "/assets/ai-buds-8.webp"
-      }
-    ];
-    setProducts(dummyProducts);
-  }, []);
+    if (productsFromStore && productsFromStore.length > 0) {
+      // Force enable scrolling after data loads (with a delay to ensure rendering completes)
+      const timer = setTimeout(() => {
+        if (window.lenisScroll) window.lenisScroll.start();
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [productsFromStore]);
+
+  useEffect(() => {
+    setProducts(productsFromStore);
+  }, [productsFromStore]);
+
+  // Reset product cards ref array when products change
+  useEffect(() => {
+    productCardsRef.current = productCardsRef.current.slice(0, products.length);
+    
+    // Always ensure scrolling is enabled when products change
+    if (window.lenisScroll) {
+      setTimeout(() => {
+        window.lenisScroll.start();
+      }, 500);
+    }
+  }, [products]);
 
   // GSAP animations for product cards
   useGSAP(() => {
-    if (productGridRef.current) {
-      const productCards = document.querySelectorAll('.product-card');
-      gsap.fromTo(
-        productCards,
-        { 
-          opacity: 0,
-          y: 20
-        },
-        { 
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
-          duration: 0.8,
-          ease: "power2.out"
+    if (productGridRef.current && productCardsRef.current.length > 0) {
+      // Temporarily stop smooth scrolling during animation
+      if (window.lenisScroll) window.lenisScroll.stop();
+      
+      try {
+        const validCards = productCardsRef.current.filter(ref => ref !== null);
+        if (validCards.length > 0) {
+          gsap.fromTo(
+            validCards,
+            { 
+              opacity: 0,
+              y: 20
+            },
+            { 
+              opacity: 1,
+              y: 0,
+              stagger: 0.1,
+              duration: 0.8,
+              ease: "power2.out",
+              onComplete: () => {
+                // Resume smooth scrolling after animation
+                if (window.lenisScroll) window.lenisScroll.start();
+              }
+            }
+          );
+        } else if (window.lenisScroll) {
+          // No valid elements but we need to restart scrolling
+          window.lenisScroll.start();
         }
-      );
+      } catch (error) {
+        console.error("Animation error:", error);
+        // Ensure scrolling is restored even if animation fails
+        if (window.lenisScroll) window.lenisScroll.start();
+      }
+      
+      // Safety timeout to ensure scrolling is always re-enabled
+      setTimeout(() => {
+        if (window.lenisScroll) window.lenisScroll.start();
+      }, 1200); // Just after animation should complete
     }
   }, [products]);
 
@@ -234,21 +187,39 @@ const ProductPage = () => {
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
     
-    // Animation for category change
+    // Animation for category change - using ref instead of direct selector
     if (productGridRef.current) {
-      gsap.to('.product-grid', {
-        opacity: 0,
-        y: -10,
-        duration: 0.3,
-        onComplete: () => {
-          gsap.to('.product-grid', {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            delay: 0.1
-          });
-        }
-      });
+      // Temporarily stop smooth scrolling during animation
+      if (window.lenisScroll) window.lenisScroll.stop();
+      
+      try {
+        safeAnimate(productGridRef.current, {
+          opacity: 0,
+          y: -10,
+          duration: 0.3,
+          onComplete: () => {
+            safeAnimate(productGridRef.current, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              delay: 0.1,
+              onComplete: () => {
+                // Resume smooth scrolling after animation
+                if (window.lenisScroll) window.lenisScroll.start();
+              }
+            });
+          }
+        });
+      } catch (error) {
+        console.error("Animation error:", error);
+        // Ensure scrolling is restored even if animation fails
+        if (window.lenisScroll) window.lenisScroll.start();
+      }
+      
+      // Safety timeout to ensure scrolling is always re-enabled
+      setTimeout(() => {
+        if (window.lenisScroll) window.lenisScroll.start();
+      }, 1000);
     }
   };
 
@@ -299,19 +270,28 @@ const ProductPage = () => {
     });
     setSortBy('featured');
     
-    // Animation for reset
-    gsap.to('.product-grid', {
-      opacity: 0.5,
-      scale: 0.98,
-      duration: 0.3,
-      onComplete: () => {
-        gsap.to('.product-grid', {
-          opacity: 1,
-          scale: 1,
-          duration: 0.5
-        });
-      }
-    });
+    // Animation for reset - using ref instead of direct selector
+    if (productGridRef.current) {
+      // Temporarily stop smooth scrolling during animation
+      if (window.lenisScroll) window.lenisScroll.stop();
+      
+      safeAnimate(productGridRef.current, {
+        opacity: 0.5,
+        scale: 0.98,
+        duration: 0.3,
+        onComplete: () => {
+          safeAnimate(productGridRef.current, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.5,
+            onComplete: () => {
+              // Resume smooth scrolling after animation
+              if (window.lenisScroll) window.lenisScroll.start();
+            }
+          });
+        }
+      });
+    }
   };
 
   const getTotalActiveFilters = () => {
@@ -319,6 +299,13 @@ const ProductPage = () => {
     if (filters.price.min > 500 || filters.price.max < 50000) count += 1;
     if (sortBy !== 'featured') count += 1;
     return count;
+  };
+
+  // Function to add reference to product card
+  const addToRefs = (el, index) => {
+    if (el && !productCardsRef.current[index]) {
+      productCardsRef.current[index] = el;
+    }
   };
 
   return (
@@ -339,8 +326,8 @@ const ProductPage = () => {
         </button>
         
         <button 
-          className={`category-btn ${activeCategory === 'gaming-pods' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('gaming-pods')}
+          className={`category-btn ${activeCategory === 'gaming-pod' ? 'active' : ''}`}
+          onClick={() => handleCategoryClick('gaming-pod')}
         >
           <span>Gaming Pods</span>
           <div className="category-indicator"></div>
@@ -511,19 +498,27 @@ const ProductPage = () => {
         {/* Product Grid */}
         <div className="product-grid" ref={productGridRef}>
           {sortedProducts.length > 0 ? (
-            sortedProducts.map(product => (
-              <div key={product.id} className="product-card">
-                <div className="product-image-container">
-                  <img 
-                    className="product-image" 
-                    src={product.image} 
-                    alt={product.name} 
-                  />
-                </div>
+            sortedProducts.map((product, index) => (
+              <div 
+                key={product._id} 
+                className="product-card"
+                ref={(el) => addToRefs(el, index)}
+              >
+                <Link to={`/products/${product._id}`} className="product-link">
+                  <div className="product-image-container">
+                    <img 
+                      className="product-image" 
+                      src={Object.values(product.color[0])[0]} 
+                      alt={product.name} 
+                    />
+                  </div>
+                </Link>
                 
                 <div className="product-info">
-                  <h3 className="product-name">{product.name}</h3>
-                  <p className="product-description">{product.description}</p>
+                  <Link to={`/products/${product._id}`} className="product-name-link">
+                    <h3 className="product-name">{product.name}</h3>
+                  </Link>
+                  <p className="product-description">{product.tagline}</p>
                   
                   <div className="product-meta">
                     <div className="product-rating">
@@ -557,10 +552,10 @@ const ProductPage = () => {
                       <i className="ri-shopping-cart-line"></i>
                       Add to Cart
                     </button>
-                    <button className="quick-view-btn">
+                    <Link to={`/products/${product._id}`} className="quick-view-btn">
                       <i className="ri-eye-line"></i>
-                      Quick View
-                    </button>
+                      View Details
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -579,19 +574,6 @@ const ProductPage = () => {
       </div>
     </div>
   );
-};
-
-// Helper function to get color codes
-const getColorCode = (color) => {
-  const colorMap = {
-    'black': '#000000',
-    'white': '#FFFFFF',
-    'red': '#FF0000',
-    'blue': '#0000FF',
-    'grey': '#808080',
-    'yellow': '#FFFF00'
-  };
-  return colorMap[color] || '#CCCCCC';
 };
 
 export default ProductPage; 

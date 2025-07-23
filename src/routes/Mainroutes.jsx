@@ -5,6 +5,7 @@ import Login from '../components/Login'
 import NavBar from '../components/NavBar'
 import Profile from '../components/Profile'
 import ProductPage from '../components/ProductListing'
+import ProductDetail from '../components/ProductDetail'
 
 const Mainroutes = () => {
   
@@ -18,6 +19,7 @@ const Mainroutes = () => {
             <Route path="/about" element={""} />
             <Route path="/contact" element={""} />
             <Route path="/products" element={<ProductPage />} />
+            <Route path="/products/:productId" element={<ProductDetail />} />
             <Route path="/cart" element={""} />
         </Routes>
     </div>
