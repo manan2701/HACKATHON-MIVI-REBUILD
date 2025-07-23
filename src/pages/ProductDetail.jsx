@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './ProductDetail.css';
+import { asyncaddToCart } from '../store/actions/userActions';
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -9,7 +10,8 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
+  const users = useSelector((state) => state.userReducer.user);
+  const dispatch = useDispatch(); 
   useEffect(() => {
     if (products.length > 0 && productId) {
       const foundProduct = products.find(p => p._id === productId);
@@ -30,6 +32,10 @@ const ProductDetail = () => {
   const handleColorSelect = (color) => {
     setSelectedColor(color);
   };
+
+  const addToCart = (user, product) => {
+    dispatch(asyncaddToCart(user, product));
+  }
 
   if (isLoading || !product) {
     return (
@@ -90,8 +96,7 @@ const ProductDetail = () => {
               </legend>
               <div className="product-detail-values-container">
                 {colors.map((color, index) => (
-                  <div key={index} className="product-detail__thumbnails">
-             
+                  <div key={index} className="product-detail__thumbnails">             
                     <div 
                       className={`product-detail-thumbnail-item ${selectedColor === color.name ? 'active' : ''}`} 
                       key={index}
@@ -147,6 +152,7 @@ const ProductDetail = () => {
               <button 
                 type="button" 
                 className="product-detail-form__submit button button--primary"
+                onClick={() => addToCart(users, product)}
               >
                 <span className="product-detail-cart-loading-spinner hidden">
                   <svg className="product-detail-spinner" viewBox="0 0 50 50">
@@ -179,7 +185,7 @@ const ProductDetail = () => {
                     </span>
                   </div>
                   <div className="product-detail-mobile-add-to-cart-sticky-button">
-                    <button type="button" className="font-body-text">ADD TO CART</button>
+                      <button type="button" className="font-body-text" onClick={() => addToCart(users, product)}>ADD TO CART</button>
                   </div>
                 </div>
               </div>

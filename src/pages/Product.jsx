@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './ProductListing.css';
+import './Product.css';
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";

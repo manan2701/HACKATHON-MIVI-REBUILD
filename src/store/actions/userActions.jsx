@@ -71,3 +71,26 @@ export const asyncupdateuser = (id, user) => async (dispatch, getState) => {
         console.log(error);
     }
 }
+
+
+export const asyncaddToCart = (user, product) => async (dispatch, getState) => {
+    try {
+      const updatedCart = [...(user.cart)];
+      const index = updatedCart.findIndex((item) => item.product?._id === product._id);
+      if (index === -1) {
+        updatedCart.push({ product, quantity: 1 });
+      } else {
+        updatedCart[index] = {
+          ...updatedCart[index],
+          quantity: updatedCart[index].quantity + 1,
+        };
+      }
+      const updatedUser =  {...user, cart: updatedCart};
+      await axiosInstance.patch(`/users/${user._id}`, updatedUser);
+      dispatch(asyncupdateuser(user._id, updatedUser));
+      toast.success("Added To Cart!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("Failed to add to cart.");
+    }
+  };

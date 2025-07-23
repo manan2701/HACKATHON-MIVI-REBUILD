@@ -1,5 +1,6 @@
 import axiosInstance from "../../api/axiosconfig"
 import { setProducts } from "../reducers/productSlice"
+import { toast } from "react-toastify";
 
 export const asyncGetProducts = () => async (dispatch, getState) => {
     try {
@@ -8,4 +9,4 @@ export const asyncGetProducts = () => async (dispatch, getState) => {
     } catch (error) {
         console.log('Error fetching products', error)
     }
-}   
+}

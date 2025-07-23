@@ -1,11 +1,12 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from '../pages/Home'
-import Login from '../components/Login'
+import Login from '../pages/Login'
+import Profile from '../pages/Profile'
+import ProductPage from '../pages/Product'
+import ProductDetail from '../pages/ProductDetail'
 import NavBar from '../components/NavBar'
-import Profile from '../components/Profile'
-import ProductPage from '../components/ProductListing'
-import ProductDetail from '../components/ProductDetail'
+
 
 const Mainroutes = () => {
   

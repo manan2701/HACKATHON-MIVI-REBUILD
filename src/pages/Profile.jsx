@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
-import OrderItem from "./OrderItem";
 import { toast } from "react-toastify";
 import { asyncRegisterUser, asyncupdateuser } from "../store/actions/userActions";
 
