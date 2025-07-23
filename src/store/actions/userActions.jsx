@@ -73,24 +73,75 @@ export const asyncupdateuser = (id, user) => async (dispatch, getState) => {
 }
 
 
-export const asyncaddToCart = (user, product) => async (dispatch, getState) => {
-    try {
-      const updatedCart = [...(user.cart)];
-      const index = updatedCart.findIndex((item) => item.product?._id === product._id);
-      if (index === -1) {
-        updatedCart.push({ product, quantity: 1 });
-      } else {
-        updatedCart[index] = {
-          ...updatedCart[index],
-          quantity: updatedCart[index].quantity + 1,
-        };
-      }
-      const updatedUser =  {...user, cart: updatedCart};
-      await axiosInstance.patch(`/users/${user._id}`, updatedUser);
-      dispatch(asyncupdateuser(user._id, updatedUser));
-      toast.success("Added To Cart!");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      toast.error("Failed to add to cart.");
+export const asyncaddToCart = (user, product, selectedColorName) => async (dispatch) => {
+  try {
+    // Extract the correct image URL for the selected color
+    const colorEntry = product.color.find((colorObj) => colorObj[selectedColorName]);
+    const colorImageUrl = colorEntry?.[selectedColorName];
+
+    // Clone and modify the product object to embed image URL directly
+    const updatedProduct = {
+      ...product,
+      color: [{ name: selectedColorName, image: colorImageUrl }]
+// << store only the image URL here
+    };
+
+    // Prepare the cart update
+    const updatedCart = [...(user.cart)];
+    const index = updatedCart.findIndex(
+      (item) => item.product?._id === product._id && item?.product?.color[0]?.name === selectedColorName
+    );
+
+    if (index === -1) {
+      updatedCart.push({ product: updatedProduct, quantity: 1 });
+    } else {
+      updatedCart[index] = {
+        ...updatedCart[index],
+        quantity: updatedCart[index].quantity + 1,
+      };
     }
-  };
+
+    const updatedUser = { ...user, cart: updatedCart };
+
+    await axiosInstance.patch(`/users/${user._id}`, updatedUser);
+    dispatch(asyncupdateuser(user._id, updatedUser));
+    toast.success("Added To Cart!");
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    toast.error("Failed to add to cart.");
+  }
+};
+
+export const asyncPlaceOrder = (user, orderData) => async (dispatch) => {
+  try {
+    // Create new order object
+    const newOrder = {
+      items: orderData.items,
+      totalAmount: orderData.totalAmount,
+      shippingAddress: orderData.shippingAddress,
+      paymentMethod: orderData.paymentMethod,
+      orderDate: new Date().toISOString(),
+      status: 'Processing',
+      orderId: `MIVI${Math.floor(Math.random() * 10000)}`
+    };
+    
+    // Add order to user's orders array and empty the cart
+    const updatedUser = {
+      ...user,
+      orders: [...(user.orders || []), newOrder],
+      cart: []
+    };
+    
+    // Update user in the database
+    await axiosInstance.patch(`/users/${user._id}`, updatedUser);
+    dispatch(asyncupdateuser(user._id, updatedUser));
+    
+    toast.success("Order placed successfully!");
+    return true;
+  } catch (error) {
+    console.error("Error placing order:", error);
+    toast.error("Failed to place order.");
+    return false;
+  }
+};
+

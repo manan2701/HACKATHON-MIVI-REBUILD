@@ -6,6 +6,7 @@ import Profile from '../pages/Profile'
 import ProductPage from '../pages/Product'
 import ProductDetail from '../pages/ProductDetail'
 import NavBar from '../components/NavBar'
+import Cart from '../pages/Cart'
 
 
 const Mainroutes = () => {
@@ -21,7 +22,7 @@ const Mainroutes = () => {
             <Route path="/contact" element={""} />
             <Route path="/products" element={<ProductPage />} />
             <Route path="/products/:productId" element={<ProductDetail />} />
-            <Route path="/cart" element={""} />
+            <Route path="/cart" element={<Cart />} />
         </Routes>
     </div>
   )

@@ -34,7 +34,7 @@ const ProductDetail = () => {
   };
 
   const addToCart = (user, product) => {
-    dispatch(asyncaddToCart(user, product));
+    dispatch(asyncaddToCart(user, product, selectedColor));
   }
 
   if (isLoading || !product) {

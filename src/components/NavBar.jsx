@@ -154,9 +154,9 @@ const FloatingNavbar = () => {
         </div>
         
         <div className="navbar-profile">
-          <a href="#cart" className="cart-icon">
+          <Link to="/cart" className="cart-icon">
             <i className="ri-shopping-cart-line"></i>
-          </a>
+          </Link>
           <Link to={user ? "/profile" : "/login"} className="user-icon">
             <i className="ri-user-line"></i>
           </Link>

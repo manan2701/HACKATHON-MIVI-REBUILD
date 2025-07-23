@@ -44,39 +44,6 @@ const Profile = () => {
   const [editPersonalInfo, setEditPersonalInfo] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
 
-  // Sample order for UI demo
-  const sampleOrder = {
-    id: "MIVI3574",
-    status: "Delivered",
-    date: "2023-07-15",
-    total: 4999.0,
-    itemsTotal: 4999.0,
-    shipping: 0,
-    discount: 0,
-    items: [
-      {
-        name: "DuoPods A25",
-        price: 2499.0,
-        quantity: 1,
-        image: "/assets/ai-buds-1.webp",
-      },
-      {
-        name: "DuoPods A350",
-        price: 2500.0,
-        quantity: 1,
-        image: "/assets/ai-buds-2.webp",
-      },
-    ],
-    deliveryAddress: {
-      name: "John Doe",
-      street: "123 Main Street, Apartment 4B",
-      city: "Mumbai",
-      state: "Maharashtra",
-      pincode: "400001",
-      phone: "+917818007554",
-    },
-  };
-
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
@@ -106,30 +73,29 @@ const Profile = () => {
 
   const saveAddress = () => {
     const updatedUser = { ...user, ...formData };
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    dispatch(asyncupdateuser(user._id, updatedUser));
     setEditAddress(false);
     toast.success("Address updated successfully");
   };
 
   const cancelEdit = (section) => {
-    const savedUser = JSON.parse(localStorage.getItem("user")) || {};
     if (section === "personal") {
       setEditPersonalInfo(false);
       setFormData((prev) => ({
         ...prev,
-        fullName: savedUser?.fullName || "John Doe",
-        email: savedUser?.email || "bordaalpaben@gmail.com",
-        phone: savedUser?.phone || "7818007554",
-        dob: savedUser?.dob || "",
+        fullName: user?.fullName || "John Doe",
+        email: user?.email || "bordaalpaben@gmail.com",
+        phone: user?.phone || "7818007554",
+        dob: user?.dob || "",
       }));
     } else if (section === "address") {
       setEditAddress(false);
       setFormData((prev) => ({
         ...prev,
-        address: savedUser?.address || "123 Main Street, Apartment 4B",
-        city: savedUser?.city || "Mumbai",
-        state: savedUser?.state || "Maharashtra",
-        pincode: savedUser?.pincode || "400001",
+        address: user?.address || "123 Main Street, Apartment 4B",
+        city: user?.city || "Mumbai",
+        state: user?.state || "Maharashtra",
+        pincode: user?.pincode || "400001",
       }));
     }
   };
@@ -404,18 +370,90 @@ const Profile = () => {
               <h2>My Orders</h2>
               <p className="tab-description">Track and manage your orders</p>
               <div className="orders-section">
-                <OrderItem order={sampleOrder} />
-                <div className="no-orders-message">
-                  <i className="ri-shopping-bag-3-line"></i>
-                  <h3>No more orders to display</h3>
-                  <p>When you place orders, they will appear here</p>
-                  <button
-                    className="shop-now-button"
-                    onClick={() => navigate("/products")}
-                  >
-                    Continue Shopping
-                  </button>
-                </div>
+                {user?.orders && user.orders.length > 0 ? (
+                  <div className="orders-list">
+                    {user.orders.map((order, index) => (
+                      <div key={order.orderId || index} className="order-card">
+                        <div className="order-header">
+                          <div className="order-info">
+                            <h3>Order #{order.orderId || `MIVI${index + 1000}`}</h3>
+                            <span className="order-date">
+                              {new Date(order.orderDate).toLocaleDateString('en-IN', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                              })}
+                            </span>
+                          </div>
+                          <div className="order-status">
+                            <span className={`status-badge ${order.status.toLowerCase()}`}>
+                              {order.status}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="order-items">
+                          {order.items.map((item, idx) => (
+                            <div key={idx} className="order-item">
+                              <div className="order-item-image">
+                                <img 
+                                  src={item.product?.color[0]?.image} 
+                                  alt={item.product?.name} 
+                                />
+                              </div>
+                              <div className="order-item-details">
+                                <h4>{item.product?.name}</h4>
+                                <div className="order-item-meta">
+                                  <span>Color: {item.product?.color[0]?.name}</span>
+                                  <span>Qty: {item.quantity}</span>
+                                </div>
+                              </div>
+                              <div className="order-item-price">
+                                ₹{item.product?.price.toLocaleString()}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="order-footer">
+                          <div className="order-address">
+                            <h4>Delivery Address</h4>
+                            <p>{formData.fullName}</p>
+                            <p>{order.shippingAddress.address}</p>
+                            <p>
+                              {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.pincode}
+                            </p>
+                            <p>India</p>
+                          </div>
+                          
+                          <div className="order-summary">
+                            <div className="order-total">
+                              <span>Total:</span>
+                              <span className="total-amount">₹{order.totalAmount.toLocaleString()}</span>
+                            </div>
+                            <div className="payment-method">
+                              <span>Payment:</span>
+                              <span>{order.paymentMethod === 'cod' ? 'Cash on Delivery' : 
+                                     order.paymentMethod === 'card' ? 'Credit/Debit Card' : 'UPI'}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="no-orders-message">
+                    <i className="ri-shopping-bag-3-line"></i>
+                    <h3>No orders to display</h3>
+                    <p>When you place orders, they will appear here</p>
+                    <button
+                      className="shop-now-button"
+                      onClick={() => navigate("/products")}
+                    >
+                      Continue Shopping
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           )}
