@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./NavBar.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const FloatingNavbar = () => {
-  const [isNavVisible, setIsNavVisible] = useState(false); // Start with navbar hidden
+  const [isNavVisible, setIsNavVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
