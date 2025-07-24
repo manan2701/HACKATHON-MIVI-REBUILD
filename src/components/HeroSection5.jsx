@@ -2,17 +2,10 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import './HeroSection5.css';
 
-// Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Engineering data
 const engineeringData = [
   {
     id: 1,
@@ -40,11 +33,20 @@ const engineeringData = [
 const HeroSection5 = () => {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
+  const cardsContainerRef = useRef(null);
   const [flippedCards, setFlippedCards] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
 
-  // GSAP animations
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Remove the horizontal scroll reset since we're using column layout now
+
   useGSAP(() => {
-    // Main section entrance animation
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -54,184 +56,74 @@ const HeroSection5 = () => {
       }
     });
 
-    // Animate heading with split text effect
     tl.fromTo(
       headingRef.current,
-      { 
-        opacity: 0, 
-        y: 50,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power2.out",
-      }
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
     );
 
-    // Animate card content elements
-    gsap.fromTo(
-      ".card-content h3",
-      { 
-        opacity: 0,
-        y: 20,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".engineering-swiper",
-          start: "top 60%",
-          toggleActions: "play none none none"
-        }
-      }
-    );
 
-    gsap.fromTo(
-      ".card-content p",
-      { 
-        opacity: 0,
-        y: 15,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        delay: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".engineering-swiper",
-          start: "top 60%",
-          toggleActions: "play none none none"
-        }
-      }
-    );
-
-    // Create a parallax effect on the card images
-    gsap.fromTo(
-      ".card-image",
-      {
-        y: 20,
-      },
-      {
-        y: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".engineering-swiper",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      }
-    );
-
-    return () => {
-      // Clean up scroll triggers when component unmounts
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+    return () => ScrollTrigger.getAll().forEach(trigger => trigger.kill());
   }, []);
 
-  // Handle card flip
   const handleFlipCard = (id, e) => {
     e.preventDefault();
     e.stopPropagation();
-    setFlippedCards(prev => {
-      const isFlipping = !prev[id];
-      return {
-        ...prev,
-        [id]: isFlipping
-      };
-    });
+    setFlippedCards(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
   };
 
   return (
     <div ref={sectionRef} className="engineering-section">
       <h2 ref={headingRef} className="engineering-heading">
-        The Engineering<br/> behind Mivi AI.
+        The Engineering<br /> behind Mivi AI.
       </h2>
-      
-      <Swiper
-        modules={[Navigation, Pagination]}
-        spaceBetween={20}
-        slidesPerView={1}
-        navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        }}
-        pagination={{ clickable: true }}
-        breakpoints={{
-          640: {
-            slidesPerView: 1.5,
-            spaceBetween: 15,
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 15,
-          },
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-        }}
-        className="engineering-swiper"
-      >
-        {engineeringData.map((item, index) => (
-          <SwiperSlide key={item.id} className="engineering-slide">
-            <div 
-              className={`engineering-card flip-card ${flippedCards[item.id] ? 'flipped' : ''}`}
-              data-id={item.id}
-            >
-              {/* Front of card */}
-              <div className="flip-card-inner">
-                <div className="flip-card-front">
-                  <div className="card-image-container">
-                    <img 
-                      src={item.image} 
-                      alt={item.title} 
-                      className="card-image"
-                    />
-                  </div>
-                  <div className="card-content">
-                    <h3>{item.title}</h3>
-                    <p>{item.shortDesc}</p>
-                    <div className="card-link">
-                      <button onClick={(e) => handleFlipCard(item.id, e)}>
-                        Learn More
-                      </button>
-                    </div>
+
+      <div ref={cardsContainerRef} className="engineering-cards-container">
+        {engineeringData.map((item) => (
+          <div
+            key={item.id}
+            className={`engineering-card flip-card ${flippedCards[item.id] ? 'flipped' : ''}`}
+          >
+            <div className="flip-card-inner">
+              {/* Front Side */}
+              <div className="flip-card-front">
+                <div className="card-image-container">
+                  <img src={item.image} alt={item.title} className="card-image" />
+                </div>
+                <div className="card-content">
+                  <h3>{item.title}</h3>
+                  <p>{item.shortDesc}</p>
+                  <div className="card-link">
+                    <button onClick={(e) => handleFlipCard(item.id, e)}>
+                      Learn More
+                    </button>
                   </div>
                 </div>
-                
-                {/* Back of card */}
-                <div className="flip-card-back">
-                  <div className="card-image-container">
-                    <img 
-                      src={item.image} 
-                      alt={item.title} 
-                      className="card-image"
-                    />
-                  </div>
-                  <div className="back-content">
-                    <p>{item.longDesc}</p>
-                    <div className="show-less-button">
-                      <button onClick={(e) => handleFlipCard(item.id, e)}>
-                        Show Less
-                      </button>
-                    </div>
+              </div>
+
+              {/* Back Side */}
+              <div className="flip-card-back">
+                <div className="card-image-container">
+                  <img src={item.image} alt={item.title} className="card-image" />
+                </div>
+                <div className="back-content">
+                  <p>{item.longDesc}</p>
+                  <div className="show-less-button">
+                    <button onClick={(e) => handleFlipCard(item.id, e)}>
+                      Show Less
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-          </SwiperSlide>
+          </div>
         ))}
-      </Swiper>
-
+      </div>
     </div>
   );
 };
 
-export default HeroSection5; 
+export default HeroSection5;
