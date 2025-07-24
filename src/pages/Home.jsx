@@ -4,6 +4,7 @@ import HeroSection2 from '../components/HeroSection2'
 import HeroSection3 from '../components/HeroSection3'
 import HorizontalScrollSection from '../components/HorizontalScrollSection'
 import HeroSection4 from '../components/HeroSection4'
+import HeroSection5 from '../components/HeroSection5'
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <HorizontalScrollSection />
       <HeroSection3 />
       <HeroSection4 />
+      <HeroSection5 />
     </div>
   )
 }
