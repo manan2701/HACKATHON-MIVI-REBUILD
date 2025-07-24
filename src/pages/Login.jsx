@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 // import { Link } from 'react-router-dom';
 import './Login.css';
 import { nanoid } from '@reduxjs/toolkit';
-import { asyncLoginUser, asyncRegisterUser } from '../store/actions/userActions';
+import { asyncLoginUser, asyncRegisterUser, asyncForgotPassword } from '../store/actions/userActions';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -14,6 +14,8 @@ const Login = () => {
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
@@ -30,6 +32,19 @@ const Login = () => {
       phone: '',
       password: '',
       rememberMe: false
+    }
+  });
+  
+  // React Hook Form setup for forgot password
+  const { 
+    register: registerForgotPassword, 
+    handleSubmit: handleSubmitForgotPassword, 
+    formState: { errors: forgotPasswordErrors },
+    reset: resetForgotPassword
+  } = useForm({
+    mode: 'onSubmit',
+    defaultValues: {
+      email: ''
     }
   });
   
@@ -98,10 +113,35 @@ const Login = () => {
       resetRegister()
   };
 
+  const onForgotPasswordSubmit = async (data) => {
+    setIsSubmitting(true);
+    console.log(data);
+    try {
+      const success = await dispatch(asyncForgotPassword(data.email));
+      if (success) {
+        resetForgotPassword();
+        setShowForgotPasswordModal(false);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Password visibility toggle handlers
   const toggleLoginPasswordVisibility = () => setShowLoginPassword(!showLoginPassword);
   const toggleRegisterPasswordVisibility = () => setShowRegisterPassword(!showRegisterPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+  
+  // Modal handlers
+  const openForgotPasswordModal = (e) => {
+    e.preventDefault();
+    setShowForgotPasswordModal(true);
+  };
+  
+  const closeForgotPasswordModal = () => {
+    resetForgotPassword();
+    setShowForgotPasswordModal(false);
+  };
 
   return (
     <div className="auth-container">
@@ -122,6 +162,7 @@ const Login = () => {
                       type="email" 
                       placeholder="Enter your email"
                       {...registerLogin('email', {
+                        required: 'Email is required',
                         pattern: {
                           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                           message: 'Enter a valid email address'
@@ -163,7 +204,7 @@ const Login = () => {
                     />
                     <label htmlFor="remember">Remember me</label>
                   </div>
-                  <a href="#" className="forgot-password">Forgot Password?</a>
+                  <a href="#" onClick={openForgotPasswordModal} className="forgot-password">Forgot Password?</a>
                 </div>
                 
                 <button className="auth-button" type="submit">
@@ -325,6 +366,51 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotPasswordModal && (
+        <div className="modal-overlay">
+          <div className="forgot-password-modal">
+            <div className="modal-header">
+              <h3>Forgot Password</h3>
+              <button type="button" className="close-modal" onClick={closeForgotPasswordModal}>
+                <i className="ri-close-line"></i>
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>Enter your email address and we'll send you a link to reset your password.</p>
+              <form onSubmit={handleSubmitForgotPassword(onForgotPasswordSubmit)}>
+                <div className="forgot-password-group">
+                  <label>Email</label>
+                  <div className={`input-with-icon ${forgotPasswordErrors.email ? 'input-error' : ''}`}>
+                    <i className="ri-mail-line"></i>
+                    <input 
+                      type="email" 
+                      placeholder="Enter your email"
+                      {...registerForgotPassword('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: 'Enter a valid email address'
+                        }
+                      })}
+                    />
+                  </div>
+                  {forgotPasswordErrors.email && <span className="error-message">{forgotPasswordErrors.email.message}</span>}
+                </div>
+                <button 
+                  className="auth-button" 
+                  type="submit" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Reset Password'}
+                  {!isSubmitting && <i className="ri-arrow-right-line"></i>}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

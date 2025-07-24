@@ -155,6 +155,15 @@ const HeroSection4 = () => {
         [newActiveTab]: 100
       }));
     }, 50);
+
+    // Force update for mobile view
+    if (isMobile) {
+      setTimeout(() => {
+        if (swiperInstance) {
+          swiperInstance.update();
+        }
+      }, 100);
+    }
   };
 
   return (
@@ -192,6 +201,10 @@ const HeroSection4 = () => {
           onSwiper={setSwiperInstance}
           onSlideChange={handleSlideChange}
           className="tab-swiper"
+          spaceBetween={20}
+          watchSlidesProgress={true}
+          slidesPerView={1}
+          virtual={isMobile ? false : true}
         >
           {avatarData.map((avatar) => (
             <SwiperSlide key={avatar.id}>

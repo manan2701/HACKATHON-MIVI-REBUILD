@@ -148,3 +148,16 @@ export const asyncPlaceOrder = (user, orderData) => async (dispatch) => {
   }
 };
 
+export const asyncForgotPassword = (email) => async (dispatch) => {
+  try {
+    console.log(email);
+    await axiosInstance.get(`/users/email/${email}`);
+    toast.success('Password reset link sent to your email');
+    return true;
+  } catch (error) {
+    console.error('Password reset request failed', error);
+    toast.error('Password reset failed. Please check your email and try again.');
+    return false;
+  }
+};
+

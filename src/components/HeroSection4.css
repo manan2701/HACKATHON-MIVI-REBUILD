@@ -354,6 +354,7 @@
     transition: opacity 0.3s ease;
     height: auto;
     position: relative;
+    z-index: 1;
   }
 
   .tabcontent.inactive {
@@ -364,6 +365,21 @@
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 0;
+  }
+
+  .tabcontent.active {
+    position: static;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .swiper-slide-active {
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 5 !important;
   }
 
   .tab-text-content {
@@ -422,6 +438,34 @@
     background-color: #52fea2;
     width: 0;
     transition: width 0.3s ease;
+  }
+
+  /* Swiper fixes */
+  .swiper, .swiper-wrapper {
+    overflow: visible !important;
+    z-index: auto !important;
+  }
+  
+  .swiper-slide {
+    transition: opacity 0.3s ease;
+    height: auto !important;
+  }
+  
+  .swiper-slide:not(.swiper-slide-active) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: -1;
+  }
+  
+  /* Make sure active slide is visible */
+  .swiper-slide-active .tabcontent {
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    display: flex !important;
   }
 }
 
