@@ -12,6 +12,7 @@
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@reduxjs/toolkit": "^2.8.2",
+    "@splidejs/splide": "^4.1.4",
     "axios": "^1.10.0",
     "framer-motion": "^12.23.6",
     "id": "^0.0.0",

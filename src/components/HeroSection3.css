@@ -40,6 +40,75 @@
     padding: 0 10vw;
 }
 
+/* Avatar Section Styles */
+.avatar-section {
+    background-color: #0b0d0d;
+    min-height: 100vh;
+    width: 100%;
+    padding-top: 0;
+    padding:  0 10vw 5vw 10vw;
+    color: #f8faf7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.avatar-label-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: fit-content;
+    margin-bottom: 2rem;
+}
+
+
+.avatar-label {
+    position: relative;
+    padding: 45px 16px;
+    height: 40px;
+    font-size: 4em;
+    background: #52fea2;
+    color: #272e29;
+    font-weight: 500;
+    letter-spacing: 0.72px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-content {
+    text-align: center;
+    max-width: 800px;
+    margin-bottom: 3rem;
+}
+
+.avatar-heading {
+    font-size: 5em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.avatar-subheading {
+    font-size: 1.2em;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+.avatar-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-image img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
 .animating-banner-text-wrapper {
     font-size: 2vw;
     text-align: center;
@@ -52,6 +121,14 @@
     .multi-lang-content h1 {
         font-size: 3.5em;
     }
+    
+    .avatar-heading {
+        font-size: 3em;
+    }
+    
+    .avatar-image img {
+        max-height: 804px;
+    }
 }
 
 /* Medium screens */
@@ -62,11 +139,29 @@
     }
     
     .multi-lang-content h1 {
-        font-size: 2.5em;
+        font-size: 3em;
     }
     
     .animating-banner-text-wrapper {
         font-size: 2.5vw;
+    }
+
+    .avatar-label {
+        position: relative;
+        padding: 40px 16px;
+        font-size: 3em;;
+    }
+    
+    .avatar-section {
+        padding: 0 6vw 5vw 6vw;
+    }
+    
+    .avatar-heading {
+        font-size: 3.8em;
+    }
+    
+    .avatar-subheading {
+        font-size: 1.1em;
     }
 }
 
@@ -105,6 +200,24 @@
         font-size: 3vw;
         max-width: 90%;
     }
+    
+    .avatar-section {
+        padding: 4rem 4vw;
+    }
+    
+    .avatar-label {
+        height: 35px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .avatar-heading {
+        font-size: 2em;
+    }
+    
+    .avatar-content {
+        max-width: 90%;
+    }
 }
 
 /* Mobile phones */
@@ -129,5 +242,28 @@
     .animating-banner-text-wrapper {
         font-size: 4vw;
         max-width: 100%;
+    }
+    
+    .avatar-section {
+        padding: 3rem 3vw;
+    }
+    
+    .avatar-label {
+        height: 31px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .avatar-heading {
+        font-size: 1.8em;
+    }
+    
+    .avatar-subheading {
+        font-size: 0.9em;
+    }
+    
+    .avatar-content {
+        max-width: 100%;
+        margin-bottom: 2rem;
     }
 }

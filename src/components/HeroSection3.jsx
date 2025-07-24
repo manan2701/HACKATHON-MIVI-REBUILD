@@ -6,6 +6,8 @@ import AnimatedBackground from "./AnimatedBackground";
 
 const HeroSection3 = () => {
   const videoRef = useRef(null);
+  const avatarRef = useRef(null);
+
   useGSAP(() => {
     gsap.fromTo(
       videoRef.current,
@@ -69,6 +71,50 @@ const HeroSection3 = () => {
       }
     );
   }, []);
+
+  // Animation for avatar section
+  useGSAP(() => {
+    const avatarTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".avatar-section",
+        start: "top 80%",
+        end: "bottom 60%",
+        scrub: 1,
+      },
+    });
+
+    avatarTl.fromTo(
+      ".avatar-heading",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      }
+    ).fromTo(
+      ".avatar-subheading",
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      },
+      "-=0.4"
+    ).fromTo(
+      avatarRef.current,
+      { opacity: 0, scale: 0.9 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        ease: "power2.out",
+      },
+      "-=0.3"
+    );
+  }, []);
+
   return (
     <div className="hero-section3">
       <div className="multi-language">
@@ -103,14 +149,30 @@ const HeroSection3 = () => {
         </div>
       </div>
 
-      <div className="avatar-container">
-        <div className="animating-banner-text-wrapper">
-          Guided by experts (Avatars), <strong>talk about anything</strong>,
-          from “How do I negotiate my CTC?” to “How do I make pizza at home?”
-          <p></p>
+      {/* Avatar Section */}
+      <div className="avatar-section">
+        <div className="avatar-label-box">
+          <div className="avatar-green-box"></div>
+          <p className="avatar-label">Avatars</p>
+        </div>
+        
+        <div className="avatar-content">
+          <h3 className="avatar-heading">Avatars: Your subject matter experts</h3>
+          <p className="avatar-subheading">
+            Each Mivi AI Avatar serves a purpose. They guide, teach, support, or inform. 
+            They sound real, think smart, and feel truly human in every conversation.
+          </p>
+        </div>
+        
+        <div className="avatar-image">
+          <img 
+            ref={avatarRef}
+            src="/assets/Avatar.webp" 
+            alt="Mivi AI Avatar" 
+            loading="eager" 
+          />
         </div>
       </div>
-     
     </div>
   );
 };
