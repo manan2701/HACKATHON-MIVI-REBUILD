@@ -204,7 +204,6 @@ const HeroSection4 = () => {
           spaceBetween={20}
           watchSlidesProgress={true}
           slidesPerView={1}
-          virtual={isMobile ? false : true}
         >
           {avatarData.map((avatar) => (
             <SwiperSlide key={avatar.id}>

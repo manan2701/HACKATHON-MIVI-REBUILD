@@ -216,7 +216,7 @@
   }
 }
 
-/* Responsive Styles
+/* Responsive Styles */
 @media (min-width: 1200px) {
   .avatar-section-label {
     padding: 12px 20px;
@@ -274,7 +274,29 @@
   .tab-image img {
     max-height: 450px;
   }
-} */
+}
+
+/* Desktop-specific Swiper styles */
+@media (min-width: 769px) {
+  .tabcontent {
+    visibility: visible;
+    opacity: 1;
+    position: relative;
+  }
+  
+  .tabcontent.active {
+    display: flex !important;
+  }
+  
+  .tabcontent.inactive {
+    display: none !important;
+  }
+  
+  .swiper-slide {
+    height: auto !important;
+    visibility: visible !important;
+  }
+}
 
 /* ✅ Mobile & Small Tablet Styles */
 @media (max-width: 768px) {
