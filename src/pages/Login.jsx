@@ -11,6 +11,9 @@ import { toast } from 'react-toastify';
 const Login = () => {
   const [isLoginActive, setIsLoginActive] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
@@ -75,6 +78,10 @@ const Login = () => {
     // Reset form fields when toggling
     resetLogin();
     resetRegister();
+    // Reset password visibility states
+    setShowLoginPassword(false);
+    setShowRegisterPassword(false);
+    setShowConfirmPassword(false);
   };
   
   // Form submission handlers
@@ -90,6 +97,11 @@ const Login = () => {
       dispatch(asyncRegisterUser(user))  
       resetRegister()
   };
+
+  // Password visibility toggle handlers
+  const toggleLoginPasswordVisibility = () => setShowLoginPassword(!showLoginPassword);
+  const toggleRegisterPasswordVisibility = () => setShowRegisterPassword(!showRegisterPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   return (
     <div className="auth-container">
@@ -118,40 +130,26 @@ const Login = () => {
                     />
                   </div>
                   {loginErrors.email && <span className="error-message">{loginErrors.email.message}</span>}
-                </div>
-                
-                {/* <div className="input-group">
-                  <label>Phone Number</label>
-                  <div className={`input-with-icon input-with-prefix ${loginErrors.phone ? 'input-error' : ''}`}>
-                    <i className="ri-smartphone-line"></i>
-                    <span className="input-prefix">+91</span>
-                    <input 
-                      type="tel" 
-                      placeholder="10 digit number"
-                      maxLength="10"
-                      {...registerLogin('phone', {
-                        required: 'Phone number is required',
-                        pattern: {
-                          value: /^[0-9]\d{9}$/,
-                          message: 'Enter a valid 10 digit phone number'
-                        }
-                      })}
-                    />
-                  </div>
-                  {loginErrors.phone && <span className="error-message">{loginErrors.phone.message}</span>}
-                </div> */}
-                
+                </div>               
                 <div className="input-group">
                   <label>Password</label>
                   <div className={`input-with-icon ${loginErrors.password ? 'input-error' : ''}`}>
                     <i className="ri-lock-line"></i>
                     <input 
-                      type="password" 
+                      type={showLoginPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       {...registerLogin('password', {
                         required: 'Password is required'
                       })}
                     />
+                    <button 
+                      type="button" 
+                      className="password-toggle" 
+                      onClick={toggleLoginPasswordVisibility}
+                      aria-label={showLoginPassword ? "Hide password" : "Show password"}
+                    >
+                      <i className={showLoginPassword ? "ri-eye-off-fill" : "ri-eye-fill"}></i>
+                    </button>
                   </div>
                   {loginErrors.password && <span className="error-message">{loginErrors.password.message}</span>}
                 </div>
@@ -241,7 +239,7 @@ const Login = () => {
                   <div className={`input-with-icon ${registerErrors.password ? 'input-error' : ''}`}>
                     <i className="ri-lock-line"></i>
                     <input 
-                      type="password" 
+                      type={showRegisterPassword ? "text" : "password"}
                       placeholder="Create a password"
                       {...registerSignup('password', {
                         required: 'Password is required',
@@ -251,6 +249,14 @@ const Login = () => {
                         }
                       })}
                     />
+                    <button 
+                      type="button" 
+                      className="password-toggle" 
+                      onClick={toggleRegisterPasswordVisibility}
+                      aria-label={showRegisterPassword ? "Hide password" : "Show password"}
+                    >
+                      <i className={showRegisterPassword ? "ri-eye-off-fill" : "ri-eye-fill"}></i>
+                    </button>
                   </div>
                   {registerErrors.password && <span className="error-message">{registerErrors.password.message}</span>}
                 </div>
@@ -260,13 +266,21 @@ const Login = () => {
                   <div className={`input-with-icon ${registerErrors.confirmPassword ? 'input-error' : ''}`}>
                     <i className="ri-lock-line"></i>
                     <input 
-                      type="password" 
+                      type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm your password"
                       {...registerSignup('confirmPassword', {
                         required: 'Please confirm your password',
                         validate: value => value === password || 'Passwords do not match'
                       })}
                     />
+                    <button 
+                      type="button" 
+                      className="password-toggle" 
+                      onClick={toggleConfirmPasswordVisibility}
+                      aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    >
+                      <i className={showConfirmPassword ? "ri-eye-off-fill" : "ri-eye-fill"}></i>
+                    </button>
                   </div>
                   {registerErrors.confirmPassword && <span className="error-message">{registerErrors.confirmPassword.message}</span>}
                 </div>

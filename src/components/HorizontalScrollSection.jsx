@@ -5,6 +5,7 @@ import "./HorizontalSection.css";
 import { useGSAP } from "@gsap/react";
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncaddToCart } from '../store/actions/userActions';
+import LoadingSpinner from "./LoadingSpinner";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +15,7 @@ const HorizontalScrollSection = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer.user);
   const product = useSelector((state) => state.productReducer.products)
-
+  const [loadingProductId, setLoadingProductId] = useState(null);
   const colors = [{
     color : "Black",
     image : "/assets/ai-buds-1.webp"
@@ -50,7 +51,7 @@ const HorizontalScrollSection = () => {
     setSelectedImages(updated);
   };
 
-  const handleAddToCart = (index) => {
+  const handleAddToCart = async (index) => {
     // Only proceed if user is logged in and products are loaded
     if (!user) {
       // Navigate to login or show notification
@@ -65,7 +66,9 @@ const HorizontalScrollSection = () => {
         // Use the first color option for the selected product
         const {color} = productToAdd;
         console.log(color);
-        dispatch(asyncaddToCart(user, product[0], color));
+        setLoadingProductId(product[0]?._id);
+        await dispatch(asyncaddToCart(user, product[0], color));
+        setLoadingProductId(null);
       }
     }
   };
@@ -130,8 +133,13 @@ const HorizontalScrollSection = () => {
             <button 
               className="horizontal-add-to-cart"
               onClick={() => handleAddToCart(groupIndex)}
+              disabled={loadingProductId === product[0]?._id}
             >
-              ADD TO CART<span>  |  </span>₹6999
+              {loadingProductId === product[0]?._id ? (
+                <span>Adding...<span>  |  </span>₹6999</span>
+              ) : (
+                <span>ADD TO CART<span>  |  </span>₹6999</span>
+              )}
             </button>
           </div>
         ))}

@@ -90,7 +90,7 @@ const HeroSection2 = () => {
     <div className="hero-section2">
       <div className="hero-section-top" ref={topSectionRef}>
         <p className="ai-line">
-          {`Mivi AI Buds, powered by built-in Mivi AI, mark the first step in the human and AI relationship. Designed for voice-only conversations, just plug in and say "Hi Mivi" to get started.`
+          {`Mivi AI Buds, powered by built-in Mivi AI,  mark the first step in the human and AI relationship. Designed for voice-only conversations, just plug in and say "Hi Mivi" to get started.`
             .split(" ")
             .map((word, i) => (
               <span key={i} className="ai-word">
@@ -98,10 +98,6 @@ const HeroSection2 = () => {
               </span>
             ))}
         </p>
-
-        {/* <div className="android-image" ref={androidRef}>
-          <img width={"100%"} src="/assets/android.png" alt="" />
-        </div> */}
       </div>
 
       <div className="wake-up" ref={wakeUpRef}>

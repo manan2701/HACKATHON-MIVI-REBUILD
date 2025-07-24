@@ -149,11 +149,11 @@ const Footer = () => {
             <li>
               <a href="/pages/privacy-policy">Privacy Policy</a>
             </li>
-            <li className="separator"></li>
+            {/* <li className="separator"></li> */}
             <li>
               <a href="/pages/terms-and-conditions">Terms of Service</a>
             </li>
-            <li className="separator"></li>
+            {/* <li className="separator"></li> */}
             <li>
               <span>All Rights Reserved. 2024</span>
             </li>

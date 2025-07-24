@@ -5,8 +5,7 @@
 
 .hero-section-top {
   position: relative;
-  background: linear-gradient(180deg, #181A1B, #040503);
-  /* background: #181A1B; */
+  background:#0b0d0d ;
   height: 90vh;
   width: 100%;
   padding: 5vw 25vw 30vw 5vw;
@@ -14,20 +13,14 @@
 }
 
 .hero-section-top p {
-  font-family: 'anton';
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   color: #ffffff;
+  font-weight: 600;
   font-size: 3.8em;
-  /* font-weight: 600; */
   letter-spacing: 0.05em;
   opacity: 1;
 }
 
-.android-image {
-  position: absolute;
-  bottom: 10%;
-  right: -20%;
-  width: 70vw
-}
 
 .hero-section-top p span {
   display: inline-block;
@@ -39,7 +32,7 @@
   padding: 0 5vw;
   height: 80vh;
   gap: 2vw;
-  background: linear-gradient(360deg, #181A1B, #040503);
+  background:#0b0d0d;
   z-index: 100;
 }
 
@@ -79,7 +72,7 @@
   opacity: 0.6;
   padding-top: 1em;
   text-transform: uppercase;
-  font-family: "inter tight", sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   color: #ffffff;
   letter-spacing: 0.15em;
 }

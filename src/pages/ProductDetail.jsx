@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import './ProductDetail.css';
-import { asyncaddToCart } from '../store/actions/userActions';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import "./ProductDetail.css";
+import { asyncaddToCart } from "../store/actions/userActions";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const products = useSelector((state) => state.productReducer.products);
   const [product, setProduct] = useState(null);
-  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedColor, setSelectedColor] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingProductId, setLoadingProductId] = useState(null);
   const users = useSelector((state) => state.userReducer.user);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   useEffect(() => {
     if (products.length > 0 && productId) {
-      const foundProduct = products.find(p => p._id === productId);
+      const foundProduct = products.find((p) => p._id === productId);
       if (foundProduct) {
         setProduct(foundProduct);
         // Set default selected color to first color
@@ -33,9 +35,11 @@ const ProductDetail = () => {
     setSelectedColor(color);
   };
 
-  const addToCart = (user, product) => {
-    dispatch(asyncaddToCart(user, product, selectedColor));
-  }
+  const addToCart = async (user, product) => {
+    setLoadingProductId(product._id);
+    await dispatch(asyncaddToCart(user, product, selectedColor));
+    setLoadingProductId(null);
+  };
 
   if (isLoading || !product) {
     return (
@@ -47,11 +51,11 @@ const ProductDetail = () => {
   }
 
   // Extract colors from product
-  const colors = product.color.map(colorObj => {
+  const colors = product.color.map((colorObj) => {
     const colorName = Object.keys(colorObj)[0];
     return {
       name: colorName,
-      image: colorObj[colorName]
+      image: colorObj[colorName],
     };
   });
 
@@ -60,17 +64,19 @@ const ProductDetail = () => {
     ((product.originalPrice - product.price) / product.originalPrice) * 100
   );
 
-
-
   return (
     <div className="product-detail-page">
       <div className="product-detail-container">
         {/* Product Images Section */}
         <div className="product-detail__images">
           <div className="product-detail__main-image">
-            <img 
-              src={colors.find(c => c.name === selectedColor)?.image || colors[0]?.image || '/assets/product-placeholder.jpg'} 
-              alt={product.name} 
+            <img
+              src={
+                colors.find((c) => c.name === selectedColor)?.image ||
+                colors[0]?.image ||
+                "/assets/product-placeholder.jpg"
+              }
+              alt={product.name}
             />
           </div>
         </div>
@@ -96,16 +102,20 @@ const ProductDetail = () => {
               </legend>
               <div className="product-detail-values-container">
                 {colors.map((color, index) => (
-                  <div key={index} className="product-detail__thumbnails">             
-                    <div 
-                      className={`product-detail-thumbnail-item ${selectedColor === color.name ? 'active' : ''}`} 
+                  <div key={index} className="product-detail__thumbnails">
+                    <div
+                      className={`product-detail-thumbnail-item ${
+                        selectedColor === color.name ? "active" : ""
+                      }`}
                       key={index}
                       onClick={() => handleColorSelect(color.name)}
                     >
-                      <img src={color.image} alt={`${product.name} in ${color.name}`} />
+                      <img
+                        src={color.image}
+                        alt={`${product.name} in ${color.name}`}
+                      />
                     </div>
-                  
-                </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -113,15 +123,24 @@ const ProductDetail = () => {
             {/* Ratings */}
             <div className="product-detail-ratings">
               <div className="product-detail-stars-container">
-                {Array(5).fill().map((_, i) => (
-                  <span 
-                    key={i} 
-                    className={`product-detail-star ${i < Math.floor(product.rating) ? 'full' : 
-                                      i < product.rating ? 'half' : 'empty'}`}
-                  ></span>
-                ))}
+                {Array(5)
+                  .fill()
+                  .map((_, i) => (
+                    <span
+                      key={i}
+                      className={`product-detail-star ${
+                        i < Math.floor(product.rating)
+                          ? "full"
+                          : i < product.rating
+                          ? "half"
+                          : "empty"
+                      }`}
+                    ></span>
+                  ))}
               </div>
-              <span className="product-detail-rating-text">{product.reviews} Reviews</span>
+              <span className="product-detail-rating-text">
+                {product.reviews} Reviews
+              </span>
             </div>
 
             {/* Price */}
@@ -149,19 +168,19 @@ const ProductDetail = () => {
 
             {/* Add to Cart Button */}
             <div className="product-detail-form__buttons">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="product-detail-form__submit button button--primary"
                 onClick={() => addToCart(users, product)}
+                disabled={loadingProductId === product._id}
               >
-                <span className="product-detail-cart-loading-spinner hidden">
-                  <svg className="product-detail-spinner" viewBox="0 0 50 50">
-                    <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5"></circle>
-                  </svg>
-                </span>
-                <span className="product-detail-add-to-cart-button">
-                  Add to Cart
-                </span>
+                {loadingProductId === product._id ? (
+                  <LoadingSpinner />
+                ) : (
+                  <span className="product-detail-add-to-cart-button">
+                    Add to Cart
+                  </span>
+                )}
               </button>
             </div>
 
@@ -185,7 +204,18 @@ const ProductDetail = () => {
                     </span>
                   </div>
                   <div className="product-detail-mobile-add-to-cart-sticky-button">
-                      <button type="button" className="font-body-text" onClick={() => addToCart(users, product)}>ADD TO CART</button>
+                    <button
+                      type="button"
+                      className="font-body-text"
+                      onClick={() => addToCart(users, product)}
+                      disabled={loadingProductId === product._id}
+                    >
+                      {loadingProductId === product._id ? (
+                        <LoadingSpinner />
+                      ) : (
+                        "ADD TO CART"
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -197,19 +227,25 @@ const ProductDetail = () => {
                 <div className="product-detail-usp-icon">
                   <i className="ri-truck-line"></i>
                 </div>
-                <span className="product-detail-usp__icon__text">Free Shipping</span>
+                <span className="product-detail-usp__icon__text">
+                  Free Shipping
+                </span>
               </li>
               <li className="product-detail-usp--item">
                 <div className="product-detail-usp-icon">
                   <i className="ri-shield-check-line"></i>
                 </div>
-                <span className="product-detail-usp__icon__text">1 year Warranty</span>
+                <span className="product-detail-usp__icon__text">
+                  1 year Warranty
+                </span>
               </li>
               <li className="product-detail-usp--item">
                 <div className="product-detail-usp-icon">
                   <i className="ri-time-line"></i>
                 </div>
-                <span className="product-detail-usp__icon__text">Ships Today</span>
+                <span className="product-detail-usp__icon__text">
+                  Ships Today
+                </span>
               </li>
             </ul>
 
@@ -219,21 +255,22 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Product Features Section */}
       <div className="product-detail-features-section">
         <h2>Features</h2>
         <ul className="product-detail-features-list">
-          {product.features && product.features.map((feature, index) => (
-            <li key={index} className="product-detail-feature-item">
-              <i className="ri-check-line"></i>
-              <span>{feature}</span>
-            </li>
-          ))}
+          {product.features &&
+            product.features.map((feature, index) => (
+              <li key={index} className="product-detail-feature-item">
+                <i className="ri-check-line"></i>
+                <span>{feature}</span>
+              </li>
+            ))}
         </ul>
       </div>
     </div>
   );
 };
 
-export default ProductDetail; 
+export default ProductDetail;

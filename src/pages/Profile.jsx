@@ -392,9 +392,9 @@ const Profile = () => {
                           <div className="order-address">
                             <h4>Delivery Address</h4>
                             <p>{formData.fullName}</p>
-                            <p>{order.shippingAddress.address}</p>
+                            <p>{order.shippingAddress?.address}</p>
                             <p>
-                              {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.pincode}
+                              {order.shippingAddress?.city}, {order.shippingAddress?.state} {order.shippingAddress?.pincode}
                             </p>
                             <p>India</p>
                           </div>

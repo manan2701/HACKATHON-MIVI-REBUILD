@@ -60,12 +60,10 @@ const HeroSection5 = () => {
       { 
         opacity: 0, 
         y: 50,
-        filter: "blur(8px)"
       },
       {
         opacity: 1,
         y: 0,
-        filter: "blur(0px)",
         duration: 1,
         ease: "power2.out",
       }

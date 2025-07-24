@@ -72,7 +72,7 @@ const HeroSection4 = () => {
         }
       }
     );
-    
+
     gsap.fromTo(
       ".avatar-tabs-container",
       { opacity: 0, y: 20 },
@@ -96,10 +96,10 @@ const HeroSection4 = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => {
       window.removeEventListener('resize', checkMobile);
     };
@@ -111,13 +111,13 @@ const HeroSection4 = () => {
     if (swiperInstance) {
       swiperInstance.slideTo(index);
     }
-    
+
     // Reset and start progress for the clicked tab
     setProgressWidth(prev => ({
       ...prev,
       [tabId]: 0
     }));
-    
+
     setTimeout(() => {
       setProgressWidth(prev => ({
         ...prev,
@@ -140,14 +140,14 @@ const HeroSection4 = () => {
   const handleSlideChange = (swiper) => {
     const newActiveTab = avatarData[swiper.activeIndex].id;
     setActiveTab(newActiveTab);
-    
+
     // Reset and start progress for all tabs
     const newProgressWidth = {};
     avatarData.forEach(avatar => {
       newProgressWidth[avatar.id] = avatar.id === newActiveTab ? 0 : 0;
     });
     setProgressWidth(newProgressWidth);
-    
+
     // Start progress for active tab
     setTimeout(() => {
       setProgressWidth(prev => ({
@@ -164,7 +164,7 @@ const HeroSection4 = () => {
         <h2>Explore our AI Avatars</h2>
         <p>Select an avatar to learn more about their capabilities</p>
       </div>
-      
+
       <div className="ai-buds-slider-component">
         {/* Tab navigation */}
         <div className="tab avatar-tabs-container">
@@ -195,30 +195,33 @@ const HeroSection4 = () => {
         >
           {avatarData.map((avatar) => (
             <SwiperSlide key={avatar.id}>
-              <div id={`tab-${avatar.id}`} className={`tabcontent ${activeTab === avatar.id ? 'active' : ''}`}>
+              <div
+                id={`tab-${avatar.id}`}
+                className={`tabcontent ${activeTab === avatar.id ? 'active' : 'inactive'}`}
+              >
                 <div className="tab-text-content">
                   <h3>{avatar.heading}</h3>
                   <p>{avatar.description}</p>
                 </div>
                 <div className="tab-image">
                   <picture>
-                    <source 
-                      type="image/webp" 
-                      media="(max-width: 360px)" 
+                    <source
+                      type="image/webp"
+                      media="(max-width: 360px)"
                       srcSet={avatar.image}
                     />
-                    <source 
-                      type="image/webp" 
-                      media="(max-width: 768px)" 
+                    <source
+                      type="image/webp"
+                      media="(max-width: 768px)"
                       srcSet={avatar.image}
                     />
-                    <source 
-                      type="image/webp" 
+                    <source
+                      type="image/webp"
                       srcSet={avatar.image}
                     />
-                    <img 
+                    <img
                       src={avatar.image}
-                      alt={avatar.title} 
+                      alt={avatar.title}
                       loading="lazy"
                       style={{ objectFit: 'contain' }}
                     />
@@ -232,18 +235,18 @@ const HeroSection4 = () => {
         {/* Progress bars */}
         <div className="tab-progress-container">
           {avatarData.map((avatar) => (
-            <div 
+            <div
               key={avatar.id}
               className={`tab-progress-bar ${activeTab === avatar.id ? 'active' : ''}`}
               data-tab={`tab-${avatar.id}`}
               onClick={() => handleTabClick(avatar.id, avatarData.findIndex(a => a.id === avatar.id))}
             >
-              <div 
-                className="progress-line" 
+              <div
+                className="progress-line"
                 style={{
                   width: `${progressWidth[avatar.id] || 0}%`,
-                  animation: activeTab === avatar.id 
-                    ? '5s linear 0s 1 normal forwards running progressAnimation' 
+                  animation: activeTab === avatar.id
+                    ? '5s linear 0s 1 normal forwards running progressAnimation'
                     : 'auto ease 0s 1 normal none running none'
                 }}
               />
@@ -255,4 +258,4 @@ const HeroSection4 = () => {
   );
 };
 
-export default HeroSection4; 
+export default HeroSection4;

@@ -2,7 +2,7 @@
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background-color: #181A1B;
+  background-color: #0b0d0d;
 }
 
 .horizontal-scroll {
@@ -42,16 +42,16 @@
 }
 
 .image-card-1{
-  background: linear-gradient(180deg, #767e82, #040503);
+  background: linear-gradient(180deg, #767e82, #181818 );
 }
 .image-card-2{
-  background: linear-gradient(180deg, #aeaaa1, #040503);
+  background: linear-gradient(180deg, #aeaaa1, #181818);
 }
 .image-card-3{
-  background: linear-gradient(180deg, #df8746, #040503);
+  background: linear-gradient(180deg, #df8746, #181818);
 }
 .image-card-4{
-  background: linear-gradient(180deg, #bf9472, #040503);
+  background: linear-gradient(180deg, #bf9472, #181818);
 }
 
 .selected-image {
@@ -165,12 +165,12 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .horizontal-section {
     height: auto;
     min-height: 100vh;
   }
-  
+
   .horizontal-scroll {
     height: auto;
     flex-direction: column;
@@ -180,8 +180,8 @@
   .image-card {
     flex: 0 0 auto;
     height: auto;
-    min-height: 80vh;
-    padding: 10vh 4vh 4vh;
+    min-height: 80vh;            /* overwritten */
+    padding: 10vh 4vh 4vh;       /* overwritten */
     flex-direction: column;
     align-items: center;
     gap: 2vh;
@@ -199,18 +199,17 @@
     margin-bottom: 2vh;
   }
 
-  .image-wrapper {
-    width: 70px;
-    height: 70px;
-  }
-
+  .image-wrapper,
   .select-image-menu img {
-    width: 70px;
+    width: 70px;                 /* final value after overwrite */
     height: 70px;
   }
 
-  .image-card-1, .image-card-2, .image-card-3, .image-card-4 {
-    width: 85vw;
+  .image-card-1,
+  .image-card-2,
+  .image-card-3,
+  .image-card-4 {
+    width: 85vw;                 
     height: auto;
     aspect-ratio: 1 / 1;
     max-height: 50vh;
@@ -224,7 +223,7 @@
   }
 
   .horizontal-section-content h1 {
-    font-size: 8vw;
+    font-size: 8vw;              /* final value after overwrite */
     padding: 8vh 4vw 0vh;
     text-align: center;
   }
@@ -234,41 +233,11 @@
     top: auto;
     right: auto;
     margin-top: 3vh;
-    padding: 1.5vh 6vw;
+    padding: 1.5vh 6vw;          /* final value after overwrite */
     font-size: 5vw;
   }
 }
 
-@media (max-width: 768px) {
-  .image-card {
-    padding: 8vh 2vh 4vh;
-    min-height: 70vh;
-  }
-
-  .image-wrapper {
-    width: 60px;
-    height: 60px;
-  }
-
-  .select-image-menu img {
-    width: 60px;
-    height: 60px;
-  }
-
-  .image-card-1, .image-card-2, .image-card-3, .image-card-4 {
-    width: 90vw;
-  }
-
-  .horizontal-section-content h1 {
-    font-size: 10vw;
-    padding: 6vh 4vw 0;
-  }
-
-  .horizontal-add-to-cart {
-    padding: 1.2vh 5vw;
-    font-size: 6vw;
-  }
-}
 
 @media (max-width: 600px) {
   .image-card {

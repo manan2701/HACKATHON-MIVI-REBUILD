@@ -6,8 +6,6 @@ import AnimatedBackground from "./AnimatedBackground";
 
 const HeroSection3 = () => {
   const videoRef = useRef(null);
-  const avatarRef = useRef(null);
-
   useGSAP(() => {
     gsap.fromTo(
       videoRef.current,
@@ -53,26 +51,7 @@ const HeroSection3 = () => {
     );
   }, []);
 
-  useGSAP(() => {
-    gsap.fromTo(
-      ".multi-language",
-      {
-        backgroundColor: "#181A1B",
-      },
-      {
-        backgroundColor: "#0b0d0d",
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".multi-language",
-          start: "top 80%",
-          end: "50% 60%",
-          scrub: 1,
-        },
-      }
-    );
-  }, []);
 
-  // Animation for avatar section
   useGSAP(() => {
     const avatarTl = gsap.timeline({
       scrollTrigger: {
@@ -103,7 +82,7 @@ const HeroSection3 = () => {
       },
       "-=0.4"
     ).fromTo(
-      avatarRef.current,
+      ".avatar-image",
       { opacity: 0, scale: 0.9 },
       {
         opacity: 1,
@@ -166,10 +145,16 @@ const HeroSection3 = () => {
         
         <div className="avatar-image">
           <img 
-            ref={avatarRef}
             src="/assets/Avatar.webp" 
             alt="Mivi AI Avatar" 
-            loading="eager" 
+            loading="eager"
+            className="avatar-image-desktop"
+          />
+          <img
+            className="avatar-image-mobile" 
+            src="https://www.mivi.in/cdn/shop/files/Avatar.png?v=1751543509&width=800&format=webp&quality=100" 
+            alt="Mivi AI Avatar - Mobile Version" 
+            loading="eager"
           />
         </div>
       </div>

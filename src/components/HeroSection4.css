@@ -216,7 +216,7 @@
   }
 }
 
-/* Responsive Styles */
+/* Responsive Styles
 @media (min-width: 1200px) {
   .avatar-section-label {
     padding: 12px 20px;
@@ -274,120 +274,199 @@
   .tab-image img {
     max-height: 450px;
   }
-}
+} */
 
+/* ✅ Mobile & Small Tablet Styles */
 @media (max-width: 768px) {
   .avatar-section-wrapper {
     padding: 0 4vw 4vw 4vw;
+    min-height: auto;
   }
-  
+
+  .avatar-section-heading {
+    margin-bottom: 2rem;
+  }
+
   .avatar-section-heading h2 {
-    font-size: 2.4em;
+    font-size: 2em;
+    line-height: 1.2;
   }
-  
+
   .avatar-section-heading p {
-    font-size: 1.1em;
+    font-size: 1em;
+    line-height: 1.5;
+    opacity: 0.8;
   }
-  
-  .tabcontent {
-    flex-direction: column-reverse;
-    gap: 20px;
-  }
-  
+
   .tab {
+    display: flex;
+    flex-wrap: nowrap;
     overflow-x: auto;
     justify-content: flex-start;
+    gap: 14px;
     padding-bottom: 10px;
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    mask-image: linear-gradient(to right, transparent, black 10px, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10px, black 90%, transparent);
   }
-  
+
   .tab::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
   }
-  
-  .tab-text {
-    white-space: nowrap;
-  }
-  
+
   .tablinks {
+    flex: 0 0 auto;
+    min-width: max-content;
     padding: 8px 12px;
     font-size: 15px;
-    min-width: max-content;
+    color: rgba(248, 250, 247, 0.7);
+    white-space: nowrap;
+    position: relative;
   }
-  
-  .tab-text-content {
-    padding: 15px 0;
-    text-align: center;
+
+  .tablinks.active {
+    color: #52fea2;
+    font-weight: 600;
   }
-  
-  .tab-text-content h3 {
-    font-size: 2em;
-    margin-bottom: 15px;
+
+  .tab-indicator {
+    height: 2px;
+    width: 0;
+    background-color: #52fea2;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
   }
-  
-  .tab-text-content p {
-    font-size: 1.1em;
-  }
-  
-  .tab-image {
-    width: 100%;
-  }
-  
-  .tab-image img {
-    max-height: 350px;
-  }
-  
-  .tab-progress-bar {
-    width: 33px;
-  }
-  
+
   .tablinks.active .tab-indicator {
     width: 20px;
   }
+
+  .tabcontent {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0 20px;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    height: auto;
+    position: relative;
+  }
+
+  .tabcontent.inactive {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .tab-text-content {
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+    order: 1;
+  }
+
+  .tab-text-content h3 {
+    font-size: 1.6em;
+    margin-bottom: 12px;
+  }
+
+  .tab-text-content p {
+    font-size: 1em;
+    line-height: 1.6;
+    padding: 0 5px;
+  }
+
+  .tab-image {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    order: 0;
+    margin-bottom: 5px;
+  }
+
+  .tab-image img {
+    max-height: 300px;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .tab-progress-container {
+    gap: 8px;
+    margin-top: 16px;
+    justify-content: center;
+  }
+
+  .tab-progress-bar {
+    width: 30px;
+    height: 3px;
+    background-color: rgba(248, 250, 247, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .tab-progress-bar.active {
+    background-color: rgba(248, 250, 247, 0.2);
+  }
+
+  .progress-line {
+    height: 100%;
+    background-color: #52fea2;
+    width: 0;
+    transition: width 0.3s ease;
+  }
 }
 
+/* === SMALLER MOBILE SCREENS === */
 @media (max-width: 480px) {
   .avatar-section-wrapper {
     padding: 0 3vw 3vw 3vw;
   }
-  
-  .avatar-section-label {
-    padding: 8px 12px;
-    height: 35px;
-    font-size: 12px;
-  }
-  
+
   .avatar-section-heading h2 {
-    font-size: 1.9em;
+    font-size: 1.7em;
   }
-  
+
   .avatar-section-heading p {
-    font-size: 1em;
+    font-size: 0.95em;
   }
-  
+
   .tab-text-content h3 {
-    font-size: 1.6em;
-    margin-bottom: 10px;
+    font-size: 1.4em;
   }
-  
+
   .tab-text-content p {
-    font-size: 1em;
+    font-size: 0.95em;
+    padding: 0;
   }
-  
+
+  .tab-image {
+    height: auto;
+    max-height: 250px;
+    overflow: visible;
+  }
+
   .tab-image img {
-    max-height: 300px;
+    max-height: 220px;
+    width: auto;
+    display: block;
   }
-  
+
   .tablinks {
-    padding: 6px 10px;
     font-size: 14px;
+    padding: 6px 10px;
   }
-  
+
   .tab-progress-bar {
-    width: 30px;
-    height: 3px;
+    width: 26px;
+    height: 2.5px;
   }
-} 
+}

@@ -11,6 +11,42 @@
     padding-top: calc(10vh + 10px);
 }
 
+.login-form input{
+    width: 100%;
+    height: 3rem;
+    padding: 9px 50px 9px 42px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.login-form label{
+    padding: 0.5rem;
+    font-size: 16px;
+    display: block;
+    color: #181a1b;
+    font-weight: 600;
+}
+
+.register-form input {
+    width: 100%;
+    padding: 9px 50px 9px 42px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+
+.register-form label {
+    padding: 0 0.5rem;
+    display: block;
+    color: #181a1b;
+    font-weight: 600;
+    font-size: 13px;
+}
+
 .auth-box {
     display: flex;
     width: 90%;
@@ -113,13 +149,6 @@
     margin-bottom: 12px;
 }
 
-.input-group label {
-    display: block;
-    color: #181a1b;
-    font-weight: 600;
-    font-size: 13px;
-}
-
 .input-with-icon {
     position: relative;
 }
@@ -133,14 +162,6 @@
     font-size: 16px;
 }
 
-.input-with-icon input {
-    width: 100%;
-    padding: 9px 16px 9px 42px;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    font-size: 13px;
-    transition: all 0.3s ease;
-}
 
 /* Add these styles for form validation and error messages */
 
@@ -266,24 +287,9 @@
     z-index: 1;
 }
 
-.auth-button::before {
-    content: "";
-    position: absolute;
-    left: -100%;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #52fea2;
-    z-index: -1;
-    transition: all 0.5s ease;
-}
-
 .auth-button:hover {
     color: #181a1b;
-}
-
-.auth-button:hover::before {
-    left: 0;
+    background-color: #52fea2;
 }
 
 .auth-button i {
@@ -600,4 +606,18 @@
     .auth-background-side{
         display: none;
     }
+}
+
+/* Add these styles for the password toggle button */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    color: #181a1b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    width: 32px;
 }

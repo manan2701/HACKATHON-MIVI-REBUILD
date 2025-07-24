@@ -5,7 +5,7 @@
   padding: 2rem 0;
   background-color: #f8f9fa;
   color: #121212;
-  font-family: 'Intel One Mono', monospace;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   margin-top: 10vh;
 }
 
@@ -188,34 +188,6 @@
   flex-wrap: wrap;
 }
 
-.product-detail-color-option-container {
-  position: relative;
-}
-
-.product-detail-color-option-container input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.product-detail-color-option-container label {
-  display: block;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid black;
-}
-
-.product-detail-color-option-container label.checked {
-  border-color: #52fea2;
-  box-shadow: 0 0 0 2px rgba(82, 254, 162, 0.3);
-  transform: scale(1.1);
-}
-
-
 .product-detail-visually-hidden {
   position: absolute;
   width: 1px;
@@ -334,7 +306,7 @@
   background-color: #52fea2;
   border: none;
   color: #121212;
-  font-family: 'Intel One Mono', monospace;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-size: 1rem;
   font-weight: 500;
   padding: 1rem;
@@ -350,7 +322,11 @@
 
 .product-detail-form__submit:hover {
   background-color: #35d280;
-  transform: translateY(-2px);
+}
+
+.product-detail-form__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .product-detail-cart-loading-spinner {
@@ -588,7 +564,7 @@
     background-color: #52fea2;
     border: none;
     color: #121212;
-    font-family: 'Intel One Mono', monospace;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
     padding: 0.75rem 1.5rem;

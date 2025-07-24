@@ -298,12 +298,11 @@ const Cart = () => {
                   </span>
                   <span className="pay-opt-icon">
                     <img src="https://cdn.gokwik.co/v4/images/upi-icons.svg" alt="UPI" />
-                    <img src="https://cdn.gokwik.co/v4/images/right-arrow.svg" alt="Arrow" />
                   </span>
                 </button>
               </div>
               
-              <div className="emi-option">
+              <div className="emi-option" onClick={toggleCheckoutForm}>
                 <div className="pay-later-wrapper">
                   <div className="pay-dp-line">
                     <span className="inst-first-text">PAY</span>
