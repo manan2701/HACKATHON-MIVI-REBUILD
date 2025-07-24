@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
-import { toast } from "react-toastify";
-import { asyncRegisterUser, asyncupdateuser } from "../store/actions/userActions";
+import { toast } from "../components/CustomToast.jsx";
+import { asyncupdateuser, asyncLogoutUser } from "../store/actions/userActions";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -52,8 +52,7 @@ const Profile = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+    dispatch(asyncLogoutUser(navigate));
   };
 
   const handleInputChange = (e) => {

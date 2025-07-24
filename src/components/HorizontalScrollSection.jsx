@@ -1,11 +1,10 @@
-import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
+import React, { useRef, useLayoutEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalSection.css";
-import { useGSAP } from "@gsap/react";
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncaddToCart } from '../store/actions/userActions';
-import LoadingSpinner from "./LoadingSpinner";
+import { Link, useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +15,7 @@ const HorizontalScrollSection = () => {
   const user = useSelector((state) => state.userReducer.user);
   const product = useSelector((state) => state.productReducer.products)
   const [loadingProductId, setLoadingProductId] = useState(null);
+  const navigate = useNavigate();
   const colors = [{
     color : "Black",
     image : "/assets/ai-buds-1.webp"
@@ -54,8 +54,7 @@ const HorizontalScrollSection = () => {
   const handleAddToCart = async (index) => {
     // Only proceed if user is logged in and products are loaded
     if (!user) {
-      // Navigate to login or show notification
-      alert('Please log in to add items to cart');
+      navigate('/login');
       return;
     }
 
@@ -65,7 +64,6 @@ const HorizontalScrollSection = () => {
       if (productToAdd) {
         // Use the first color option for the selected product
         const {color} = productToAdd;
-        console.log(color);
         setLoadingProductId(product[0]?._id);
         await dispatch(asyncaddToCart(user, product[0], color));
         setLoadingProductId(null);
@@ -129,6 +127,9 @@ const HorizontalScrollSection = () => {
                 src={`/assets/ai-buds-${selectedImages[groupIndex]}.webp`}
                 alt={`Main ${selectedImages[groupIndex]}`}
               />
+              <div className="horzontal-more-details">
+                <Link to={`/products/${product[0]?._id}`}>More Details</Link>
+              </div>
             </div>
             <button 
               className="horizontal-add-to-cart"

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-// import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
 import { nanoid } from '@reduxjs/toolkit';
 import { asyncLoginUser, asyncRegisterUser, asyncForgotPassword } from '../store/actions/userActions';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from '../components/CustomToast.jsx';
+import ModernLoader from '../components/ModernLoader';
 
 const Login = () => {
   const [isLoginActive, setIsLoginActive] = useState(true);
@@ -16,8 +16,11 @@ const Login = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [isRegisterLoading, setIsRegisterLoading] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation();
   
   // React Hook Form setup for login
   const { 
@@ -100,17 +103,29 @@ const Login = () => {
   };
   
   // Form submission handlers
-  const onLoginSubmit = (data) => {
-    dispatch(asyncLoginUser(data , navigate))
-    console.log(data);
+  const onLoginSubmit = async (data) => {
+    // Get redirect path from location state (from protected route) or default to home
+    const redirectPath = location.state?.from || '/';
+    
+    setIsLoginLoading(true);
+    try {
+      await dispatch(asyncLoginUser(data, navigate, redirectPath));
+    } finally {
+      setIsLoginLoading(false);
+    }
   };
   
   const onRegisterSubmit = async (user) => {
-      user.id = nanoid()
-      user.cart = []
-      user.orders = []
-      dispatch(asyncRegisterUser(user))  
-      resetRegister()
+    setIsRegisterLoading(true);
+    try {
+      user.id = nanoid();
+      user.cart = [];
+      user.orders = [];
+      await dispatch(asyncRegisterUser(user));
+      resetRegister();
+    } finally {
+      setIsRegisterLoading(false);
+    }
   };
 
   const onForgotPasswordSubmit = async (data) => {
@@ -207,9 +222,19 @@ const Login = () => {
                   <a href="#" onClick={openForgotPasswordModal} className="forgot-password">Forgot Password?</a>
                 </div>
                 
-                <button className="auth-button" type="submit">
-                  Login
-                  <i className="ri-arrow-right-line"></i>
+                <button 
+                  className="auth-button" 
+                  type="submit" 
+                  disabled={isLoginLoading}
+                >
+                  {isLoginLoading ? (
+                    <ModernLoader small={true} />
+                  ) : (
+                    <>
+                      Login
+                      <i className="ri-arrow-right-line"></i>
+                    </>
+                  )}
                 </button>
                 
                 <div className="toggle-link">
@@ -338,11 +363,21 @@ const Login = () => {
                   {registerErrors.agreeTerms && <span className="error-message">{registerErrors.agreeTerms.message}</span>}
                 </div>
                 
-                <button className="auth-button" type="submit">
-                  Create Account
-                  <i className="ri-arrow-right-line"></i>
+                <button 
+                  className="auth-button" 
+                  type="submit" 
+                  disabled={isRegisterLoading}
+                >
+                  {isRegisterLoading ? (
+                    <ModernLoader small />
+                  ) : (
+                    <>
+                      Create Account
+                      <i className="ri-arrow-right-line"></i>
+                    </>
+                  )}
                 </button>
-              
+                
                 <div className="toggle-link">
                   <p>Already have an account? <button type="button" onClick={toggleForm}>Login</button></p>
                 </div>
@@ -403,8 +438,14 @@ const Login = () => {
                   type="submit" 
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Sending...' : 'Reset Password'}
-                  {!isSubmitting && <i className="ri-arrow-right-line"></i>}
+                  {isSubmitting ? (
+                    <ModernLoader small />
+                  ) : (
+                    <>
+                      Reset Password
+                      <i className="ri-arrow-right-line"></i>
+                    </>
+                  )}
                 </button>
               </form>
             </div>

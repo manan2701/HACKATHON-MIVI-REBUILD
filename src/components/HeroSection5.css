@@ -157,7 +157,7 @@
   color: #f8faf7;
 }
 .back-content p {
-  font-size: 1.2em;
+  font-size: 0.8em;
   line-height: 1.5;
   color: rgba(248, 250, 247, 0.8);
   margin-bottom: 20px;
@@ -222,8 +222,8 @@
     font-size: 2em;
   }
 
-  .card-content p {
-    font-size: 1em;
+  .back-content p {
+    font-size: 0.8em;
   }
 
   

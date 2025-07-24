@@ -72,6 +72,21 @@
   transform: scale(1.05);
 }
 
+.horzontal-more-details{
+  position: absolute;
+  bottom: 10vh;
+  right: 10vh;
+  font-size: 1.5vw;
+  color: #f8faf7;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  border: none;
+}
+
+.horzontal-more-details a{
+  color: #52fea2;
+}
 
 .select-image-menu{
   width: 100px;
@@ -235,6 +250,15 @@
     margin-top: 3vh;
     padding: 1.5vh 6vw;          /* final value after overwrite */
     font-size: 5vw;
+  }
+  .horzontal-more-details{
+    bottom: 17vh;
+    right: 5vh;
+    font-size: 3.5vw;
+  }
+  
+  .horzontal-more-details a{
+    color: #52fea2;
   }
 }
 

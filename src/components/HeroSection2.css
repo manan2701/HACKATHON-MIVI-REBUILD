@@ -6,7 +6,7 @@
 .hero-section-top {
   position: relative;
   background:#0b0d0d ;
-  height: 90vh;
+  height: 100vh;
   width: 100%;
   padding: 5vw 25vw 30vw 5vw;
   overflow: hidden;
@@ -67,7 +67,7 @@
 
 .wake-up-text p {
   position: absolute;
-  top: 15%;
+  top: 25%;
   font-size: 1.5vw;
   opacity: 0.6;
   padding-top: 1em;
@@ -79,7 +79,7 @@
 
 .wake-up-text h1 {
   position: absolute;
-  top: 25%;
+  top: 35%;
   font-size: 8.5vw;
   color: #52fea2;
   padding-bottom: 0.5em;

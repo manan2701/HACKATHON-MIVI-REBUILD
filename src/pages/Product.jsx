@@ -4,9 +4,11 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { asyncaddToCart } from "../store/actions/userActions";
 import LoadingSpinner from "../components/LoadingSpinner";
+import ModernLoader from "../components/ModernLoader";
+import NoProductsFound from "../components/NoProductsFound";
 gsap.registerPlugin(ScrollTrigger);
 
 // Helper function to safely animate with GSAP
@@ -53,8 +55,10 @@ const ProductPage = () => {
   const productsFromStore = useSelector(
     (state) => state.productReducer.products
   );
+  const isProductsLoading = useSelector((state) => state.productReducer.loading);
   const user = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Ensure scrolling is always enabled after data loads
   useEffect(() => {
@@ -322,7 +326,7 @@ const ProductPage = () => {
   // Function to handle adding product to cart
   const handleAddToCart = async (product) => {
     if (!user) {
-      alert('Please log in to add items to cart');
+      navigate('/login');
       return;
     }
   
@@ -554,7 +558,18 @@ const ProductPage = () => {
 
         {/* Product Grid */}
         <div className="product-grid" ref={productGridRef}>
-          {sortedProducts.length > 0 ? (
+          {isProductsLoading ? (
+            <div className="products-loading-container">
+              <ModernLoader />
+            </div>
+          ) : products.length === 0 ? (
+            <NoProductsFound 
+              title="No Products Available" 
+              message="Please try again later or check your connection."
+              buttonText="Refresh Page"
+              onButtonClick={() => window.location.reload()}
+            />
+          ) : sortedProducts.length > 0 ? (
             sortedProducts.map((product, index) => (
               <div
                 key={product._id}
@@ -647,14 +662,12 @@ const ProductPage = () => {
               </div>
             ))
           ) : (
-            <div className="no-products">
-              <i className="ri-emotion-sad-line"></i>
-              <h3>No Products Found</h3>
-              <p>Try adjusting your filters or browse a different category.</p>
-              <button className="reset-filters-btn" onClick={clearAllFilters}>
-                Reset Filters
-              </button>
-            </div>
+            <NoProductsFound 
+              title="No Products Found" 
+              message="Try adjusting your filters or browse a different category."
+              buttonText="Reset Filters"
+              onButtonClick={clearAllFilters}
+            />
           )}
         </div>
       </div>

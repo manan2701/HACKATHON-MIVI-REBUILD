@@ -40,7 +40,7 @@ const HeroSection2 = () => {
       ".wake-up-image",
       { y: 100, opacity: 0 },
       {
-        y: -100,
+        y: -50,
         opacity: 1,
         ease: "power2.out",
         scrollTrigger: {

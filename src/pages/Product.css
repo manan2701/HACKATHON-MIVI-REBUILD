@@ -580,7 +580,6 @@
   cursor: not-allowed;
 }
 
-
 .quick-view-btn {
   background-color: transparent;
   color: #0b0d0d;
@@ -826,5 +825,16 @@
 .add-to-cart-success span {
   font-weight: 500;
   font-size: 14px;
+}
+
+/* Loading state for products */
+.products-loading-container {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 100%;
 }
 

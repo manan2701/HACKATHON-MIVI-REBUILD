@@ -1,0 +1,260 @@
+.not-found-container {
+  display: flex;
+  min-height: 80vh;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+  position: relative;
+  gap: 2rem;
+}
+
+.not-found-content {
+  flex: 1;
+  max-width: 600px;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(120deg, #52fea2, #35d280);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  position: relative;
+}
+
+.error-code::after {
+  content: '';
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  width: 3.5rem;
+  height: 0.5rem;
+  background-color: #52fea2;
+  border-radius: 4px;
+}
+
+.not-found-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #121212;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: 700;
+}
+
+.not-found-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
+  color: #6c6c6c;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #52fea2;
+  color: #121212;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.back-home-btn:hover {
+  background-color: #35d280;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(82, 254, 162, 0.3);
+}
+
+.not-found-animation {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-height: 400px;
+}
+
+/* Animated circles */
+.circles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+}
+
+.circle-1 {
+  top: 20%;
+  left: 10%;
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(120deg, #52fea2, #35d280);
+  animation: float 8s infinite ease-in-out;
+}
+
+.circle-2 {
+  bottom: 15%;
+  right: 15%;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(120deg, #52fea2, #35d280);
+  animation: float 6s infinite ease-in-out 1s;
+}
+
+.circle-3 {
+  top: 40%;
+  right: 10%;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(120deg, #52fea2, #35d280);
+  animation: float 7s infinite ease-in-out 0.5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.headphones-container {
+  position: relative;
+  z-index: 2;
+}
+
+.headphone-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 15px 35px rgba(82, 254, 162, 0.2);
+  animation: pulse 3s infinite;
+}
+
+.headphone-icon i {
+  font-size: 100px;
+  color: #52fea2;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 15px 35px rgba(82, 254, 162, 0.2);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 20px 45px rgba(82, 254, 162, 0.4);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .not-found-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .not-found-content {
+    max-width: 100%;
+    padding: 1rem;
+  }
+  
+  .error-code {
+    font-size: 6rem;
+  }
+  
+  .error-code::after {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3rem;
+  }
+  
+  .not-found-content h1 {
+    font-size: 2rem;
+  }
+  
+  .not-found-content p {
+    font-size: 1rem;
+    margin: 0 auto 2rem;
+  }
+  
+  .not-found-animation {
+    min-height: 300px;
+  }
+  
+  .headphone-icon {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .headphone-icon i {
+    font-size: 75px;
+  }
+}
+
+@media (max-width: 576px) {
+  .error-code {
+    font-size: 5rem;
+  }
+  
+  .not-found-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .not-found-animation {
+    min-height: 250px;
+  }
+  
+  .circle-1 {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .circle-2 {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .circle-3 {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .headphone-icon {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .headphone-icon i {
+    font-size: 60px;
+  }
+  
+  .back-home-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

@@ -4,6 +4,7 @@ import "./Hero.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
 
 // Register the ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -15,7 +16,7 @@ const Hero = () => {
   const noteRef = useRef(null);
   const priceRef = useRef(null);
   const buttonRef = useRef(null);
-
+  const navigate = useNavigate();
   // Mouse parallax effect
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -84,6 +85,10 @@ const Hero = () => {
     }, "-=0.5");
   }, []);
 
+  const handleExploreClick = () => {
+    navigate('/products/68811f5d6d73fd0ed63ec56d');
+  }
+
 
   return (
     <div ref={sectionRef} className="home-container">
@@ -107,7 +112,7 @@ const Hero = () => {
         <p><span>₹</span>6999</p>
       </div>
       <div ref={buttonRef} className="home-button">
-      <button className="explore-button">
+      <button className="explore-button" onClick={handleExploreClick}>
     Explore
     <svg className="arrow-icon" viewBox="0 0 16 19" xmlns="http://www.w3.org/2000/svg">
       <path

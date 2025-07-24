@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./NavBar.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const FloatingNavbar = () => {
   const [isNavVisible, setIsNavVisible] = useState(true);
@@ -11,9 +12,8 @@ const FloatingNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const navbarRef = useRef(null);
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = useSelector((state) => state.userReducer.user);
   
-
   // Toggle navbar visibility on button click
   const toggleNav = () => {
     setIsNavVisible(!isNavVisible);
@@ -141,19 +141,27 @@ const FloatingNavbar = () => {
 
           <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
             <NavLink 
-              to="/products" 
-              className={({isActive}) => isActive ? "navbar-link navbar-link-active products-link" : "navbar-link products-link"} 
+              to="/products/68811f5d6d73fd0ed63ec56d" 
+              className={({isActive}) => isActive ? "navbar-link navbar-link-active Ai-buds-link" : "navbar-link Ai-buds-link"} 
               onClick={handleNavLinkClick} 
               style={{"--i": 1}}
             >
+              <p>Ai-Buds</p>
+            </NavLink>
+            <NavLink 
+              to="/products" 
+              className="navbar-link products-link" 
+              onClick={handleNavLinkClick} 
+              style={{"--i": 2}}
+            >
               <p>Products</p>
             </NavLink>
-            <a className="navbar-link about-link" href="#about" onClick={handleNavLinkClick} style={{"--i": 2}}>
+            <NavLink to="/about" className="navbar-link about-link" onClick={handleNavLinkClick} style={{"--i": 3}}>
               <p>About Us</p>
-            </a>
-            <a className="navbar-link contact-link" href="#contact" onClick={handleNavLinkClick} style={{"--i": 3}}>
+            </NavLink>
+            <NavLink to="/contact" className="navbar-link contact-link" onClick={handleNavLinkClick} style={{"--i": 4}}>
               <p>Contact Us</p>
-            </a>
+            </NavLink>
           </div>
         </div>
         

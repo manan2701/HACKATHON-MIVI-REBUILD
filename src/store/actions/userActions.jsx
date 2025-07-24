@@ -1,6 +1,6 @@
-import { toast } from "react-toastify"
+import { toast } from "../../components/CustomToast.jsx"
 import axiosInstance from "../../api/axiosconfig"
-import { setUser } from "../reducers/userSlice"
+import { setUser, clearUser } from "../reducers/userSlice"
 
 
 export const saveUser = (user) => async (dispatch,getState) => {
@@ -19,11 +19,11 @@ export const asyncRegisterUser = (user) => async (dispatch,getState) => {
         toast.success('Registration successful')
     } catch (error) {
         console.log('Registration failed', error)
-        toast.error('Registration failed')
+        toast.error('Use Different Email or try again')
     }
 }
 
-export const asyncLoginUser = (user, navigate) => async (dispatch, getState) => {
+export const asyncLoginUser = (user, navigate, redirectPath = '/') => async (dispatch, getState) => {
   try {
     const { data } = await axiosInstance.post(`/users/login`, {
       email: user.email,
@@ -34,7 +34,8 @@ export const asyncLoginUser = (user, navigate) => async (dispatch, getState) => 
     dispatch(saveUser(data));
     dispatch(setUser(data));
     toast.success('Login successful');
-    navigate('/');
+    
+    navigate(redirectPath);
   } catch (error) {
     console.log('Login failed', error);
     toast.error('Invalid email or password');
@@ -42,11 +43,12 @@ export const asyncLoginUser = (user, navigate) => async (dispatch, getState) => 
 };
 
 
-export const asyncLogoutUser = () => async (dispatch,getState) => {
+export const asyncLogoutUser = (navigate) => (dispatch,getState) => {
     try {
         localStorage.removeItem('user')
-        dispatch(setUser(null))
+        dispatch(clearUser())
         toast.success('Logout successful')
+        navigate("/");
     } catch (error) {
         console.log('Logout failed', error)
         toast.error('Logout failed')
@@ -64,32 +66,27 @@ export const asyncCurrentUser = () => async (dispatch,getState) => {
 
 export const asyncupdateuser = (id, user) => async (dispatch, getState) => {
   try {
-    console.log(user);
     const { data } = await axiosInstance.patch(`/users/${id}`, user);
     localStorage.setItem("user", JSON.stringify(data));
     dispatch(setUser(data));
-    return true; // ✅ return a success flag
+    return true; 
   } catch (error) {
     console.log(error);
-    return false; // ✅ handle errors
+    return false; 
   }
 };
 
 
 export const asyncaddToCart = (user, product, selectedColorName) => async (dispatch) => {
   try {  
-    // Extract the correct image URL for the selected color
     const colorEntry = product.color.find((colorObj) => colorObj[selectedColorName]);
     const colorImageUrl = colorEntry?.[selectedColorName];
 
-    // Clone and modify the product object to embed image URL directly
     const updatedProduct = {
       ...product,
       color: [{ name: selectedColorName, image: colorImageUrl }]
-// << store only the image URL here
     };
 
-    // Prepare the cart update
     const updatedCart = [...(user.cart)];
     const index = updatedCart.findIndex(
       (item) => item.product?._id === product._id && item?.product?.color[0]?.name === selectedColorName
@@ -117,7 +114,6 @@ export const asyncaddToCart = (user, product, selectedColorName) => async (dispa
 
 export const asyncPlaceOrder = (user, orderData) => async (dispatch) => {
   try {
-    // Create new order object
     const newOrder = {
       items: orderData.items,
       totalAmount: orderData.totalAmount,
@@ -128,14 +124,12 @@ export const asyncPlaceOrder = (user, orderData) => async (dispatch) => {
       orderId: `MIVI${Math.floor(Math.random() * 10000)}`
     };
     
-    // Add order to user's orders array and empty the cart
     const updatedUser = {
       ...user,
       orders: [...(user.orders || []), newOrder],
       cart: []
     };
-    
-    // Update user in the database
+
     await axiosInstance.patch(`/users/${user._id}`, updatedUser);
     dispatch(asyncupdateuser(user._id, updatedUser));
     

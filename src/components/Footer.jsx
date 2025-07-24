@@ -44,12 +44,7 @@ const Footer = () => {
         { text: "Help Centre", url: "#" },
         { 
           text: "Contact Us", 
-          url: "#",
-          onClick: (e) => { 
-            e.preventDefault(); 
-            setShowContactForm(true); 
-          } 
-        }
+          url: "/contact",}
       ]
     },
     {
@@ -69,7 +64,7 @@ const Footer = () => {
     {
       title: "About Mivi",
       links: [
-        { text: "Our Story", url: "/pages/about" },
+        { text: "Our Story", url: "/about" },
         { text: "Affiliate Program", url: "https://mivi.tapfiliate.com/" },
         { text: "Blogs & Articles", url: "/blogs/earbuds" }
       ]
@@ -160,58 +155,6 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-
-      {/* Contact Us Form Modal */}
-      {showContactForm && (
-        <div className="contact-form-modal" onClick={(e) => {
-          if (e.target.className === 'contact-form-modal') {
-            setShowContactForm(false);
-          }
-        }}>
-          <div className="contact-form-container">
-            <button className="close-button" onClick={() => setShowContactForm(false)}>×</button>
-            <h2>Contact Us</h2>
-            {!submitted ? (
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="name">Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    value={name} 
-                    onChange={(e) => setName(e.target.value)} 
-                    required 
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="message">Message</label>
-                  <textarea 
-                    id="message" 
-                    value={message} 
-                    onChange={(e) => setMessage(e.target.value)} 
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" className="submit-button">Submit</button>
-              </form>
-            ) : (
-              <div className="success-message">
-                <p>Thank you for your message! We'll get back to you soon.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </footer>
   );
 };

@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import LenisWrapper from "./components/LenisWrapper.jsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.jsx";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from "./components/CustomToast.jsx";
 
 
 createRoot(document.getElementById("root")).render(

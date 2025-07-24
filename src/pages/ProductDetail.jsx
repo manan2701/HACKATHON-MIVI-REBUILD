@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./ProductDetail.css";
 import { asyncaddToCart } from "../store/actions/userActions";
 import LoadingSpinner from "../components/LoadingSpinner";
+import ModernLoader from "../components/ModernLoader";
+import NoProductsFound from "../components/NoProductsFound";
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -14,6 +16,7 @@ const ProductDetail = () => {
   const [loadingProductId, setLoadingProductId] = useState(null);
   const users = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     if (products.length > 0 && productId) {
       const foundProduct = products.find((p) => p._id === productId);
@@ -25,8 +28,9 @@ const ProductDetail = () => {
 
           setSelectedColor(firstColorKey);
         }
-        setIsLoading(false);
       }
+      // Always set isLoading to false once products are loaded, regardless if this specific product was found
+      setIsLoading(false);
     }
   }, [products, productId]);
 
@@ -36,17 +40,35 @@ const ProductDetail = () => {
   };
 
   const addToCart = async (user, product) => {
+    // Check if user is logged in
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     setLoadingProductId(product._id);
     await dispatch(asyncaddToCart(user, product, selectedColor));
     setLoadingProductId(null);
   };
 
-  if (isLoading || !product) {
+  // Check if products are loading
+  if (isLoading) {
     return (
       <div className="product-detail-loading">
-        <div className="product-detail-loading-spinner"></div>
-        <p>Loading product...</p>
+        <ModernLoader />
       </div>
+    );
+  }
+
+  // Check if product was not found
+  if (!product) {
+    return (
+      <NoProductsFound 
+        title="Product Not Found" 
+        message="The product you're looking for doesn't exist or has been removed."
+        buttonText="Back to Products"
+        buttonLink="/products"
+      />
     );
   }
 
