@@ -17,49 +17,44 @@ import OurStory from '../pages/OurStory'
 
 const Mainroutes = () => {
   const location = useLocation()
-  const [isLoginPage, setisLoginPage] = useState(false)
-  useEffect(() => {
-    if(location.pathname === '/login'){
-      setisLoginPage(true)
-    }else{
-      setisLoginPage(false)
-    }
-  }, [location.pathname])
+  const isLoginPage = location.pathname === '/login'
+  
   return (
     <div>
-       <NavBar />
-        <Routes>
-            {/* Public routes accessible to everyone */}
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<OurStory />} />
-            <Route path="/our-story" element={<OurStory />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/products" element={<ProductPage />} />
-            <Route path="/products/:productId" element={<ProductDetail />} />
-            
-            {/* Protected routes (require authentication) */}
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } />
-            <Route path="/cart" element={
-              <ProtectedRoute>
-                <Cart />
-              </ProtectedRoute>
-            } />
-            
-            {/* Public routes (redirect if authenticated) */}
-            <Route path="/login" element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            } />
-            
-            {/* Catch-all 404 route */}
-            <Route path="*" element={<NotFound />} />
-        </Routes>
-      {isLoginPage ? "" : (
+      <NavBar />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<OurStory />} />
+        <Route path="/our-story" element={<OurStory />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/products" element={<ProductPage />} />
+        <Route path="/products/:productId" element={<ProductDetail />} />
+        
+        {/* Protected routes */}
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/cart" element={
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        } />
+        
+        {/* Auth routes */}
+        <Route path="/login" element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        } />
+        
+        {/* 404 route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      
+      {!isLoginPage && (
         <>
           <MarqueeStrip texts={[
             "Proudly Made in India", 

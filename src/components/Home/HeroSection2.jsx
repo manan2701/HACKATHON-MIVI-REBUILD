@@ -3,7 +3,7 @@ import "./HeroSection2.css";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import AnimatedBackground from "./AnimatedBackground";
+import AnimatedBackground from "../ui/AnimatedBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,7 +11,6 @@ const HeroSection2 = () => {
   const wakeUpRef = useRef(null);
   const topSectionRef = useRef(null);
 
-  // Keep existing GSAP animations for .ai-word and .multi-word
   useGSAP(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -34,7 +33,6 @@ const HeroSection2 = () => {
   }, []);
 
   useGSAP(() => {
-    // Wake up section animations
     const wakeUpTl = gsap.timeline();
     wakeUpTl.fromTo(
       ".wake-up-image",
@@ -99,12 +97,11 @@ const HeroSection2 = () => {
             ))}
         </p>
       </div>
-
       <div className="wake-up" ref={wakeUpRef}>
         <div className="wake-up-image">
           <img
             src="https://www.mivi.in/cdn/shop/files/Girl_image_Desktop_copy.webp?v=1751457523&width=2500&format=webp&quality=100"
-            alt=""
+            alt="Person wearing Mivi AI Buds"
           />
         </div>
         <div className="wake-up-text">

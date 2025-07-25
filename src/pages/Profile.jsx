@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
-import { toast } from "../components/CustomToast.jsx";
+import { toast } from "../components/ui/CustomToast.jsx";
 import { asyncupdateuser, asyncLogoutUser } from "../store/actions/userActions";
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer.user);
-  // Form state
   const [formData, setFormData] = useState({
     _id: "",
     fullName: "",
@@ -21,6 +20,10 @@ const Profile = () => {
     state: "",
     pincode: "",
   });
+  const [activeTab, setActiveTab] = useState("orders");
+  const [isMobile, setIsMobile] = useState(false);
+  const [editPersonalInfo, setEditPersonalInfo] = useState(false);
+  const [editAddress, setEditAddress] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -37,12 +40,6 @@ const Profile = () => {
       });
     }
   }, [user]);
-
-  // UI state
-  const [activeTab, setActiveTab] = useState("orders");
-  const [isMobile, setIsMobile] = useState(false);
-  const [editPersonalInfo, setEditPersonalInfo] = useState(false);
-  const [editAddress, setEditAddress] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -65,7 +62,7 @@ const Profile = () => {
 
   const savePersonalInfo = () => {
     const updatedUser = { ...user, ...formData };
-    dispatch(asyncupdateuser(user._id , updatedUser));  
+    dispatch(asyncupdateuser(user._id, updatedUser));  
     setEditPersonalInfo(false);
     toast.success("Personal information updated successfully");
   };
@@ -82,9 +79,9 @@ const Profile = () => {
       setEditPersonalInfo(false);
       setFormData((prev) => ({
         ...prev,
-        fullName: user?.fullName ,
-        email: user?.email ,
-        phone: user?.phone ,
+        fullName: user?.fullName,
+        email: user?.email,
+        phone: user?.phone,
       }));
     } else if (section === "address") {
       setEditAddress(false);
@@ -114,7 +111,6 @@ const Profile = () => {
         </div>
         <div className="header-ladder"></div>
       </div>
-
       <div className="profile-body">
         <div className="sidebar">
           <div className="sidebar-header">
@@ -144,7 +140,6 @@ const Profile = () => {
             </button>
           </div>
         </div>
-
         <div className="content-area">
           {activeTab === "details" && (
             <div className="tab-content details-tab">
@@ -152,7 +147,6 @@ const Profile = () => {
               <p className="tab-description">
                 Manage your personal information and addresses
               </p>
-
               <div className="details-section">
                 <h3>
                   Personal Information
@@ -180,7 +174,6 @@ const Profile = () => {
                     </div>
                   )}
                 </h3>
-
                 {!editPersonalInfo ? (
                   <div className="info-grid">
                     <div className="info-item">
@@ -242,7 +235,6 @@ const Profile = () => {
                   </form>
                 )}
               </div>
-
               <div className="details-section">
                 <h3>
                   Address
@@ -264,7 +256,6 @@ const Profile = () => {
                     </div>
                   )}
                 </h3>
-
                 {!editAddress ? (
                   <div className="address-card">
                     <div className="address-header">
@@ -336,9 +327,8 @@ const Profile = () => {
               </div>
             </div>
           )}
-
           {activeTab === "orders" && (
-            <div className="tab-content orders-tab" >
+            <div className="tab-content orders-tab">
               <h2>My Orders</h2>
               <p className="tab-description">Track and manage your orders</p>
               <div className="orders-section">
@@ -363,7 +353,6 @@ const Profile = () => {
                             </span>
                           </div>
                         </div>
-                        
                         <div className="order-items">
                           {order.items.map((item, idx) => (
                             <div key={idx} className="order-item">
@@ -386,7 +375,6 @@ const Profile = () => {
                             </div>
                           ))}
                         </div>
-                        
                         <div className="order-footer">
                           <div className="order-address">
                             <h4>Delivery Address</h4>
@@ -397,7 +385,6 @@ const Profile = () => {
                             </p>
                             <p>India</p>
                           </div>
-                          
                           <div className="order-summary">
                             <div className="order-total">
                               <span>Total:</span>
@@ -429,7 +416,6 @@ const Profile = () => {
               </div>
             </div>
           )}
-
           {activeTab === "wishlist" && (
             <div className="tab-content wishlist-tab">
               <h2>My Wishlist</h2>
@@ -453,7 +439,6 @@ const Profile = () => {
               </div>
             </div>
           )}
-
           <div className="content-ladder"></div>
         </div>
       </div>

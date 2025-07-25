@@ -1,35 +1,31 @@
-import { toast } from "../../components/CustomToast.jsx"
+import { toast } from "../../components/ui/CustomToast.jsx"
 import axiosInstance from "../../api/axiosconfig"
 import { setUser, clearUser } from "../reducers/userSlice"
 
-
-export const saveUser = (user) => async (dispatch,getState) => {
+export const saveUser = (user) => async (dispatch) => {
     try {
         localStorage.setItem('user', JSON.stringify(user))
     } catch (error) {
-        console.log('Registration failed', error)
+        toast.error('Failed to save user data')
     }
 }
 
-export const asyncRegisterUser = (user) => async (dispatch,getState) => {
+export const asyncRegisterUser = (user) => async (dispatch) => {
     try {
         const response = await axiosInstance.post('/users', user)
-        console.log('Registration successful', response.data)
         dispatch(setUser(response.data))
         toast.success('Registration successful')
     } catch (error) {
-        console.log('Registration failed', error)
         toast.error('Use Different Email or try again')
     }
 }
 
-export const asyncLoginUser = (user, navigate, redirectPath = '/') => async (dispatch, getState) => {
+export const asyncLoginUser = (user, navigate, redirectPath = '/') => async (dispatch) => {
   try {
     const { data } = await axiosInstance.post(`/users/login`, {
       email: user.email,
       password: user.password
     });
-    console.log(data);
     
     dispatch(saveUser(data));
     dispatch(setUser(data));
@@ -37,45 +33,40 @@ export const asyncLoginUser = (user, navigate, redirectPath = '/') => async (dis
     
     navigate(redirectPath);
   } catch (error) {
-    console.log('Login failed', error);
     toast.error('Invalid email or password');
   }
 };
 
-
-export const asyncLogoutUser = (navigate) => (dispatch,getState) => {
+export const asyncLogoutUser = (navigate) => (dispatch) => {
     try {
         localStorage.removeItem('user')
         dispatch(clearUser())
         toast.success('Logout successful')
         navigate("/");
     } catch (error) {
-        console.log('Logout failed', error)
         toast.error('Logout failed')
     }
 }
 
-export const asyncCurrentUser = () => async (dispatch,getState) => {
+export const asyncCurrentUser = () => async (dispatch) => {
     try {
         const user = JSON.parse(localStorage.getItem("user"))
         if(user) dispatch(setUser(user))
     } catch (error) {
-        console.log(error);
+        // Silent fail - user not in local storage
     }
 }
 
-export const asyncupdateuser = (id, user) => async (dispatch, getState) => {
+export const asyncupdateuser = (id, user) => async (dispatch) => {
   try {
     const { data } = await axiosInstance.patch(`/users/${id}`, user);
     localStorage.setItem("user", JSON.stringify(data));
     dispatch(setUser(data));
     return true; 
   } catch (error) {
-    console.log(error);
     return false; 
   }
 };
-
 
 export const asyncaddToCart = (user, product, selectedColorName) => async (dispatch) => {
   try {  
@@ -107,7 +98,6 @@ export const asyncaddToCart = (user, product, selectedColorName) => async (dispa
     dispatch(asyncupdateuser(user._id, updatedUser));
     toast.success("Added To Cart!");
   } catch (error) {
-    console.error("Error adding to cart:", error);
     toast.error("Failed to add to cart.");
   }
 };
@@ -136,20 +126,17 @@ export const asyncPlaceOrder = (user, orderData) => async (dispatch) => {
     toast.success("Order placed successfully!");
     return true;
   } catch (error) {
-    console.error("Error placing order:", error);
     toast.error("Failed to place order.");
     return false;
   }
 };
 
-export const asyncForgotPassword = (email) => async (dispatch) => {
+export const asyncForgotPassword = (email) => async () => {
   try {
-    console.log(email);
     await axiosInstance.get(`/users/email/${email}`);
     toast.success('Password reset link sent to your email');
     return true;
   } catch (error) {
-    console.error('Password reset request failed', error);
     toast.error('Password reset failed. Please check your email and try again.');
     return false;
   }

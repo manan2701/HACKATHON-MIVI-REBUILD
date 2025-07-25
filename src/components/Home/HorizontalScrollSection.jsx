@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalSection.css";
 import { useSelector, useDispatch } from 'react-redux';
-import { asyncaddToCart } from '../store/actions/userActions';
+import { asyncaddToCart } from '../../store/actions/userActions';
 import { Link, useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,25 +13,16 @@ const HorizontalScrollSection = () => {
   const horizontalRef = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer.user);
-  const product = useSelector((state) => state.productReducer.products)
+  const product = useSelector((state) => state.productReducer.products);
   const [loadingProductId, setLoadingProductId] = useState(null);
   const navigate = useNavigate();
-  const colors = [{
-    color : "Black",
-    image : "/assets/ai-buds-1.webp"
-  },
-  {
-    color : "Silver",
-    image : "/assets/ai-buds-2.webp"
-  },
-  {
-    color : "Orange",
-    image : "/assets/ai-buds-3.webp"
-  },
-  {
-    color : "Champagne",
-    image : "/assets/ai-buds-4.webp"
-  }]
+
+  const colors = [
+    { color: "Black", image: "/assets/ai-buds-1.webp" },
+    { color: "Silver", image: "/assets/ai-buds-2.webp" },
+    { color: "Orange", image: "/assets/ai-buds-3.webp" },
+    { color: "Champagne", image: "/assets/ai-buds-4.webp" }
+  ];
 
   const imageURLs = [
     [1, 5, 9],
@@ -40,7 +31,6 @@ const HorizontalScrollSection = () => {
     [4, 8, 12],
   ];
 
-  // 💡 Initialize selected images with first image in each group
   const [selectedImages, setSelectedImages] = useState(
     imageURLs.map((group) => group[0])
   );
@@ -52,18 +42,14 @@ const HorizontalScrollSection = () => {
   };
 
   const handleAddToCart = async (index) => {
-    // Only proceed if user is logged in and products are loaded
     if (!user) {
       navigate('/login');
       return;
     }
-
     if (colors && product.length > 0) {
-      // For simplicity, we'll use the first 4 products from the products array
       const productToAdd = colors[index];
       if (productToAdd) {
-        // Use the first color option for the selected product
-        const {color} = productToAdd;
+        const { color } = productToAdd;
         setLoadingProductId(product[0]?._id);
         await dispatch(asyncaddToCart(user, product[0], color));
         setLoadingProductId(null);
@@ -74,11 +60,9 @@ const HorizontalScrollSection = () => {
   useLayoutEffect(() => {
     const elem = sectionRef.current;
     const scrollElem = horizontalRef.current;
-
     const totalWidth = scrollElem.scrollWidth;
     const viewportWidth = window.innerWidth;
     const scrollDistance = totalWidth - viewportWidth;
-
     gsap.to(scrollElem, {
       x: () => `-${scrollDistance}`,
       ease: "none",
@@ -91,7 +75,6 @@ const HorizontalScrollSection = () => {
         anticipatePin: 1,
       },
     });
-
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
@@ -102,7 +85,6 @@ const HorizontalScrollSection = () => {
       <div className="horizontal-section-content">
         <h1>Explore every detail</h1>
       </div>
-
       <div className="horizontal-scroll" ref={horizontalRef}>
         {imageURLs.map((group, groupIndex) => (
           <div key={groupIndex} className="image-card">
@@ -110,14 +92,13 @@ const HorizontalScrollSection = () => {
               {group.map((imgId, i) => (
                 <div key={i} className="image-wrapper">
                   <img
-                  key={i}
-                  src={`/assets/ai-buds-${imgId}.webp`}
-                  alt={`Thumbnail ${imgId}`}
-                  className={`thumbnail ${
-                    selectedImages[groupIndex] === imgId ? "active" : ""
-                  }`}
-                  onClick={() => handleSelectImage(groupIndex, imgId)}
-                />
+                    src={`/assets/ai-buds-${imgId}.webp`}
+                    alt={`Thumbnail ${imgId}`}
+                    className={`thumbnail ${
+                      selectedImages[groupIndex] === imgId ? "active" : ""
+                    }`}
+                    onClick={() => handleSelectImage(groupIndex, imgId)}
+                  />
                 </div>
               ))}
             </div>

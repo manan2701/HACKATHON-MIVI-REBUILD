@@ -18,10 +18,9 @@ const Cart = () => {
     paymentMethod: 'upi'
   });
   const [useProfileAddress, setUseProfileAddress] = useState(false);
-  
+
   useEffect(() => {
     setCartItems(user?.cart);
-    // Initialize checkout form with user's address if available
     if (user) {
       setCheckoutData({
         address: user?.address,
@@ -32,13 +31,13 @@ const Cart = () => {
       });
     }
   }, [user]);
-  
-  // Calculate totals
+
   const subtotal = cartItems?.reduce((acc, item) => acc + item?.product?.price * item?.quantity, 0) || 0;
   const totalMRP = cartItems?.reduce((acc, item) => acc + item?.product?.originalPrice * item?.quantity, 0) || 0;
   const discount = totalMRP - subtotal;
-  
-  // Handle quantity changes - updated to check both ID and color and persist to database
+  const totalItems = cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+
+  // Cart item quantity handlers
   const handleQuantityChange = (id, color, change) => {
     const updatedCartItems = cartItems?.map(item => {
       if (item?.product?._id === id && item?.product?.color[0]?.name === color) {
@@ -47,11 +46,7 @@ const Cart = () => {
       }
       return item;
     });
-    
-    // Update local state
     setCartItems(updatedCartItems);
-    
-    // Update database
     if (user) {
       const updatedUser = {
         ...user,
@@ -60,17 +55,12 @@ const Cart = () => {
       dispatch(asyncupdateuser(user._id, updatedUser));
     }
   };
-  
-  // Remove item from cart - updated to check both ID and color and persist to database
+
   const removeItem = (id, color) => {
     const updatedCartItems = cartItems?.filter(item => 
       !(item?.product?._id === id && item?.product?.color[0]?.name === color)
     );
-    
-    // Update local state
     setCartItems(updatedCartItems);
-    
-    // Update database
     if (user) {
       const updatedUser = {
         ...user,
@@ -80,26 +70,17 @@ const Cart = () => {
     }
   };
 
-  // Toggle checkout form
   const toggleCheckoutForm = () => {
     setShowCheckoutForm(!showCheckoutForm);
-    
-    // Toggle body scroll when modal is open/closed
-    if (!showCheckoutForm) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+    document.body.style.overflow = !showCheckoutForm ? 'hidden' : 'auto';
   };
 
-  // Close the modal when clicking outside
   const handleModalClick = (e) => {
     if (e.target.className === 'checkout-modal') {
       toggleCheckoutForm();
     }
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCheckoutData({
@@ -108,11 +89,9 @@ const Cart = () => {
     });
   };
 
-  // Toggle using profile address
   const handleUseProfileAddress = () => {
     setUseProfileAddress(!useProfileAddress);
     if (!useProfileAddress) {
-      // Restore profile address
       setCheckoutData({
         ...checkoutData,
         address: user?.address,
@@ -135,7 +114,6 @@ const Cart = () => {
       },
       paymentMethod: checkoutData.paymentMethod,
     };
-  
     const updatedUserData = {
       ...user,
       address: checkoutData.address,
@@ -143,34 +121,21 @@ const Cart = () => {
       state: checkoutData.state,
       pincode: checkoutData.pincode
     };
-  
-    // ✅ Await user update and check result
     const userUpdated = dispatch(asyncupdateuser(user._id, updatedUserData));
-  
-    if (!userUpdated) {
-      console.error("User update failed.");
-      return; // Stop here if update failed
-    }
-  
-    // ✅ Await order placement
+    if (!userUpdated) return;
     const orderSuccess = await dispatch(asyncPlaceOrder(user, orderData));
-  
     if (orderSuccess) {
       setCartItems([]);
       setShowCheckoutForm(false);
       navigate('/profile');
-    } else {
-      console.error("Order placement failed.");
     }
   };
-  
 
   return (
     <div className="cart-page">
       <div className="page-width cart_main__container">
         <div className="cart-items-container">
           {cartItems?.length === 0 ? (
-            // Empty cart state
             <div className="cart__warnings">
               <div className="empty-cart-empty">
                 <h2 className="cart-empty-heading">Your Shopping Bag</h2>
@@ -179,16 +144,14 @@ const Cart = () => {
               </div>
             </div>
           ) : (
-            // Populated cart state
             <>
               <div className="cart-info-heading">
                 <h2 className="cart-items-heading">
                   Your Bag
-                  <sup>({cartItems?.reduce((acc, item) => acc + item.quantity, 0)})</sup>
+                  <sup>({totalItems})</sup>
                 </h2>
                 <p className="bag-text">Confirm your items before checking out</p>
               </div>
-              
               <div className="cart-items-list">
                 {cartItems?.map((item) => (
                   <div key={`${item?.product?._id}-${item?.product?.color[0]?.name}`} className="cart-item">
@@ -199,7 +162,6 @@ const Cart = () => {
                         </div>
                       </Link>
                     </div>
-                    
                     <div className="cart-item-details">
                       <div className="price-title-container">
                         <Link to={`/products/${item?.product?._id}`} className="cart-item-name">{item?.product?.name}</Link>
@@ -208,12 +170,10 @@ const Cart = () => {
                           <span className="item-option-value">{item?.product?.color[0]?.name}</span>
                         </div>
                       </div>
-                      
                       <div className="cart-item-prices">
                         <div className="cart-original-price">₹{item?.product?.price?.toLocaleString()}</div>
                         <span className="item-comp-price">₹{item.product?.originalPrice?.toLocaleString()}</span>
                       </div>
-                      
                       <div className="cart-item-quantity">
                         <div className="quantity">
                           <button 
@@ -229,7 +189,6 @@ const Cart = () => {
                               <path d="M12.6668 8.66536H3.3335V7.33203H12.6668V8.66536Z" fill="#343B36"></path>
                             </svg>
                           </button>
-                          
                           <input 
                             className="quantity-input"
                             type="number"
@@ -256,11 +215,9 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                    
                     <div className="cart-item-totals">
                       <span className="price">₹{(item?.product?.price * item?.quantity)?.toLocaleString()}</span>
                     </div>
-                    
                     <button 
                       className="remove-item-button" 
                       onClick={() => removeItem(
@@ -278,7 +235,6 @@ const Cart = () => {
             </>
           )}
         </div>
-        
         {cartItems?.length > 0 && (
           <div className="cart-footer">  
             <div className="cart-footer-details">
@@ -286,7 +242,6 @@ const Cart = () => {
                 <div className="cart-total-price">₹{subtotal?.toLocaleString()}</div>
                 <div className="cart-footer-details-link">VIEW DETAILS</div>
               </div>
-              
               <div className="cart-ctas">
                 <button 
                   type="button" 
@@ -301,7 +256,6 @@ const Cart = () => {
                   </span>
                 </button>
               </div>
-              
               <div className="emi-option" onClick={toggleCheckoutForm}>
                 <div className="pay-later-wrapper">
                   <div className="pay-dp-line">
@@ -314,24 +268,20 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-            
             <div className="cart-order-summary">
               <div className="order-summary-title">
                 <h3>Order Summary</h3>
                 <p className="order-summary-text">Shipping & discounts will be applied at checkout</p>
               </div>
-              
               <div className="order-summary-info">
                 <div className="cart-subtotal">
-                  <div className="cart-subtotal-label">Total MRP ({cartItems?.reduce((acc, item) => acc + item.quantity, 0)} Items)</div>
+                  <div className="cart-subtotal-label">Total MRP ({totalItems} Items)</div>
                   <div className="cart-subtotal-value">₹{totalMRP?.toLocaleString()}</div>
                 </div>
-                
                 <div className="cart-discount">
                   <div className="cart-discount-label">Discount on MRP</div>
                   <div className="cart-discount-value">- ₹{discount?.toLocaleString()}</div>
                 </div>
-                
                 <div className="cart-total">
                   <div className="cart-total-label">Subtotal</div>
                   <div className="cart-total-value">₹{subtotal?.toLocaleString()}</div>
@@ -349,7 +299,6 @@ const Cart = () => {
                     <p>We offer replacement within 7 days of delivery. Orders can be canceled within 24 hours of purchase.</p>
                   </div>
                 </details>
-                
                 <details className="cart-policy-details">
                   <summary className="cart-policy-summary">
                     <span className="cart-policy-title">Privacy Policy</span>
@@ -364,16 +313,15 @@ const Cart = () => {
           </div>
         )}
       </div>
-
-      {/* Checkout Form Modal */}
       {showCheckoutForm && (
         <div className="checkout-modal" onClick={handleModalClick}>
           <div className="checkout-form-container">
             <div className="checkout-form-header">
               <h2>Complete Your Order</h2>
-              <button className="close-button" onClick={toggleCheckoutForm}>×</button>
+              <button className="close-button" onClick={toggleCheckoutForm}>
+                ×
+              </button>
             </div>
-            
             <div className="checkout-form">
               <div className="checkout-columns">
                 <div className="checkout-left-column">
@@ -388,7 +336,6 @@ const Cart = () => {
                       />
                       <label htmlFor="use-profile-address">Use address from profile</label>
                     </div>
-                    
                     <div className="checkout-form-group">
                       <label htmlFor="address">Address</label>
                       <textarea
@@ -400,7 +347,6 @@ const Cart = () => {
                         required
                       />
                     </div>
-                    
                     <div className="form-row">
                       <div className="checkout-form-group">
                         <label htmlFor="city">City</label>
@@ -414,7 +360,6 @@ const Cart = () => {
                           required
                         />
                       </div>
-                      
                       <div className="checkout-form-group">
                         <label htmlFor="state">State</label>
                         <input
@@ -428,7 +373,6 @@ const Cart = () => {
                         />
                       </div>
                     </div>
-                    
                     <div className="checkout-form-group">
                       <label htmlFor="pincode">Pincode</label>
                       <input
@@ -442,7 +386,6 @@ const Cart = () => {
                       />
                     </div>                    
                   </div>
-                  
                   <div className="form-section payment-section">
                     <h3>Payment Method</h3>
                     <div className="payment-options">
@@ -457,7 +400,6 @@ const Cart = () => {
                         />
                         <label htmlFor="upi">UPI</label>
                       </div>
-                      
                       <div className="payment-option">
                         <input
                           type="radio"
@@ -469,7 +411,6 @@ const Cart = () => {
                         />
                         <label htmlFor="card">Credit/Debit Card</label>
                       </div>
-                      
                       <div className="payment-option">
                         <input
                           type="radio"
@@ -484,13 +425,12 @@ const Cart = () => {
                     </div>
                   </div>
                 </div>
-                
                 <div className="checkout-right-column">
                   <div className="order-summary-section">
                     <h3>Order Summary</h3>
                     <div className="order-summary-details">
                       <div className="summary-row">
-                        <span>Items ({cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0})</span>
+                        <span>Items ({totalItems})</span>
                         <span>₹{totalMRP?.toLocaleString()}</span>
                       </div>
                       <div className="summary-row">
@@ -506,7 +446,6 @@ const Cart = () => {
                         <span>₹{subtotal?.toLocaleString()}</span>
                       </div>
                     </div>
-                    
                     <div className="form-actions">
                       <button type="button" className="cancel-button" onClick={toggleCheckoutForm}>
                         Cancel

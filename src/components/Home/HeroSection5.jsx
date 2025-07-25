@@ -44,8 +44,6 @@ const HeroSection5 = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Remove the horizontal scroll reset since we're using column layout now
-
   useGSAP(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -55,14 +53,11 @@ const HeroSection5 = () => {
         scrub: 1,
       }
     });
-
     tl.fromTo(
       headingRef.current,
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
     );
-
-
     return () => ScrollTrigger.getAll().forEach(trigger => trigger.kill());
   }, []);
 
@@ -80,7 +75,6 @@ const HeroSection5 = () => {
       <h2 ref={headingRef} className="engineering-heading">
         The Engineering<br /> behind Mivi AI.
       </h2>
-
       <div ref={cardsContainerRef} className="engineering-cards-container">
         {engineeringData.map((item) => (
           <div
@@ -88,7 +82,6 @@ const HeroSection5 = () => {
             className={`engineering-card flip-card ${flippedCards[item.id] ? 'flipped' : ''}`}
           >
             <div className="flip-card-inner">
-              {/* Front Side */}
               <div className="flip-card-front">
                 <div className="card-image-container">
                   <img src={item.image} alt={item.title} className="card-image" />
@@ -103,8 +96,6 @@ const HeroSection5 = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Back Side */}
               <div className="flip-card-back">
                 <div className="card-image-container">
                   <img src={item.image} alt={item.title} className="card-image" />

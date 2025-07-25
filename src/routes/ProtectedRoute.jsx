@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { toast } from '../components/ui/CustomToast.jsx';
 
 const ProtectedRoute = ({ children }) => {
-  const user = useSelector((state) => state.userReducer.user);
+  const [redirect, setRedirect] = useState(false);
   const location = useLocation();
-  
-  if (!user) {  
-    // Redirect to login page with the return path
+  const user = localStorage.getItem("user");
+
+  useEffect(() => {
+    if (!user) {
+      toast.info("Need to login first");
+      setRedirect(true);
+    }
+  }, [user]);
+
+  if (redirect) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
   return children;
 };
 
-export default ProtectedRoute; 
+export default ProtectedRoute;

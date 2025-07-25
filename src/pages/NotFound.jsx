@@ -14,14 +14,12 @@ const NotFound = () => {
           <i className="ri-arrow-right-line"></i>
         </Link>
       </div>
-      
       <div className="not-found-animation">
         <div className="circles">
           <div className="circle circle-1"></div>
           <div className="circle circle-2"></div>
           <div className="circle circle-3"></div>
         </div>
-        
         <div className="headphones-container">
           <div className="headphone-icon">
             <i className="ri-headphone-line"></i>

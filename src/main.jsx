@@ -1,20 +1,26 @@
 import { createRoot } from "react-dom/client";
 import "./main.css";
-import App from "./App.jsx";
+import React, { Suspense, lazy } from "react";
+const App = lazy(() => import("./App.jsx"));
+const LenisWrapper = lazy(() => import("./components/LenisWrapper.jsx"));
+const ToastContainer = lazy(() => import("./components/ui/CustomToast.jsx").then(mod => ({ default: mod.ToastContainer })));
 import { BrowserRouter } from "react-router-dom";
-import LenisWrapper from "./components/LenisWrapper.jsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.jsx";
-import { ToastContainer } from "./components/CustomToast.jsx";
-
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
+      <Suspense fallback={null}>
         <LenisWrapper>
-          <App />
-          <ToastContainer />
-        </LenisWrapper>  
+          <Suspense fallback={null}>
+            <App />
+          </Suspense>
+          <Suspense fallback={null}>
+            <ToastContainer />
+          </Suspense>
+        </LenisWrapper>
+      </Suspense>
     </BrowserRouter>
   </Provider>
 );

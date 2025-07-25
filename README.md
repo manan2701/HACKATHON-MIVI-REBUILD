@@ -1,12 +1,59 @@
-# React + Vite
+# Mivi Audio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the codebase for the Mivi Audio e-commerce website, built with React and Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Modern UI with smooth scrolling animations using GSAP and Lenis
+- Complete product catalog with filtering and sorting
+- User authentication and account management
+- Shopping cart functionality
+- Order placement and tracking
+- Responsive design for all device sizes
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js 16.x or higher
+- npm 8.x or higher
+
+### Installation
+
+1. Clone the repository
+   ```
+   git clone https://github.com/your-username/mivi-website.git
+   cd mivi-website
+   ```
+
+2. Install dependencies
+   ```
+   npm install
+   ```
+
+3. Create a `.env` file in the root directory with the following variables:
+   ```
+   VITE_API_URL=your_backend_api_url
+   ```
+
+4. Start the development server
+   ```
+   npm run dev
+   ```
+
+The site will be available at http://localhost:5173
+
+## Building for Production
+
+To create a production build, run:
+```
+npm run build
+```
+
+## Technology Stack
+
+- React 18
+- Redux Toolkit for state management
+- GSAP for animations
+- Lenis for smooth scrolling
+- React Router for navigation

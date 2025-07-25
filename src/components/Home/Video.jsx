@@ -28,10 +28,9 @@ const Video = () => {
       if (mobileVideoRef.current) {
         mobileVideoRef.current.play();
       }
-    };   
-    
+    };
     const timer = setTimeout(playVideos, 1500);
-    return () => clearTimeout(timer); // Clean up the timeout
+    return () => clearTimeout(timer);
   }, []);
 
   return (

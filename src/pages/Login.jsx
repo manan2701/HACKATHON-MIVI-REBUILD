@@ -5,8 +5,8 @@ import './Login.css';
 import { nanoid } from '@reduxjs/toolkit';
 import { asyncLoginUser, asyncRegisterUser, asyncForgotPassword } from '../store/actions/userActions';
 import { useDispatch } from 'react-redux';
-import { toast } from '../components/CustomToast.jsx';
-import ModernLoader from '../components/ModernLoader';
+import { toast } from '../components/ui/CustomToast.jsx';
+import ModernLoader from '../components/ui/ModernLoader.jsx';
 
 const Login = () => {
   const [isLoginActive, setIsLoginActive] = useState(true);
@@ -18,11 +18,10 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
-  
-  // React Hook Form setup for login
+
   const { 
     register: registerLogin, 
     handleSubmit: handleSubmitLogin, 
@@ -37,8 +36,7 @@ const Login = () => {
       rememberMe: false
     }
   });
-  
-  // React Hook Form setup for forgot password
+
   const { 
     register: registerForgotPassword, 
     handleSubmit: handleSubmitForgotPassword, 
@@ -50,8 +48,7 @@ const Login = () => {
       email: ''
     }
   });
-  
-  // React Hook Form setup for registration
+
   const { 
     register: registerSignup, 
     handleSubmit: handleSubmitSignup, 
@@ -70,22 +67,14 @@ const Login = () => {
     }
   });
 
-  // Watch password to compare with confirmPassword
   const password = watchRegister('password');
 
-  // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
-    // Initial check
     checkMobile();
-    
-    // Add resize listener
     window.addEventListener('resize', checkMobile);
-    
-    // Cleanup
     return () => {
       window.removeEventListener('resize', checkMobile);
     };
@@ -93,20 +82,15 @@ const Login = () => {
 
   const toggleForm = () => {
     setIsLoginActive(!isLoginActive);
-    // Reset form fields when toggling
     resetLogin();
     resetRegister();
-    // Reset password visibility states
     setShowLoginPassword(false);
     setShowRegisterPassword(false);
     setShowConfirmPassword(false);
   };
-  
-  // Form submission handlers
+
   const onLoginSubmit = async (data) => {
-    // Get redirect path from location state (from protected route) or default to home
     const redirectPath = location.state?.from || '/';
-    
     setIsLoginLoading(true);
     try {
       await dispatch(asyncLoginUser(data, navigate, redirectPath));
@@ -114,7 +98,7 @@ const Login = () => {
       setIsLoginLoading(false);
     }
   };
-  
+
   const onRegisterSubmit = async (user) => {
     setIsRegisterLoading(true);
     try {
@@ -130,7 +114,6 @@ const Login = () => {
 
   const onForgotPasswordSubmit = async (data) => {
     setIsSubmitting(true);
-    console.log(data);
     try {
       const success = await dispatch(asyncForgotPassword(data.email));
       if (success) {
@@ -142,17 +125,15 @@ const Login = () => {
     }
   };
 
-  // Password visibility toggle handlers
   const toggleLoginPasswordVisibility = () => setShowLoginPassword(!showLoginPassword);
   const toggleRegisterPasswordVisibility = () => setShowRegisterPassword(!showRegisterPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
-  
-  // Modal handlers
+
   const openForgotPasswordModal = (e) => {
     e.preventDefault();
     setShowForgotPasswordModal(true);
   };
-  
+
   const closeForgotPasswordModal = () => {
     resetForgotPassword();
     setShowForgotPasswordModal(false);
@@ -209,7 +190,6 @@ const Login = () => {
                   </div>
                   {loginErrors.password && <span className="error-message">{loginErrors.password.message}</span>}
                 </div>
-                
                 <div className="remember-forgot">
                   <div className="remember-me">
                     <input 
@@ -221,7 +201,6 @@ const Login = () => {
                   </div>
                   <a href="#" onClick={openForgotPasswordModal} className="forgot-password">Forgot Password?</a>
                 </div>
-                
                 <button 
                   className="auth-button" 
                   type="submit" 
@@ -236,13 +215,11 @@ const Login = () => {
                     </>
                   )}
                 </button>
-                
                 <div className="toggle-link">
                   <p>Don't have an account? <button type="button" onClick={toggleForm}>Register</button></p>
                 </div>
               </form>
             </div>
-            
             <div className={`form-panel ${!isLoginActive ? 'active' : ''}`}>
               <form className="register-form" onSubmit={handleSubmitSignup(onRegisterSubmit)}>
                 <div className="input-group">
@@ -259,7 +236,6 @@ const Login = () => {
                   </div>
                   {registerErrors.fullName && <span className="error-message">{registerErrors.fullName.message}</span>}
                 </div>
-                
                 <div className="input-group">
                   <label>Email</label>
                   <div className={`input-with-icon ${registerErrors.email ? 'input-error' : ''}`}>
@@ -278,7 +254,6 @@ const Login = () => {
                   </div>
                   {registerErrors.email && <span className="error-message">{registerErrors.email.message}</span>}
                 </div>
-                
                 <div className="input-group">
                   <label>Phone Number</label>
                   <div className={`input-with-icon input-with-prefix ${registerErrors.phone ? 'input-error' : ''}`}>
@@ -299,7 +274,6 @@ const Login = () => {
                   </div>
                   {registerErrors.phone && <span className="error-message">{registerErrors.phone.message}</span>}
                 </div>
-                
                 <div className="input-group">
                   <label>Password</label>
                   <div className={`input-with-icon ${registerErrors.password ? 'input-error' : ''}`}>
@@ -326,7 +300,6 @@ const Login = () => {
                   </div>
                   {registerErrors.password && <span className="error-message">{registerErrors.password.message}</span>}
                 </div>
-                
                 <div className="input-group">
                   <label>Confirm Password</label>
                   <div className={`input-with-icon ${registerErrors.confirmPassword ? 'input-error' : ''}`}>
@@ -350,7 +323,6 @@ const Login = () => {
                   </div>
                   {registerErrors.confirmPassword && <span className="error-message">{registerErrors.confirmPassword.message}</span>}
                 </div>
-                
                 <div className={`terms ${registerErrors.agreeTerms ? 'terms-error' : ''}`}>
                   <input 
                     type="checkbox" 
@@ -362,7 +334,6 @@ const Login = () => {
                   <label htmlFor="terms">I agree to the <a href="#">Terms & Conditions</a></label>
                   {registerErrors.agreeTerms && <span className="error-message">{registerErrors.agreeTerms.message}</span>}
                 </div>
-                
                 <button 
                   className="auth-button" 
                   type="submit" 
@@ -377,7 +348,6 @@ const Login = () => {
                     </>
                   )}
                 </button>
-                
                 <div className="toggle-link">
                   <p>Already have an account? <button type="button" onClick={toggleForm}>Login</button></p>
                 </div>
@@ -385,7 +355,6 @@ const Login = () => {
             </div>
           </div>
         </div>
-        
         <div className={`auth-background-side ${!isLoginActive && isMobile ? 'mobile-bg-register' : ''}`}>
           <div className="circles">
             <div className="circle circle-1"></div>
@@ -401,8 +370,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
-      {/* Forgot Password Modal */}
       {showForgotPasswordModal && (
         <div className="modal-overlay">
           <div className="forgot-password-modal">

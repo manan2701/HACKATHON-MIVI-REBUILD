@@ -3,7 +3,7 @@ import "./NavBar.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const FloatingNavbar = () => {
+const NavBar = () => {
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -13,12 +13,12 @@ const FloatingNavbar = () => {
   const location = useLocation();
   const navbarRef = useRef(null);
   const user = useSelector((state) => state.userReducer.user);
-  
+
   // Toggle navbar visibility on button click
   const toggleNav = () => {
     setIsNavVisible(!isNavVisible);
     if (!isNavVisible) {
-      setMenuOpen(false); // Close menu when hiding navbar
+      setMenuOpen(false);
     }
   };
 
@@ -28,17 +28,13 @@ const FloatingNavbar = () => {
 
   const handleLogoClick = (e) => {
     e.preventDefault();
-    
-    // If already on home page, scroll to top
     if (location.pathname === "/") {
       window.scrollTo({
         top: 0,
         behavior: "smooth"
       });
     } else {
-      // Navigate to home page and then scroll to top
       navigate("/");
-      // The scroll to top will happen automatically due to the LenisWrapper
     }
   };
 
@@ -48,57 +44,39 @@ const FloatingNavbar = () => {
     }
   };
 
-  // Check device screen size
+  // Device screen size effect
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       setIsMobile(width <= 768);
       setIsTablet(width > 480 && width < 992);
-      
-      // Show navbar for desktop, hide for mobile/tablet by default
       if (width >= 992) {
         setIsNavVisible(true);
       }
     };
-    
     window.addEventListener("resize", handleResize);
     handleResize();
-    
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Control navbar visibility based on scroll direction
+  // Navbar visibility on scroll
   useEffect(() => {
     const controlNavbar = () => {
-      if (isMobile || isTablet) return; // Don't control navbar visibility on mobile/tablet
-      
+      if (isMobile || isTablet) return;
       const currentScrollY = window.scrollY;
-      
-      // Determine scroll direction
       if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        // Scrolling down - hide navbar
         setIsNavVisible(false);
-        // Also close mobile menu when hiding navbar
         if (menuOpen) setMenuOpen(false);
       } else if (currentScrollY < lastScrollY) {
-        // Scrolling up - show navbar
         setIsNavVisible(true);
       }
-      
-      // Always show navbar at the top of the page
       if (currentScrollY === 0) {
         setIsNavVisible(true);
       }
-      
       setLastScrollY(currentScrollY);
     };
-
     window.addEventListener("scroll", controlNavbar);
-    return () => {
-      window.removeEventListener("scroll", controlNavbar);
-    };
+    return () => window.removeEventListener("scroll", controlNavbar);
   }, [lastScrollY, menuOpen, isMobile, isTablet]);
 
   // Close menu when clicking outside
@@ -108,11 +86,8 @@ const FloatingNavbar = () => {
         setMenuOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
   return (
@@ -123,7 +98,6 @@ const FloatingNavbar = () => {
       >
         <i className={`ri-arrow-${isNavVisible ? 'left' : 'right'}-s-line`}></i>
       </button>
-
       <nav 
         ref={navbarRef}
         className={`navbar ${isNavVisible ? "navbar-visible" : ""}`}
@@ -138,7 +112,6 @@ const FloatingNavbar = () => {
             </a>
           </div>
           <div className="navbar-separator"></div>
-
           <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
             <NavLink 
               to="/products/68811f5d6d73fd0ed63ec56d" 
@@ -164,7 +137,6 @@ const FloatingNavbar = () => {
             </NavLink>
           </div>
         </div>
-        
         <div className="navbar-profile">
           <Link to="/cart" className="cart-icon">
             <i className="ri-shopping-cart-line"></i>
@@ -173,7 +145,6 @@ const FloatingNavbar = () => {
             <i className="ri-user-line"></i>
           </Link>
         </div>
-        
         <div 
           className={`hamburger-menu ${menuOpen ? 'open' : ''}`} 
           onClick={toggleMenu}
@@ -187,4 +158,4 @@ const FloatingNavbar = () => {
   );
 };
 
-export default FloatingNavbar;
+export default NavBar;

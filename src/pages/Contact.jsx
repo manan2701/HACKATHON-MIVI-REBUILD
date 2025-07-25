@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Contact.css';
-import { toast } from '../components/CustomToast.jsx';
+import { toast } from '../components/ui/CustomToast.jsx';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,15 +13,12 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value
     });
-    
-    // Clear error when user types
     if (formErrors[name]) {
       setFormErrors({
         ...formErrors,
@@ -30,58 +27,41 @@ const Contact = () => {
     }
   };
 
-  // Validate form
   const validateForm = () => {
     const errors = {};
-    
     if (!formData.name.trim()) {
       errors.name = 'Name is required';
     }
-    
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
       errors.email = 'Invalid email address';
     }
-    
     if (!formData.subject.trim()) {
       errors.subject = 'Subject is required';
     }
-    
     if (!formData.message.trim()) {
       errors.message = 'Message is required';
     }
-    
     return errors;
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validate form
     const errors = validateForm();
     setFormErrors(errors);
-    
-    // If no errors, submit form
     if (Object.keys(errors).length === 0) {
       setIsSubmitting(true);
-      
-      // Simulate API call
       setTimeout(() => {
         setIsSubmitting(false);
         setSubmitSuccess(true);
         toast.success('Message sent successfully! We will get back to you soon.');
-        
-        // Reset form
         setFormData({
           name: '',
           email: '',
           subject: '',
           message: ''
         });
-        
-        // Reset success message after 5 seconds
         setTimeout(() => {
           setSubmitSuccess(false);
         }, 5000);
@@ -89,18 +69,12 @@ const Contact = () => {
     }
   };
 
-  // Enable smooth scroll when component mounts
   useEffect(() => {
     if (window.lenisScroll) window.lenisScroll.start();
-
-    return () => {
-      // Cleanup if needed
-    };
   }, []);
 
   return (
     <div className="contact-page">
-      {/* Hero Section */}
       <div className="contact-hero">
         <div className="contact-hero-content">
           <h1 className="contact-title">Get In Touch</h1>
@@ -109,14 +83,11 @@ const Contact = () => {
           </p>
         </div>
       </div>
-      
       <div className="contact-container">
         <div className="contact-content">
-          {/* Contact Form Section */}
           <div className="contact-form-section">
             <div className="contact-card">
               <h2 className="section-title">Send Us a Message</h2>
-              
               <form className="contact-form" onSubmit={handleSubmit}>
                 <div className="contact-form-group">
                   <label htmlFor="name">Your Name</label>
@@ -131,7 +102,6 @@ const Contact = () => {
                   />
                   {formErrors.name && <p className="error-message">{formErrors.name}</p>}
                 </div>
-                
                 <div className="contact-form-group">
                   <label htmlFor="email">Your Email</label>
                   <input
@@ -145,7 +115,6 @@ const Contact = () => {
                   />
                   {formErrors.email && <p className="error-message">{formErrors.email}</p>}
                 </div>
-                
                 <div className="contact-form-group">
                   <label htmlFor="subject">Subject</label>
                   <input
@@ -159,7 +128,6 @@ const Contact = () => {
                   />
                   {formErrors.subject && <p className="error-message">{formErrors.subject}</p>}
                 </div>
-                
                 <div className="contact-form-group">
                   <label htmlFor="message">Your Message</label>
                   <textarea
@@ -173,7 +141,6 @@ const Contact = () => {
                   ></textarea>
                   {formErrors.message && <p className="error-message">{formErrors.message}</p>}
                 </div>
-                
                 <button 
                   type="submit" 
                   className={`contact-submit-btn ${isSubmitting ? 'submitting' : ''}`}
@@ -190,12 +157,9 @@ const Contact = () => {
               </form>
             </div>
           </div>
-          
-          {/* Contact Info Section */}
           <div className="contact-info-section">
             <div className="contact-card">
               <h2 className="section-title">Contact Information</h2>
-              
               <div className="contact-info-item">
                 <div className="info-icon">
                   <i className="ri-map-pin-line"></i>
@@ -206,7 +170,6 @@ const Contact = () => {
                   <p>Hyderabad, 500081</p>
                 </div>
               </div>
-              
               <div className="contact-info-item">
                 <div className="info-icon">
                   <i className="ri-mail-line"></i>
@@ -217,7 +180,6 @@ const Contact = () => {
                   <p>info@mivi.in</p>
                 </div>
               </div>
-              
               <div className="contact-info-item">
                 <div className="info-icon">
                   <i className="ri-phone-line"></i>
@@ -228,7 +190,6 @@ const Contact = () => {
                   <p>+91 0987 654 321</p>
                 </div>
               </div>
-              
               <div className="social-links">
                 <h3>Connect With Us</h3>
                 <div className="social-icons">
@@ -250,8 +211,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      
-      {/* Map Section */}
       <div className="map-section">
         <iframe 
           title="Mivi Location"
@@ -264,8 +223,6 @@ const Contact = () => {
           referrerPolicy="no-referrer-when-downgrade">
         </iframe>
       </div>
-      
-      {/* FAQ Section */}
       <div className="faq-section">
         <div className="faq-container">
           <h2 className="section-title">Frequently Asked Questions</h2>

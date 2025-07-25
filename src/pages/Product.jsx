@@ -6,31 +6,24 @@ import { useGSAP } from "@gsap/react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { asyncaddToCart } from "../store/actions/userActions";
-import LoadingSpinner from "../components/LoadingSpinner";
-import ModernLoader from "../components/ModernLoader";
-import NoProductsFound from "../components/NoProductsFound";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import ModernLoader from "../components/ui/ModernLoader";
+import NoProductsFound from "../components/ui/NoProductsFound";
 gsap.registerPlugin(ScrollTrigger);
 
-// Helper function to safely animate with GSAP
 const safeAnimate = (target, animation, options = {}) => {
-  // Only proceed if target exists and is a valid element or array of elements
   if (!target) {
-    // If no target, immediately call onComplete if provided
     if (options.onComplete) options.onComplete();
     return;
   }
-
-  // Check if it's an array-like object with valid elements
   if (Array.isArray(target)) {
     const validElements = target.filter((el) => el && typeof el === "object");
     if (validElements.length === 0) {
-      // If no valid elements, immediately call onComplete if provided
       if (options.onComplete) options.onComplete();
       return;
     }
     gsap.to(validElements, { ...animation, ...options });
   } else {
-    // For direct element references
     gsap.to(target, { ...animation, ...options });
   }
 };
@@ -51,23 +44,17 @@ const ProductPage = () => {
     sort: useRef(null),
     price: useRef(null),
   };
-
-  const productsFromStore = useSelector(
-    (state) => state.productReducer.products
-  );
+  const productsFromStore = useSelector((state) => state.productReducer.products);
   const isProductsLoading = useSelector((state) => state.productReducer.loading);
   const user = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Ensure scrolling is always enabled after data loads
   useEffect(() => {
     if (productsFromStore && productsFromStore.length > 0) {
-      // Force enable scrolling after data loads (with a delay to ensure rendering completes)
       const timer = setTimeout(() => {
         if (window.lenisScroll) window.lenisScroll.start();
       }, 1000);
-
       return () => clearTimeout(timer);
     }
   }, [productsFromStore]);
@@ -76,11 +63,8 @@ const ProductPage = () => {
     setProducts(productsFromStore);
   }, [productsFromStore]);
 
-  // Reset product cards ref array when products change
   useEffect(() => {
     productCardsRef.current = productCardsRef.current.slice(0, products.length);
-
-    // Always ensure scrolling is enabled when products change
     if (window.lenisScroll) {
       setTimeout(() => {
         window.lenisScroll.start();
@@ -88,12 +72,9 @@ const ProductPage = () => {
     }
   }, [products]);
 
-  // GSAP animations for product cards
   useGSAP(() => {
     if (productGridRef.current && productCardsRef.current.length > 0) {
-      // Temporarily stop smooth scrolling during animation
       if (window.lenisScroll) window.lenisScroll.stop();
-
       try {
         const validCards = productCardsRef.current.filter(
           (ref) => ref !== null
@@ -112,31 +93,23 @@ const ProductPage = () => {
               duration: 0.8,
               ease: "power2.out",
               onComplete: () => {
-                // Resume smooth scrolling after animation
                 if (window.lenisScroll) window.lenisScroll.start();
               },
             }
           );
         } else if (window.lenisScroll) {
-          // No valid elements but we need to restart scrolling
           window.lenisScroll.start();
         }
       } catch (error) {
-        console.error("Animation error:", error);
-        // Ensure scrolling is restored even if animation fails
         if (window.lenisScroll) window.lenisScroll.start();
       }
-
-      // Safety timeout to ensure scrolling is always re-enabled
       setTimeout(() => {
         if (window.lenisScroll) window.lenisScroll.start();
-      }, 1200); // Just after animation should complete
+      }, 1200);
     }
   }, [products]);
 
-  // Set up filter panel animations
   useEffect(() => {
-    // Initial setup for filter panels
     Object.keys(filterRefs).forEach((key) => {
       if (key === activeFilterPanel && filterRefs[key].current) {
         const contentEl = filterRefs[key].current;
@@ -145,17 +118,13 @@ const ProductPage = () => {
     });
   }, []);
 
-  // Toggle filter panel with smooth animation
   const toggleFilterPanel = (panelName) => {
-    // Handle closing current panel
     if (activeFilterPanel) {
       const currentContentEl = filterRefs[activeFilterPanel]?.current;
       if (currentContentEl) {
         currentContentEl.classList.remove("active");
       }
     }
-
-    // Set new active panel or close if clicking same panel
     if (activeFilterPanel === panelName) {
       setActiveFilterPanel(null);
     } else {
@@ -165,29 +134,23 @@ const ProductPage = () => {
         if (newContentEl) {
           newContentEl.classList.add("active");
         }
-      }, 50); // Small delay to allow state to update
+      }, 50);
     }
   };
 
-  // Filter products based on selected filters
   const filteredProducts = products.filter((product) => {
-    // Filter by subcategory
     if (activeCategory !== "all" && product.subcategory !== activeCategory) {
       return false;
     }
-
-    // Filter by price
     if (
       product.price < filters.price.min ||
       product.price > filters.price.max
     ) {
       return false;
     }
-
     return true;
   });
 
-  // Sort products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
@@ -195,18 +158,14 @@ const ProductPage = () => {
       case "price-high":
         return b.price - a.price;
       default:
-        return 0; // Featured sorting
+        return 0;
     }
   });
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
-
-    // Animation for category change - using ref instead of direct selector
     if (productGridRef.current) {
-      // Temporarily stop smooth scrolling during animation
       if (window.lenisScroll) window.lenisScroll.stop();
-
       try {
         safeAnimate(productGridRef.current, {
           opacity: 0,
@@ -219,19 +178,14 @@ const ProductPage = () => {
               duration: 0.5,
               delay: 0.1,
               onComplete: () => {
-                // Resume smooth scrolling after animation
                 if (window.lenisScroll) window.lenisScroll.start();
               },
             });
           },
         });
       } catch (error) {
-        console.error("Animation error:", error);
-        // Ensure scrolling is restored even if animation fails
         if (window.lenisScroll) window.lenisScroll.start();
       }
-
-      // Safety timeout to ensure scrolling is always re-enabled
       setTimeout(() => {
         if (window.lenisScroll) window.lenisScroll.start();
       }, 1000);
@@ -242,19 +196,15 @@ const ProductPage = () => {
     setSortBy(value);
   };
 
-  // Fixed price filter handling
   const handlePriceChange = (type, value) => {
     const parsedValue = parseInt(value);
-
     if (type === "min") {
-      // Handle min price changes
       if (isNaN(parsedValue)) {
         setFilters({
           ...filters,
           price: { ...filters.price, min: 0 },
         });
       } else {
-        // Ensure min can't exceed max
         const newMin = Math.min(parsedValue, filters.price.max - 500);
         setFilters({
           ...filters,
@@ -262,14 +212,12 @@ const ProductPage = () => {
         });
       }
     } else {
-      // Handle max price changes
       if (isNaN(parsedValue)) {
         setFilters({
           ...filters,
           price: { ...filters.price, max: 50000 },
         });
       } else {
-        // Ensure max is at least min + 500
         const newMax = Math.max(parsedValue, filters.price.min + 500);
         setFilters({
           ...filters,
@@ -284,12 +232,8 @@ const ProductPage = () => {
       price: { min: 500, max: 50000 },
     });
     setSortBy("featured");
-
-    // Animation for reset - using ref instead of direct selector
     if (productGridRef.current) {
-      // Temporarily stop smooth scrolling during animation
       if (window.lenisScroll) window.lenisScroll.stop();
-
       safeAnimate(productGridRef.current, {
         opacity: 0.5,
         scale: 0.98,
@@ -300,7 +244,6 @@ const ProductPage = () => {
             scale: 1,
             duration: 0.5,
             onComplete: () => {
-              // Resume smooth scrolling after animation
               if (window.lenisScroll) window.lenisScroll.start();
             },
           });
@@ -316,40 +259,28 @@ const ProductPage = () => {
     return count;
   };
 
-  // Function to add reference to product card
   const addToRefs = (el, index) => {
     if (el && !productCardsRef.current[index]) {
       productCardsRef.current[index] = el;
     }
   };
 
-  // Function to handle adding product to cart
   const handleAddToCart = async (product) => {
     if (!user) {
       navigate('/login');
       return;
     }
-  
     const firstColorKey = product.color && product.color.length > 0 
       ? Object.keys(product.color[0])[0] 
       : null;
-  
-    if (!firstColorKey) {
-      console.error("No color available for this product");
-      return;
-    }
-  
-    setLoadingProductId(product._id); // Start loader
-  
+    if (!firstColorKey) return;
+    setLoadingProductId(product._id);
     try {
       await dispatch(asyncaddToCart(user, product, firstColorKey));
-    } catch (err) {
-      console.error("Failed to add to cart:", err);
     } finally {
-      setLoadingProductId(null); // Stop loader
+      setLoadingProductId(null);
     }
   };
-  
 
   return (
     <div className="product-page">
@@ -360,8 +291,6 @@ const ProductPage = () => {
           products
         </p>
       </div>
-
-      {/* Category Navigation */}
       <div className="product-page__categories">
         <button
           className={`category-btn ${activeCategory === "all" ? "active" : ""}`}
@@ -370,7 +299,6 @@ const ProductPage = () => {
           <span>All Products</span>
           <div className="category-indicator"></div>
         </button>
-
         <button
           className={`category-btn ${
             activeCategory === "gaming-pod" ? "active" : ""
@@ -380,7 +308,6 @@ const ProductPage = () => {
           <span>Gaming Pods</span>
           <div className="category-indicator"></div>
         </button>
-
         <button
           className={`category-btn ${
             activeCategory === "duopods" ? "active" : ""
@@ -390,7 +317,6 @@ const ProductPage = () => {
           <span>DuoPods</span>
           <div className="category-indicator"></div>
         </button>
-
         <button
           className={`category-btn ${
             activeCategory === "superpods" ? "active" : ""
@@ -401,8 +327,6 @@ const ProductPage = () => {
           <div className="category-indicator"></div>
         </button>
       </div>
-
-      {/* Mobile Filter Toggle */}
       <button
         className="filter-toggle-btn"
         onClick={() => setShowMobileFilters(!showMobileFilters)}
@@ -413,9 +337,7 @@ const ProductPage = () => {
           <div className="filter-badge">{getTotalActiveFilters()}</div>
         )}
       </button>
-
       <div className="product-page__content">
-        {/* Filter Sidebar */}
         <div
           className={`product-filters ${
             showMobileFilters ? "show-mobile" : ""
@@ -429,7 +351,6 @@ const ProductPage = () => {
                 <div className="filter-count">{getTotalActiveFilters()}</div>
               )}
             </div>
-
             {showMobileFilters && (
               <button
                 className="close-filters-btn"
@@ -439,14 +360,11 @@ const ProductPage = () => {
               </button>
             )}
           </div>
-
           {getTotalActiveFilters() > 0 && (
             <button className="clear-filters-btn" onClick={clearAllFilters}>
               Clear All
             </button>
           )}
-
-          {/* Sort Options */}
           <div className="filter-section">
             <div
               className="filter-section__header"
@@ -459,7 +377,6 @@ const ProductPage = () => {
                 }-s-line`}
               ></i>
             </div>
-
             <div ref={filterRefs.sort} className="filter-section__content">
               <div className="filter-option">
                 <input
@@ -471,7 +388,6 @@ const ProductPage = () => {
                 />
                 <label htmlFor="sort-featured">Featured</label>
               </div>
-
               <div className="filter-option">
                 <input
                   type="radio"
@@ -482,7 +398,6 @@ const ProductPage = () => {
                 />
                 <label htmlFor="sort-price-low">Price: Low to High</label>
               </div>
-
               <div className="filter-option">
                 <input
                   type="radio"
@@ -495,8 +410,6 @@ const ProductPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Price Filter */}
           <div className="filter-section">
             <div
               className="filter-section__header"
@@ -509,7 +422,6 @@ const ProductPage = () => {
                 }-s-line`}
               ></i>
             </div>
-
             <div ref={filterRefs.price} className="filter-section__content">
               <div className="price-range">
                 <div className="price-inputs">
@@ -524,7 +436,6 @@ const ProductPage = () => {
                       onChange={(e) => handlePriceChange("min", e.target.value)}
                     />
                   </div>
-
                   <div className="price-field">
                     <label htmlFor="max-price">Max (₹)</label>
                     <input
@@ -536,7 +447,6 @@ const ProductPage = () => {
                     />
                   </div>
                 </div>
-
                 <div className="price-slider">
                   <div className="price-range-track">
                     <div
@@ -555,8 +465,6 @@ const ProductPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Product Grid */}
         <div className="product-grid" ref={productGridRef}>
           {isProductsLoading ? (
             <div className="products-loading-container">
@@ -585,7 +493,6 @@ const ProductPage = () => {
                     />
                   </div>
                 </Link>
-
                 <div className="product-info">
                   <Link
                     to={`/products/${product._id}`}
@@ -594,7 +501,6 @@ const ProductPage = () => {
                     <h3 className="product-name">{product.name}</h3>
                   </Link>
                   <p className="product-description">{product.tagline}</p>
-
                   <div className="product-meta">
                     <div className="product-rating">
                       <span className="rating-stars">
@@ -615,7 +521,6 @@ const ProductPage = () => {
                       </span>
                       <span className="rating-count">({product.reviews})</span>
                     </div>
-
                     <div className="product-price-container">
                       <span className="product-price">
                         ₹{product.price.toLocaleString()}
@@ -627,7 +532,6 @@ const ProductPage = () => {
                       )}
                     </div>
                   </div>
-
                   <div className="product-features">
                     {product.features.map((feature, index) => (
                       <span key={index} className="feature-tag">
@@ -635,7 +539,6 @@ const ProductPage = () => {
                       </span>
                     ))}
                   </div>
-
                   <div className="product-cta">
                     <button
                       className="add-to-cart-btn"

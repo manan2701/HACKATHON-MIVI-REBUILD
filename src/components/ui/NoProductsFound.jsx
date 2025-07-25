@@ -20,7 +20,6 @@ const NoProductsFound = ({
         </div>
         <h2 className="no-products-title">{title}</h2>
         <p className="no-products-message">{message}</p>
-        
         {showButton && (
           onButtonClick ? (
             <button onClick={onButtonClick} className="no-products-button">

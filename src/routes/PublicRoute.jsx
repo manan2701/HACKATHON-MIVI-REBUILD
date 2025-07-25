@@ -1,12 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 const PublicRoute = ({ children }) => {
-  const user = useSelector((state) => state.userReducer.user);
-  
+  const user = localStorage.getItem("user");
   if (user) {
-    // Redirect logged-in users to the homepage
     return <Navigate to="/" replace />;
   }
 

@@ -219,8 +219,6 @@
   position: relative;
   margin-bottom: 4rem;
   z-index: 2;
-  display: flex;
-  justify-content: center;
 }
 
 .timeline-dot {

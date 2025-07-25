@@ -2,10 +2,11 @@ import React, { useRef } from "react";
 import "./HeroSection3.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import AnimatedBackground from "./AnimatedBackground";
+import AnimatedBackground from "../ui/AnimatedBackground";
 
 const HeroSection3 = () => {
   const videoRef = useRef(null);
+
   useGSAP(() => {
     gsap.fromTo(
       videoRef.current,
@@ -51,7 +52,6 @@ const HeroSection3 = () => {
     );
   }, []);
 
-
   useGSAP(() => {
     const avatarTl = gsap.timeline({
       scrollTrigger: {
@@ -61,7 +61,6 @@ const HeroSection3 = () => {
         scrub: 1,
       },
     });
-
     avatarTl.fromTo(
       ".avatar-heading",
       { opacity: 0, y: 30 },
@@ -127,14 +126,11 @@ const HeroSection3 = () => {
           ></video>
         </div>
       </div>
-
-      {/* Avatar Section */}
       <div className="avatar-section">
         <div className="avatar-label-box">
           <div className="avatar-green-box"></div>
           <p className="avatar-label">Avatars</p>
         </div>
-        
         <div className="avatar-content">
           <h3 className="avatar-heading">Avatars: Your subject matter experts</h3>
           <p className="avatar-subheading">
@@ -142,7 +138,6 @@ const HeroSection3 = () => {
             They sound real, think smart, and feel truly human in every conversation.
           </p>
         </div>
-        
         <div className="avatar-image">
           <img 
             src="/assets/Avatar.webp" 

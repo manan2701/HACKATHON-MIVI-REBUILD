@@ -8,14 +8,10 @@ const Footer = () => {
   const [submitted, setSubmitted] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically handle the form submission
-    console.log({ name, email, message });
-    // Show success message
     setSubmitted(true);
-    // Reset form after submission
     setTimeout(() => {
       setName('');
       setEmail('');
@@ -24,7 +20,7 @@ const Footer = () => {
       setShowContactForm(false);
     }, 3000);
   };
-  
+
   const toggleDropdown = (index) => {
     if (activeDropdown === index) {
       setActiveDropdown(null);
@@ -32,7 +28,7 @@ const Footer = () => {
       setActiveDropdown(index);
     }
   };
-  
+
   const footerSections = [
     {
       title: "Customer Support",
@@ -42,9 +38,7 @@ const Footer = () => {
         { text: "Return & Replacement", url: "#" },
         { text: "Warranty Repairs", url: "#" },
         { text: "Help Centre", url: "#" },
-        { 
-          text: "Contact Us", 
-          url: "/contact",}
+        { text: "Contact Us", url: "/contact" }
       ]
     },
     {
@@ -52,7 +46,7 @@ const Footer = () => {
       links: [
         { text: "AI Buds", url: "/products" },
         { text: "Superpods", url: "/products" },
-            { text: "Duopods", url: "/products" },
+        { text: "Duopods", url: "/products" }
       ]
     },
     {
@@ -82,7 +76,6 @@ const Footer = () => {
   return (
     <footer className="mivi-footer">
       <div className="mivi-footer-container">
-        {/* Footer sections with dropdown links */}
         {footerSections.map((section, index) => (
           <div className="mivi-footer-block" key={index}>
             <div 
@@ -108,8 +101,6 @@ const Footer = () => {
             </ul>
           </div>
         ))}
-
-        {/* Social Media Section */}
         <div className="social-section">
           <div className="social-heading-text mivi-footer-block-heading">Social</div>
           <ul className="social-links">
@@ -123,8 +114,6 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-
-      {/* Footer Bottom Section */}
       <div className="mivi-footer-bottom-block">
         <div className="mivi-footer-bottom-block-inner-1">
           <img 
@@ -138,17 +127,14 @@ const Footer = () => {
             alt="Payment methods mobile" 
           />
         </div>
-        
         <div className="footer-legal">
           <ul className="legal-links">
             <li>
               <a href="/pages/privacy-policy">Privacy Policy</a>
             </li>
-            {/* <li className="separator"></li> */}
             <li>
               <a href="/pages/terms-and-conditions">Terms of Service</a>
             </li>
-            {/* <li className="separator"></li> */}
             <li>
               <span>All Rights Reserved. 2024</span>
             </li>

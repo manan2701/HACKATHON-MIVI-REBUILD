@@ -2,7 +2,6 @@ import React from 'react';
 import { toast as toastOriginal, ToastContainer as ToastContainerOriginal, Bounce } from 'react-toastify';
 import './CustomToast.css';
 
-// Custom ToastContainer that applies our styles
 export const ToastContainer = (props) => {
   return (
     <ToastContainerOriginal
@@ -23,14 +22,12 @@ export const ToastContainer = (props) => {
   );
 };
 
-// Custom close button component
 const CustomCloseButton = ({ closeToast }) => (
   <button onClick={closeToast} className="Toastify__close-button" aria-label="close">
     ✕
   </button>
 );
 
-// SVG icons for different toast types
 const icons = {
   success: (
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,7 +51,6 @@ const icons = {
   ),
 };
 
-// Custom toast functions with enhanced visuals
 const toast = {
   success: (message, options = {}) => {
     return toastOriginal.success(message, {
