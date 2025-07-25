@@ -25,7 +25,7 @@ const OurStory = () => {
     company: "Mivi",
     education: "Florida State University - College of Business",
     location: "Hyderabad, Telangana, India",
-    image : "public/assets/founder.jpg"
+    image : "/assets/founder.jpg"
   };
 
   const miviTimeline = [
@@ -122,7 +122,7 @@ const OurStory = () => {
                 <img 
                   src={founderInfo.image} 
                   alt={founderInfo.name} 
-                  onError={(e) => { e.target.src = "/assets/Avatar.webp"; }} 
+                  onError={(e) => { e.target.src = "/assets/founder.jpg"; }} 
                 />
               </div>
             </div>
