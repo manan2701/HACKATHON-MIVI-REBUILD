@@ -761,6 +761,15 @@
 
 /* Responsive Styles - Consolidated */
 @media (max-width: 900px) {
+  .checkout-modal {
+    align-items: flex-start;
+  }
+  .checkout-form-container {
+    max-height: 80vh;
+    overflow-y: auto;
+    margin: 5vh 20px;
+  }
+
   .checkout-columns {
     flex-direction: column;
   }
