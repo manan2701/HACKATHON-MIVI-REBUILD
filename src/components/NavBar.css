@@ -130,6 +130,10 @@
   padding: 0 3rem;
 }
 
+.active {
+  color: #52fea2;
+}
+
 .navbar-profile a {
   display: inline-block;
   position: relative;
